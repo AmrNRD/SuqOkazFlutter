@@ -145,4 +145,16 @@ class ImageProcessor {
           )),
     );
   }
+
+  double screenAwareSize(double size, BuildContext context) {
+    double drawingHeight =
+        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+    return size * drawingHeight / baseHeight;
+  }
+
+  double screenAwareWidth(double size, BuildContext context) {
+    double drawingWidth =
+        MediaQuery.of(context).size.width - AppDimens.marginDefault16;
+    return size * drawingWidth / baseWidth;
+  }
 }

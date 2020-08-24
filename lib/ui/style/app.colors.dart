@@ -6,9 +6,10 @@ class AppColors {
   static const MaterialColor primaryColors = MaterialColor(
     0xFF161615,
     <int, Color>{
-      50: Color(0xFFE6A537),
+      50: Color(0xFFF9C45A),
       100: Color(0xFFFDF6E0),
-      200: Color(0xFF262626),
+      150: Color(0xFFF3ECC2),
+      200: Color(0xFF242424),
     },
   );
 
@@ -36,10 +37,11 @@ class AppColors {
     },
   );
 
-  static Color primaryColor1 = Color(0xFFE6A537);
+  static Color primaryColor1 = Color(0xFFF9C45A);
   static Color primaryColor2 = Color(0xFFFDF6E0);
-  static Color primaryColor3 = Color(0xFF262626);
+  static Color primaryColor3 = Color(0xFF242424);
+  static Color primaryColor4 = Color(0xFF888156);
 
   static Color accentColor1 = Color(0xFF44444E);
-  static Color accentColor2 = Color(0xFFEB5757);
+  static Color accentColor2 = Color(0xFFCC1111);
 }

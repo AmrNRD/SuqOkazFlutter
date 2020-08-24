@@ -3,15 +3,17 @@ class Constants {
   static bool hideOutOfStock = false;
 
   // Base
+  static const appName = "SuqOkaz";
   static const baseUrl = "https://suqokaz.com";
   static bool isRTL = false;
   static const dummyProfilePic = "";
 
   //Route names
-  static const mainScreen = "/";
+  static const mainScreen = "/main";
   static const loginScreen = "/loginScreen";
+  static const homeScreen = "/";
+  static const categoriesScreen = "/categoriesScreen";
 
-  static const appName = "SuqOkaz";
 
   // Keys
   static const consumerKey = "ck_84bf021fb3836e4daa569acf30a4ed7b67485163";  // suqokaz

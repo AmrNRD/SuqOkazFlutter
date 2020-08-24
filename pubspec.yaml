@@ -60,6 +60,7 @@ dependencies:
   html: ^0.14.0+3
   async: ^2.4.2
   jaguar_jwt: ^2.1.6
+  custom_navigation_bar: ^0.2.7
 
   flutter_localizations:
     sdk: flutter
@@ -75,6 +76,8 @@ flutter:
 
   assets:
     - assets/lang/
+    - assets/images/
+    - assets/icons/
 
   fonts:
     - family: Roboto
