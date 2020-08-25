@@ -11,6 +11,7 @@ class AppDimens {
   static const double marginSeparator16 = 16;
   static const double marginEdgeCase24 = 24;
   static const double marginEdgeCase32 = 32;
+  static const double marginEdgeCase64 = 64;
   static const double paddingDefault16 = 16;
   static const double paddingEdgeCase24 = 24;
   static const double paddingEdgeCase40 = 40;

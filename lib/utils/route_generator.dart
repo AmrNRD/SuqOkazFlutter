@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:suqokaz/ui/modules/auth/auth.page.dart';
 import 'package:suqokaz/ui/modules/home/home.tab.dart';
 import 'package:suqokaz/ui/modules/navigation/home.navigation.dart';
 import 'package:suqokaz/ui/modules/splash/splash.page.dart';
@@ -13,21 +14,27 @@ class RouteGenerator {
     final args = settings.arguments;
 
     switch (settings.name) {
-      case Constants.mainScreen:
+      case Constants.mainPage:
         return MaterialPageRoute(
-          settings: RouteSettings(name: Constants.mainScreen),
+          settings: RouteSettings(name: Constants.mainPage),
           builder: (_) => LandingSplashScreen(),
         );
-      case Constants.categoriesScreen:
+      case Constants.authPage:
         return MaterialPageRoute(
-          settings: RouteSettings(name: Constants.categoriesScreen),
+          settings: RouteSettings(name: Constants.authPage),
+          builder: (_) => AuthPage(),
+        );
+      case Constants.categoriesPage:
+        return MaterialPageRoute(
+          settings: RouteSettings(name: Constants.categoriesPage),
           builder: (_) => LandingSplashScreen(),
         );
-      case Constants.homeScreen:
+      case Constants.homePage:
         return MaterialPageRoute(
-          settings: RouteSettings(name: Constants.homeScreen),
+          settings: RouteSettings(name: Constants.homePage),
           builder: (_) => HomeNavigationPage(),
         );
+
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return _errorRoute();

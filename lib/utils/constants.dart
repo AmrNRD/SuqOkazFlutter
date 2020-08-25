@@ -9,10 +9,10 @@ class Constants {
   static const dummyProfilePic = "";
 
   //Route names
-  static const mainScreen = "/main";
-  static const loginScreen = "/loginScreen";
-  static const homeScreen = "/";
-  static const categoriesScreen = "/categoriesScreen";
+  static const mainPage = "/";
+  static const authPage = "/authPage";
+  static const homePage = "/mainPage";
+  static const categoriesPage= "/categoriesPage";
 
 
   // Keys

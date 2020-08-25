@@ -1,5 +1,18 @@
 {
     "app_name": "رالف - المخبز الالماني",
     "choose_language": "اختر اللغة",
-    "language_selection": "English"
+    "language_selection": "English",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "sign_in": "تسجيل الدخول",
+    "skip": "تخطي",
+    "forget": "هل نسيت كلمة المرور؟",
+    "phone_number": "رقم الجوال",
+    "or": "او",
+    "do_you_have_account": "هل لديك حساب؟ ",
+    "password_confirmation": "تأكيد الباسورد",
+    "send": "ارسال",
+    "back_to_login": "العودة الى تسجيل الدخول",
+    "hello": "مرحبا!",
+    "please_enter_your_details": "من فضلك قم بإدخال البيانات"
 }
