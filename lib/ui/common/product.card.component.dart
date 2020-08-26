@@ -11,7 +11,8 @@ class ProductCardComponent extends StatefulWidget {
   final Function onItemTap;
   final ProductModel product;
 
-  const ProductCardComponent(this.product, {Key key, this.onItemTap}) : super(key: key);
+  const ProductCardComponent(this.product, {Key key, this.onItemTap})
+      : super(key: key);
 
   @override
   _ProductCardComponentState createState() => _ProductCardComponentState();
@@ -24,7 +25,8 @@ class _ProductCardComponentState extends State<ProductCardComponent> {
     try {
       /*currency = AppLocalizations.of(context).translate("currency", replacement: double.parse(widget.product.price).toStringAsFixed(2)
         .toString());*/
-      currency = AppLocalizations.of(context).translate("currency", defaultText: "SAR", replacement: "22.99 SAR");
+      currency = AppLocalizations.of(context)
+          .translate("currency", defaultText: "SAR", replacement: "22.99 SAR");
     } catch (_) {}
 
     return GestureDetector(
@@ -38,14 +40,16 @@ class _ProductCardComponentState extends State<ProductCardComponent> {
           border: Border.all(color: Color(0xFFF2F2F2), width: 1),
           boxShadow: [
             BoxShadow(
-              color: Color(0xFF000000).withOpacity(0.05), blurRadius: 5, offset: Offset(0, 1), // changes position of shadow
+              color: Color(0xFF000000).withOpacity(0.05), blurRadius: 5,
+              offset: Offset(0, 1), // changes position of shadow
             ),
           ],
         ),
         child: Stack(
           children: [
             Container(
-              margin: EdgeInsetsDirectional.only(bottom: AppDimens.marginDefault12),
+              margin:
+                  EdgeInsetsDirectional.only(bottom: AppDimens.marginDefault12),
               child: Column(
                 children: <Widget>[
                   Container(
@@ -62,10 +66,18 @@ class _ProductCardComponentState extends State<ProductCardComponent> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsetsDirectional.only(start: AppDimens.marginDefault16, end: AppDimens.marginDefault16,top: AppDimens.marginDefault12),
+                    margin: EdgeInsetsDirectional.only(
+                        start: AppDimens.marginDefault16,
+                        end: AppDimens.marginDefault16,
+                        top: AppDimens.marginDefault12),
                     child: Text(
                       //widget.product.name,
-                      "Playstation 5 2TP With joystick", style: Theme.of(context).textTheme.headline5.copyWith(fontSize: 13), maxLines: 2,
+                      "Playstation 5 2TP With joystick",
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline5
+                          .copyWith(fontSize: 13),
+                      maxLines: 2,
                       softWrap: true, overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -76,10 +88,15 @@ class _ProductCardComponentState extends State<ProductCardComponent> {
                       children: <Widget>[
                         Expanded(
                           child: Padding(
-                            padding:EdgeInsetsDirectional.only(start: AppDimens.marginDefault16,end: AppDimens.marginDefault16),
+                            padding: EdgeInsetsDirectional.only(
+                                start: AppDimens.marginDefault16,
+                                end: AppDimens.marginDefault16),
                             child: Text(
                               "24,99 $currency",
-                              style: Theme.of(context).textTheme.headline2.copyWith(fontWeight: FontWeight.w800),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline2
+                                  .copyWith(fontWeight: FontWeight.w800),
                               maxLines: 2,
                               softWrap: true,
                               overflow: TextOverflow.ellipsis,
@@ -91,10 +108,19 @@ class _ProductCardComponentState extends State<ProductCardComponent> {
                             color: AppColors.primaryColors[50],
                             borderRadius: BorderRadius.circular(4),
                           ),
-                          padding: EdgeInsetsDirectional.only(end: AppDimens.marginDefault6,start: AppDimens.marginDefault6,top:
-                          AppDimens.marginDefault6,bottom: AppDimens.marginDefault6),
-                          margin: EdgeInsetsDirectional.only(end: AppDimens.marginDefault16),
-                          child: SvgPicture.asset("assets/icons/cart_icon.svg",color: Colors.white,height: 16,width: 16,),
+                          padding: EdgeInsetsDirectional.only(
+                              end: AppDimens.marginDefault6,
+                              start: AppDimens.marginDefault6,
+                              top: AppDimens.marginDefault6,
+                              bottom: AppDimens.marginDefault6),
+                          margin: EdgeInsetsDirectional.only(
+                              end: AppDimens.marginDefault16),
+                          child: SvgPicture.asset(
+                            "assets/icons/shopping_icon.svg",
+                            color: Colors.white,
+                            height: 16,
+                            width: 16,
+                          ),
                         ),
                       ],
                     ),
@@ -108,21 +134,26 @@ class _ProductCardComponentState extends State<ProductCardComponent> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsetsDirectional.only(top: AppDimens.marginDefault12, start: AppDimens.marginDefault16, end: AppDimens
-                        .marginDefault16),
+                    margin: EdgeInsetsDirectional.only(
+                        top: AppDimens.marginDefault12,
+                        start: AppDimens.marginDefault16,
+                        end: AppDimens.marginDefault16),
                     child: Container(
-                      padding: EdgeInsetsDirectional.only(top: 3,bottom: 3,start: 6,end: 6),
-                      decoration: BoxDecoration(
-                        color: AppColors.accentColor2.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Text(
-                        "Sale",
-                        style: Theme.of(context).textTheme.headline3.copyWith(fontWeight: FontWeight.w500,color: AppColors.accentColor2),
-                        maxLines: 1,
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                        padding: EdgeInsetsDirectional.only(
+                            top: 3, bottom: 3, start: 6, end: 6),
+                        decoration: BoxDecoration(
+                          color: AppColors.accentColor2.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Text(
+                          "Sale",
+                          style: Theme.of(context).textTheme.headline3.copyWith(
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.accentColor2),
+                          maxLines: 1,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                        )),
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 12, left: 14, right: 14),

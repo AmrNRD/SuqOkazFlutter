@@ -53,7 +53,7 @@ class AppTheme {
   );
 
   static TextStyle button = TextStyle(
-    fontWeight: FontWeight.w300,
+    fontWeight: FontWeight.w400,
     color: AppColors.primaryColors[200],
     fontSize: 16,
   );

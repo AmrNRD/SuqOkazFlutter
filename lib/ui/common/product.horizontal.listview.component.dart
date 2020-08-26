@@ -4,7 +4,6 @@ import 'package:suqokaz/ui/common/product.card.component.dart';
 import 'package:suqokaz/ui/style/app.colors.dart';
 import 'package:suqokaz/ui/style/app.dimens.dart';
 import 'package:suqokaz/utils/app.localization.dart';
-import 'package:suqokaz/utils/core.util.dart';
 
 class ProductHorizontalListView extends StatefulWidget {
   final int selectedCategory;
@@ -20,14 +19,14 @@ class ProductHorizontalListView extends StatefulWidget {
 }
 
 class _ProductHorizontalListViewState extends State<ProductHorizontalListView> {
-
   bool isHomeScreenCall = false;
 
   @override
   void initState() {
     super.initState();
     _scrollController = AutoScrollController(
-      viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
+      viewportBoundaryGetter: () =>
+          Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
       axis: Axis.horizontal,
       suggestedRowHeight: 200,
     );
@@ -44,20 +43,19 @@ class _ProductHorizontalListViewState extends State<ProductHorizontalListView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                AppLocalizations.of(context).translate("featured_products",defaultText: "FEATURED"),
+                AppLocalizations.of(context)
+                    .translate("featured_products", defaultText: "FEATURED"),
                 style: Theme.of(context).textTheme.headline2,
               ),
               GestureDetector(
                 child: Text(
-                  AppLocalizations.of(context).translate("all_items",defaultText: "More"),
+                  AppLocalizations.of(context)
+                      .translate("all_items", defaultText: "More"),
                   style: Theme.of(context).textTheme.bodyText1.copyWith(
                       color: AppColors.primaryColors[50],
-                      fontWeight: FontWeight.w600
-                  ),
+                      fontWeight: FontWeight.w600),
                 ),
-                onTap: (){
-
-                },
+                onTap: () {},
               )
             ],
           ),
@@ -70,7 +68,9 @@ class _ProductHorizontalListViewState extends State<ProductHorizontalListView> {
             itemCount: 6,
             shrinkWrap: true,
             primary: false,
-            padding: EdgeInsetsDirectional.only(start: AppDimens.marginDefault16,end: AppDimens.marginDefault16),
+            padding: EdgeInsetsDirectional.only(
+                start: AppDimens.marginDefault16,
+                end: AppDimens.marginDefault16),
             scrollDirection: Axis.horizontal,
             itemBuilder: (BuildContext context, int index) {
               return ProductCardComponent(null);
@@ -80,5 +80,4 @@ class _ProductHorizontalListViewState extends State<ProductHorizontalListView> {
       ],
     );
   }
-
 }
