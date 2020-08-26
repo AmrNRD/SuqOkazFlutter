@@ -1,5 +1,20 @@
 {
     "app_name": "Ralph - German Bakery",
     "choose_language": "Choose language",
-    "language_selection": "العربية"
+    "language_selection": "العربية",
+    "email": "Email",
+    "password": "Password",
+    "sign_in": "Sign in",
+    "sign_up": "Sign up",
+    "skip": "Skip",
+    "or": "Or",
+    "forget": "forgot your password?",
+    "do_you_have_account": "Don't have an account? ",
+    "already_registered": "Already registered? ",
+    "phone_number": "Phone number",
+    "password_confirmation": "Password confirmation",
+    "send": "Send",
+    "back_to_login": "Back to login",
+    "hello": "Hello",
+    "please_enter_your_details": "Please enter your details"
 }

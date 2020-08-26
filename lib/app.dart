@@ -16,8 +16,7 @@ class Application {
 
   List<String> languagesCode = ['en', 'ar'];
 
-  Iterable<Locale> supportedLocales() =>
-      ['en', 'ar'].map<Locale>((language) => Locale(language));
+  Iterable<Locale> supportedLocales() => ['en', 'ar'].map<Locale>((language) => Locale(language));
 
   String getCurrentLocale (){
       return Constants.isRTL ? "ar" : "en";

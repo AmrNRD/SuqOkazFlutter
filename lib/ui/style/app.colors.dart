@@ -10,6 +10,7 @@ class AppColors {
       100: Color(0xFFFDF6E0),
       150: Color(0xFFF3ECC2),
       200: Color(0xFF242424),
+      300: Color(0xFFE6A537),
     },
   );
 
@@ -34,7 +35,8 @@ class AppColors {
       50: Color(0xFF161615),
       100: Color(0xFF979797),
       200: Color(0xFFE4E4E4),
-      300: Color(0xFFF5F5F5),
+      300: Color(0xFFF8F8F8),
+      400: Color(0xFFF5F5F5),
     },
   );
 
@@ -42,6 +44,7 @@ class AppColors {
   static Color primaryColor2 = Color(0xFFFDF6E0);
   static Color primaryColor3 = Color(0xFF242424);
   static Color primaryColor4 = Color(0xFF888156);
+  static Color primaryColor5 = Color(0xFFE6A537);
 
   static Color accentColor1 = Color(0xFF44444E);
   static Color accentColor2 = Color(0xFFCC1111);
