@@ -97,7 +97,7 @@ class _LandingSplashScreenState extends State<LandingSplashScreen> {
 
   void navigationPage() {
     if(_route==Constants.authPage)
-      Navigator.pushReplacement(context, PageRouteBuilder(transitionDuration: Duration(seconds: 2),pageBuilder:(_,__,___)=>AuthPage(),settings: RouteSettings(name: Constants.authPage)));
+      Navigator.pushReplacement(context, PageRouteBuilder(transitionDuration: Duration(seconds: 1),pageBuilder:(_,__,___)=>AuthPage(),settings: RouteSettings(name: Constants.authPage)));
       else
         Navigator.of(context).pushReplacementNamed(_route);
   }

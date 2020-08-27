@@ -13,12 +13,14 @@ class CustomAppBar extends PreferredSize {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(
-        text,
-        style: Theme.of(context)
-            .textTheme
-            .headline1
-            .copyWith(fontWeight: FontWeight.w500),
+      title: Center(
+        child: Text(
+          text,
+          style: Theme.of(context)
+              .textTheme
+              .headline1
+              .copyWith(fontWeight: FontWeight.w500),
+        ),
       ),
       leading: IconButton(
         icon: SvgPicture.asset(

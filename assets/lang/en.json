@@ -16,5 +16,20 @@
     "send": "Send",
     "back_to_login": "Back to login",
     "hello": "Hello",
-    "please_enter_your_details": "Please enter your details"
+    "please_enter_your_details": "Please enter your details",
+    "my_orders": "My Orders",
+    "quantity": "Quantity: %s",
+    "quantity_alone": "QUANTITY",
+    "order_number": "Order number: %s",
+    "product_quantity": "Products %s",
+    "product_value": "VALUE OF ITEMS",
+    "order_product": "Products",
+    "currency": "SAR %s",
+    "status": "Status",
+    "payment": "Payment",
+    "total_items": "Total items: %s",
+    "date": "Date: %s",
+    "seller":"Seller: %s",
+    "rate_this_product": "Rate this product"
+
 }

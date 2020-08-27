@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:suqokaz/ui/modules/address/address.page.dart';
 import 'package:suqokaz/ui/modules/auth/auth.page.dart';
 import 'package:suqokaz/ui/modules/home/home.tab.dart';
 import 'package:suqokaz/ui/modules/navigation/home.navigation.dart';
+import 'package:suqokaz/ui/modules/orders/orders.page.dart';
 import 'package:suqokaz/ui/modules/splash/splash.page.dart';
 import 'constants.dart';
 
@@ -33,6 +35,16 @@ class RouteGenerator {
         return MaterialPageRoute(
           settings: RouteSettings(name: Constants.homePage),
           builder: (_) => HomeNavigationPage(),
+        );
+      case Constants.myOrderPage:
+        return MaterialPageRoute(
+          settings: RouteSettings(name: Constants.myOrderPage),
+          builder: (_) => MyOrdersPage(),
+        );
+      case Constants.addressesPage:
+        return MaterialPageRoute(
+          settings: RouteSettings(name: Constants.addressesPage),
+          builder: (_) => AddressesPage(),
         );
 
       default:

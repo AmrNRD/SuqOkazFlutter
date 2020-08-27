@@ -14,5 +14,21 @@
     "send": "ارسال",
     "back_to_login": "العودة الى تسجيل الدخول",
     "hello": "مرحبا!",
-    "please_enter_your_details": "من فضلك قم بإدخال البيانات"
+    "please_enter_your_details": "من فضلك قم بإدخال البيانات",
+    "my_orders": "طلباتي",
+    "quantity": "العدد : %s",
+    "quantity_alone": "العدد",
+    "order_number": "رقم الطلبية: %s",
+    "product_quantity": "عدد المنتجات %s",
+    "product_value": "قيمة المنتجات",
+    "order_product": "المنتجات",
+    "currency": "%s ريال سعودي",
+    "status": "الحالة",
+    "payment": "طريقة الدفع",
+    "total_items": "عدد القطع: %s",
+    "date": "التاريخ: %s",
+    "seller":"البائع: %s",
+    "rate_this_product": "قيم هذا المنتج"
+
+
 }

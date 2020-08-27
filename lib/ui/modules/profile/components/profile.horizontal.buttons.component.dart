@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:suqokaz/utils/constants.dart';
 
 import '../../../../utils/app.localization.dart';
 import '../../../style/app.dimens.dart';
@@ -19,13 +20,13 @@ class HorizontalButtonsComponent extends StatelessWidget {
             "assets/icons/history_icon.svg",
             "Orders",
             context,
-            () {},
+            ()=>Navigator.pushNamed(context, Constants.myOrderPage),
           ),
           buildButton(
             "assets/icons/location_icon.svg",
             "Addresses",
             context,
-            () {},
+                ()=>Navigator.pushNamed(context, Constants.addressesPage),
           ),
           buildButton(
             "assets/icons/help_icon.svg",

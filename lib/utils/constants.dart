@@ -1,3 +1,5 @@
+import 'package:suqokaz/data/models/address_model.dart';
+
 class Constants {
   // WooCommerce configuration
   static bool hideOutOfStock = false;
@@ -13,8 +15,9 @@ class Constants {
   static const authPage = "/authPage";
   static const homePage = "/mainPage";
   static const categoriesPage= "/categoriesPage";
-  static const categoriesScreen = "/categoriesScreen";
-  static const orderDetailsScreen = "/orderDetailsScreen";
+  static const myOrderPage = "/myOrderPage";
+  static const orderDetailsPage = "/orderDetailsPage";
+  static const addressesPage = "/AddressesPage";
 
   // Keys
   static const consumerKey =
