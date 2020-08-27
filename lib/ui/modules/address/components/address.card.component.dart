@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:suqokaz/data/models/address_model.dart';
+import 'package:suqokaz/data/sources/local/local.database.dart';
 import 'package:suqokaz/ui/style/app.dimens.dart';
 import 'package:suqokaz/utils/app.localization.dart';
 import 'package:suqokaz/utils/core.util.dart';
 
 class AddressCard extends StatelessWidget {
-  final Address address;
+  final AddressModel address;
 
   const AddressCard({Key key,@required this.address}) : super(key: key);
   @override
@@ -27,7 +28,7 @@ class AddressCard extends StatelessWidget {
                   children: <Widget>[
                     SvgPicture.asset("assets/images/address_icon.svg",height: screenAwareSize(16, context),width: screenAwareWidth(16, context)),
                     SizedBox(width: AppDimens.marginDefault8),
-                    Text(address.street,style: Theme.of(context).textTheme.headline3),
+                    Text(address.address1,style: Theme.of(context).textTheme.headline3),
                   ],
                 ),
 
