@@ -53,7 +53,7 @@ Color generateRandomColor(int index) {
 }
 
 class ImageProcessor {
-  static image(
+  static Widget image(
       {String url,
       double width,
       double height,

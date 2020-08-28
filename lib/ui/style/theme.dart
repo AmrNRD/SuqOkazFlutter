@@ -40,7 +40,7 @@ class AppTheme {
   );
 
   static TextStyle headline4 = TextStyle(
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w300,
     color: AppColors.primaryColors[200],
     fontSize: 14,
   );
@@ -52,7 +52,7 @@ class AppTheme {
   );
 
   static TextStyle button = TextStyle(
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w300,
     color: AppColors.primaryColors[200],
     fontSize: 16,
   );
@@ -70,7 +70,7 @@ class AppTheme {
   );
 
   static TextStyle body = TextStyle(
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w300,
     color: AppColors.primaryColors[200],
     fontSize: 12,
   );

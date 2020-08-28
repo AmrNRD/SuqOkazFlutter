@@ -16,6 +16,7 @@ class Constants {
   static const myOrderPage = "/myOrderPage";
   static const orderDetailsPage = "/orderDetailsPage";
   static const addressesPage = "/AddressesPage";
+  static const productDetailsPage = "/ProductDetailsPage";
 
   // Keys
   static const consumerKey =

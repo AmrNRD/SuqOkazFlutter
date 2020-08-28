@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:suqokaz/data/models/product_model.dart';
 import 'package:suqokaz/ui/common/product.card.component.dart';
-import 'package:suqokaz/ui/style/app.colors.dart';
-import 'package:suqokaz/ui/style/app.dimens.dart';
-import 'package:suqokaz/utils/app.localization.dart';
+import 'package:suqokaz/utils/constants.dart';
 import 'package:suqokaz/utils/core.util.dart';
 
 class ProductHorizontalListView extends StatelessWidget {
@@ -26,7 +24,16 @@ class ProductHorizontalListView extends StatelessWidget {
             primary: false,
             scrollDirection: Axis.horizontal,
             itemBuilder: (BuildContext context, int index) {
-              return ProductCardComponent(product: products[index]);
+              return InkWell(
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  Constants.productDetailsPage,
+                  arguments: products[index],
+                ),
+                child: ProductCardComponent(
+                  product: products[index],
+                ),
+              );
             },
           ),
         ),

@@ -20,6 +20,7 @@
     "my_orders": "My Orders",
     "quantity": "Quantity: %s",
     "quantity_alone": "QUANTITY",
+    "review_count": "(%s Reviews)",
     "order_number": "Order number: %s",
     "product_quantity": "Products %s",
     "product_value": "VALUE OF ITEMS",
@@ -29,7 +30,7 @@
     "payment": "Payment",
     "total_items": "Total items: %s",
     "date": "Date: %s",
-    "seller":"Seller: %s",
+    "seller": "Seller: %s",
     "rate_this_product": "Rate this product"
 
 }

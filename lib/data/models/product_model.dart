@@ -233,12 +233,19 @@ class ProductModel {
 class ProductAttribute {
   int id;
   String name;
-  List options;
+  List options = [];
 
   ProductAttribute.fromJson(Map<String, dynamic> parsedJson) {
     id = parsedJson["id"];
     name = parsedJson["name"];
-    options = parsedJson["options"];
+    parsedJson["options"].forEach(
+      (element) {
+        element = element.replaceAll(RegExp("\[[:a-z]*\]"), "");
+        element = element.replaceAll(RegExp("\[[:a-z]*\]"), "");
+        element = element.replaceAll(RegExp("\[[:a-z]*\]"), "");
+        options.add(element);
+      },
+    );
   }
 
   Map<String, dynamic> toJson() {

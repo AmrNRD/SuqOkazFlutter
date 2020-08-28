@@ -11,6 +11,7 @@ class AppColors {
       150: Color(0xFFF3ECC2),
       200: Color(0xFF242424),
       300: Color(0xFFE6A537),
+      400: Color(0xFFE1A31D),
     },
   );
 
@@ -37,6 +38,8 @@ class AppColors {
       200: Color(0xFFE4E4E4),
       300: Color(0xFFF8F8F8),
       400: Color(0xFFF5F5F5),
+      500: Color(0xFFEFEFEF),
+      600: Color(0xFF636363),
     },
   );
 

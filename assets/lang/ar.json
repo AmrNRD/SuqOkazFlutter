@@ -27,7 +27,8 @@
     "payment": "طريقة الدفع",
     "total_items": "عدد القطع: %s",
     "date": "التاريخ: %s",
-    "seller":"البائع: %s",
+    "seller": "البائع: %s",
+    "review_count": "(%s رائي)",
     "rate_this_product": "قيم هذا المنتج"
 
 

@@ -8,6 +8,7 @@ import 'package:suqokaz/ui/modules/address/address.page.dart';
 import 'package:suqokaz/ui/modules/auth/auth.page.dart';
 import 'package:suqokaz/ui/modules/navigation/home.navigation.dart';
 import 'package:suqokaz/ui/modules/orders/orders.page.dart';
+import 'package:suqokaz/ui/modules/product_details/product_details.page.dart';
 import 'package:suqokaz/ui/modules/splash/splash.page.dart';
 import 'constants.dart';
 
@@ -29,6 +30,13 @@ class RouteGenerator {
         return MaterialPageRoute(
           settings: RouteSettings(name: Constants.authPage),
           builder: (_) => AuthPage(),
+        );
+      case Constants.productDetailsPage:
+        return MaterialPageRoute(
+          settings: RouteSettings(name: Constants.productDetailsPage),
+          builder: (_) => ProductDetailsPage(
+            productModel: args,
+          ),
         );
       case Constants.categoriesPage:
         return MaterialPageRoute(
