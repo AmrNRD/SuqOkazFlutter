@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../app.dart';
 import '../../../../utils/app.localization.dart';
 import '../../../style/app.colors.dart';
-import '../../../style/app.colors.dart';
 
 class SettingsButtonComponent extends StatelessWidget {
   @override

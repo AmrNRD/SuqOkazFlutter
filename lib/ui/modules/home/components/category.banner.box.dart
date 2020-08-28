@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:suqokaz/ui/style/app.colors.dart';
-import 'package:suqokaz/ui/style/app.dimens.dart';
 import 'package:suqokaz/ui/style/theme.dart';
 
 class CategoryBannerBox extends StatelessWidget {
@@ -14,32 +13,28 @@ class CategoryBannerBox extends StatelessWidget {
         color: AppColors.primaryColors[150],
         borderRadius: BorderRadius.circular(5),
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Expanded(
-            child: Container(
-              margin: EdgeInsetsDirectional.only(start: AppDimens.marginDefault16,top: AppDimens.marginDefault16,bottom: AppDimens
-                  .marginDefault16),
-              child: Text(
-                "MOBILE PHONES",
-                style: AppTheme.body.copyWith(fontWeight: FontWeight.w800, color: AppColors.primaryColor3,fontSize: 13),
-                textAlign: TextAlign.start,
-                maxLines: 2,
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              "MOBILE PHONES",
+              style: AppTheme.body.copyWith(
+                fontWeight: FontWeight.w700,
+                color: AppColors.primaryColor3,
+                fontSize: 12,
               ),
+              textAlign: TextAlign.start,
+              maxLines: 2,
             ),
-          ),
-          Container(
-            margin: EdgeInsetsDirectional.only(end: AppDimens.marginDefault12,top: AppDimens.marginDefault8,bottom: AppDimens
-                .marginDefault8),
-            child: Image.asset(
+            Image.asset(
               "assets/images/dummy_phone.png",
-              fit: BoxFit.contain,
-              height: 40,
+              fit: BoxFit.fill,
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

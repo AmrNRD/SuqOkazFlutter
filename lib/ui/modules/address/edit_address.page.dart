@@ -10,25 +10,26 @@ import 'package:suqokaz/utils/app.localization.dart';
 class EditAddressPage extends StatefulWidget {
   final AddressModel addressModel;
 
-  const EditAddressPage({Key key,@required this.addressModel}) : super(key: key);
+  const EditAddressPage({Key key, @required this.addressModel})
+      : super(key: key);
   @override
   _EditAddressPageState createState() => _EditAddressPageState();
 }
 
 class _EditAddressPageState extends State<EditAddressPage> {
-  final GlobalKey<ScaffoldState> scaffoldKey=GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   AddressBloc addressBloc;
-  bool isLoading=false;
+  bool isLoading = false;
 
-  FocusNode streetAddressFocusNode=new FocusNode();
-  FocusNode apartmentFocusNode=new FocusNode();
-  FocusNode stateCityFocusNode=new FocusNode();
-  FocusNode countryFocusNode=new FocusNode();
-  FocusNode phoneNumberLabelFocusNode=new FocusNode();
-  FocusNode companyHotelFocusNode=new FocusNode();
-  FocusNode postCodeFocusNode=new FocusNode();
-  FocusNode addInfoFocusNode=new FocusNode();
+  FocusNode streetAddressFocusNode = new FocusNode();
+  FocusNode apartmentFocusNode = new FocusNode();
+  FocusNode stateCityFocusNode = new FocusNode();
+  FocusNode countryFocusNode = new FocusNode();
+  FocusNode phoneNumberLabelFocusNode = new FocusNode();
+  FocusNode companyHotelFocusNode = new FocusNode();
+  FocusNode postCodeFocusNode = new FocusNode();
+  FocusNode addInfoFocusNode = new FocusNode();
 
   Map<String, dynamic> _addressData = {
     'address1': null,
@@ -43,28 +44,28 @@ class _EditAddressPageState extends State<EditAddressPage> {
 
   @override
   void initState() {
-    addressBloc=AddressBloc(new AddressDataRepository());
+    addressBloc = AddressBloc(new AddressDataRepository());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context)=>addressBloc,
-      child: BlocListener<AddressBloc,AddressState>(
-        listener: (context,state){
-          if(state is AddressLoadingState){
+      create: (context) => addressBloc,
+      child: BlocListener<AddressBloc, AddressState>(
+        listener: (context, state) {
+          if (state is AddressLoadingState) {
             setState(() {
-              isLoading=true;
+              isLoading = true;
             });
-          }else if(state is AddressUpdatedState){
+          } else if (state is AddressUpdatedState) {
             setState(() {
-              isLoading=false;
+              isLoading = false;
             });
             Navigator.pop(context);
-          }else if(state is AddressErrorState){
+          } else if (state is AddressErrorState) {
             setState(() {
-              isLoading=false;
+              isLoading = false;
             });
             scaffoldKey.currentState.showSnackBar(
               SnackBar(
@@ -84,7 +85,10 @@ class _EditAddressPageState extends State<EditAddressPage> {
         },
         child: Scaffold(
           key: scaffoldKey,
-          appBar: CustomAppBar(text: AppLocalizations.of(context).translate("add_address")),
+          appBar: CustomAppBar(
+            text: AppLocalizations.of(context).translate("add_address"),
+            canPop: true,
+          ),
           body: SingleChildScrollView(
             child: Container(
               margin: EdgeInsets.all(AppDimens.marginEdgeCase24),
@@ -121,9 +125,14 @@ class _EditAddressPageState extends State<EditAddressPage> {
       // Invalid!
       return;
     }
-      _formKey.currentState.save();
-    addressBloc.add(EditAddressEvent(new AddressModel(id: widget.addressModel.id,address1: _addressData['address1'], address2: _addressData['address2'], company: _addressData['company'], city: _addressData['city'], postCode: _addressData['post_code'], country: _addressData['country'])));
-
+    _formKey.currentState.save();
+    addressBloc.add(EditAddressEvent(new AddressModel(
+        id: widget.addressModel.id,
+        address1: _addressData['address1'],
+        address2: _addressData['address2'],
+        company: _addressData['company'],
+        city: _addressData['city'],
+        postCode: _addressData['post_code'],
+        country: _addressData['country'])));
   }
 }
-

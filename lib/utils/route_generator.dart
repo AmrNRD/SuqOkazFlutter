@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:suqokaz/bloc/category/category_bloc.dart';
+import 'package:suqokaz/bloc/product/product_bloc.dart';
+import 'package:suqokaz/data/repositories/categories.repository.dart';
+import 'package:suqokaz/data/repositories/products_repository.dart';
 import 'package:suqokaz/ui/modules/address/address.page.dart';
 import 'package:suqokaz/ui/modules/auth/auth.page.dart';
-import 'package:suqokaz/ui/modules/home/home.tab.dart';
 import 'package:suqokaz/ui/modules/navigation/home.navigation.dart';
 import 'package:suqokaz/ui/modules/orders/orders.page.dart';
 import 'package:suqokaz/ui/modules/splash/splash.page.dart';
 import 'constants.dart';
 
 class RouteGenerator {
-
   RouteGenerator();
 
   Route<dynamic> generateRoute(RouteSettings settings) {
     // Getting arguments passed in while calling Navigator.pushNamed
+    // ignore: unused_local_variable
     final args = settings.arguments;
 
     switch (settings.name) {
@@ -34,7 +38,21 @@ class RouteGenerator {
       case Constants.homePage:
         return MaterialPageRoute(
           settings: RouteSettings(name: Constants.homePage),
-          builder: (_) => HomeNavigationPage(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<CategoryBloc>(
+                create: (BuildContext context) => CategoryBloc(
+                  CategoriesRepository(),
+                ),
+              ),
+              BlocProvider<ProductBloc>(
+                create: (BuildContext context) => ProductBloc(
+                  ProductsRepository(),
+                ),
+              ),
+            ],
+            child: HomeNavigationPage(),
+          ),
         );
       case Constants.myOrderPage:
         return MaterialPageRoute(

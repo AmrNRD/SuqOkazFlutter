@@ -48,6 +48,10 @@ class QueryString {
   }
 }
 
+Color generateRandomColor(int index) {
+  return AppColors.randomColors[index % 9];
+}
+
 class ImageProcessor {
   static image(
       {String url,

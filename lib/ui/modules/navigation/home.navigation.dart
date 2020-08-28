@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:suqokaz/bloc/category/category_bloc.dart';
+import 'package:suqokaz/bloc/product/product_bloc.dart';
+import 'package:suqokaz/data/repositories/products_repository.dart';
 import 'package:suqokaz/ui/modules/home/home.tab.dart';
 import 'package:suqokaz/ui/modules/profile/profile.page.dart';
 
@@ -12,27 +16,36 @@ class HomeNavigationPage extends StatefulWidget {
 }
 
 class _HomeNavigationPageState extends State<HomeNavigationPage> {
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
+  static final ProductBloc _featuredProducts =
+      ProductBloc(ProductsRepository());
+  static final ProductBloc _latestProducts = ProductBloc(ProductsRepository());
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  List<Widget> body = [
-    HomeTabPage(),
+  final List<Widget> body = [
+    HomeTabPage(
+      featuredBloc: _featuredProducts,
+      latestBloc: _latestProducts,
+    ),
     Container(),
     Container(),
     ProfilePage(),
   ];
+  @override
+  initState() {
+    super.initState();
+    _featuredProducts
+      ..add(
+        GetProductsEvent(isLoadMoreMode: false, featured: true),
+      );
+    _latestProducts
+      ..add(
+        GetProductsEvent(
+          isLoadMoreMode: false,
+          orderBy: DateTime.now().year.toString(),
+        ),
+      );
+    BlocProvider.of<CategoryBloc>(context).add(GetCategoriesEvent());
+  }
+
   int _currentSelectedTab = 0;
 
   void _onItemTapped(int index) {

@@ -1,5 +1,3 @@
-import 'package:suqokaz/data/models/address_model.dart';
-
 class Constants {
   // WooCommerce configuration
   static bool hideOutOfStock = false;
@@ -14,7 +12,7 @@ class Constants {
   static const mainPage = "/";
   static const authPage = "/authPage";
   static const homePage = "/mainPage";
-  static const categoriesPage= "/categoriesPage";
+  static const categoriesPage = "/categoriesPage";
   static const myOrderPage = "/myOrderPage";
   static const orderDetailsPage = "/orderDetailsPage";
   static const addressesPage = "/AddressesPage";
@@ -49,10 +47,10 @@ class Constants {
 
   // Images
   static final Map<String, String> imagePath = {
-    "delivery_success": "assets/icons/delivery_success.svg",
-    "empty_box": "assets/icons/empty_box.svg",
+    "delivery_success": "assets/icons/done_icon.svg",
+    "empty_box": "assets/icons/box_icon.svg",
     "search_magnifier": "assets/icons/search_icon.svg",
-    "error": "assets/icons/error.svg",
+    "error": "assets/icons/error_icon.svg",
   };
   static String kDefaultImage =
       "https://trello-attachments.s3.amazonaws.com/5d64f19a7cd71013a9a418cf/640x480/1dfc14f78ab0dbb3de0e62ae7ebded0c/placeholder.jpg";

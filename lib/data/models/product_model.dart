@@ -43,13 +43,17 @@ class ProductModel {
     try {
       id = parsedJson["id"];
       categoryName = parsedJson["categories"][0]["name"];
-      name = parsedJson["name"];
+      name = parsedJson["name"]
+          .toString()
+          .substring(5, parsedJson["name"].toString().indexOf("[:en]"));
       type = parsedJson["type"];
       description = isNotBlank(parsedJson["description"])
           ? parsedJson["description"]
           : parsedJson["short_description"];
       permalink = parsedJson["permalink"];
-      price = parsedJson["price"] != null ? parsedJson["price"].toString() : "";
+      price = parsedJson["price"] != null
+          ? double.parse(parsedJson["price"].toString()).toStringAsFixed(2)
+          : "";
 
       regularPrice = parsedJson["regular_price"] != null
           ? parsedJson["regular_price"].toString()

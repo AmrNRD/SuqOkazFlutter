@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'app.colors.dart';
-import 'app.fonts.dart';
 
 class AppTheme {
   AppTheme._();

@@ -1,31 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-import 'package:suqokaz/ui/style/app.colors.dart';
-import 'package:suqokaz/ui/style/app.dimens.dart';
+import 'package:suqokaz/data/models/category_model.dart';
+import 'package:suqokaz/utils/core.util.dart';
 
-class CategoryHorizontalListView extends StatefulWidget {
+class CategoryHorizontalListViewComponent extends StatefulWidget {
   final int selectedCategory;
+  final List<CategoryModel> categories;
 
-  const CategoryHorizontalListView({
+  const CategoryHorizontalListViewComponent({
     Key key,
     this.selectedCategory,
+    @required this.categories,
   }) : super(key: key);
 
   @override
-  _CategoryHorizontalListViewState createState() =>
-      _CategoryHorizontalListViewState();
+  _CategoryHorizontalListViewComponentState createState() =>
+      _CategoryHorizontalListViewComponentState();
 }
 
-class _CategoryHorizontalListViewState
-    extends State<CategoryHorizontalListView> {
-
+class _CategoryHorizontalListViewComponentState
+    extends State<CategoryHorizontalListViewComponent> {
   bool isHomeScreenCall = false;
 
   @override
   void initState() {
     super.initState();
     _scrollController = AutoScrollController(
-      viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
+      viewportBoundaryGetter: () =>
+          Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
       axis: Axis.horizontal,
       suggestedRowHeight: 200,
     );
@@ -38,64 +40,77 @@ class _CategoryHorizontalListViewState
       height: 100,
       child: ListView.builder(
         controller: _scrollController,
-        itemCount: 6,
+        itemCount: widget.categories.length,
         shrinkWrap: true,
         primary: false,
+        padding: EdgeInsets.symmetric(horizontal: 16),
         scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, int index) {
-          return Container(
-            margin: EdgeInsetsDirectional.only(start: 8),
-            child: Column(
-              children: <Widget>[
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100.0),
-                  ),
-                  color: generateRandomColor(index),
-                  elevation: 4,
-                  shadowColor: Colors.black,
-                  child: InkWell(
-                    radius: 16,
-                    child: Container(
-                      width: 30,
-                      height: 30,
-                      margin: EdgeInsets.symmetric(vertical: AppDimens.marginDefault12, horizontal: AppDimens.marginDefault12),
-                      child: Center(
-                        child: Container(
-                          width: 30,
-                          height: 30,
-                          child: Image.asset(
-                            "assets/images/dummy_phone.png",
-                            fit: BoxFit.contain,
-                            height: 40,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10,),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 12),
-                  child: Text(
-                    "PHONES",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        .copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+          return CategoryBubbleComponent(
+            category: widget.categories[index],
+            index: index,
           );
         },
       ),
     );
   }
+}
 
-  Color generateRandomColor(int index) {
-    return AppColors.randomColors[index % 9];
+class CategoryBubbleComponent extends StatelessWidget {
+  const CategoryBubbleComponent({
+    Key key,
+    @required this.category,
+    @required this.index,
+  }) : super(key: key);
+
+  final CategoryModel category;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(right: index != 6 - 1 ? 18 : 0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: generateRandomColor(index),
+              boxShadow: [
+                BoxShadow(
+                  color: generateRandomColor(index),
+                  blurRadius: 10,
+                ),
+              ],
+            ),
+            child: Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(50.0),
+                child: ImageProcessor.image(
+                  url: category.image,
+                  fit: BoxFit.cover,
+                  height: 38,
+                  width: 38,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            category.name,
+            style: Theme.of(context)
+                .textTheme
+                .bodyText1
+                .copyWith(fontWeight: FontWeight.w400, fontSize: 10),
+          ),
+        ],
+      ),
+    );
   }
 }

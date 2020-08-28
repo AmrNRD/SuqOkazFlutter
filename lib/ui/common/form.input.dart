@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +31,7 @@ class FormInputField extends StatefulWidget {
       this.nextFocusNode,
       this.textInputAction,
       this.isRequired = false,
-      this.obscureText=false,
+      this.obscureText = false,
       this.prefixIcon,
       this.suffixIcon})
       : super(key: key);
@@ -98,8 +96,8 @@ class _FormInputFieldState extends State<FormInputField> {
             decoration: InputDecoration(
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
-              prefixIcon:widget.prefixIcon,
-              suffixIcon:widget.suffixIcon,
+              prefixIcon: widget.prefixIcon,
+              suffixIcon: widget.suffixIcon,
             ),
           ),
         ),

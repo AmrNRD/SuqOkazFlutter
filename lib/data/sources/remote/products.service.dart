@@ -67,7 +67,7 @@ class ProductsService {
       if (maxPrice != null && maxPrice > 0)
         url += "&max_price=${(maxPrice as double).toInt().toString()}";
       if (order != null) url += "&order=$order";
-      if (orderBy != null) url += "&orderby=$orderBy";
+      if (orderBy != null) url += "&order_by=$orderBy";
       if (attribute != null && attributeTerm != null)
         url += "&attribute=$attribute&attribute_term=$attributeTerm";
       if (featured != null) url += "&featured=$featured";

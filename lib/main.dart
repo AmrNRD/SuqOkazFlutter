@@ -4,20 +4,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suqokaz/bloc/user/user_bloc.dart';
-import 'package:suqokaz/ui/modules/auth/auth.page.dart';
 import 'package:suqokaz/utils/constants.dart';
 
 import 'app.dart';
-import 'data/repositories/products_repository.dart';
 import 'data/repositories/user_repository.dart';
-import 'ui/modules/splash/splash.page.dart';
 import 'ui/style/app.colors.dart';
 import 'ui/style/app.fonts.dart';
 import 'ui/style/theme.dart';
 import 'utils/app.localization.dart';
 import 'utils/core.util.dart';
 import 'utils/route_generator.dart';
-
 
 void main() => runApp(Root());
 
@@ -70,11 +66,12 @@ class _RootState extends State<Root> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-//        BlocProvider<CategoryBloc>(create: (BuildContext context) => CategoryBloc(CategoriesRepository())),
-//        BlocProvider<CartBloc>(create: (BuildContext context) => CartBloc(CartDataRepository(_appDataBase), ProductsRepository())),
-        BlocProvider<UserBloc>(create: (BuildContext context) => UserBloc(UserDataRepository())),
+        BlocProvider<UserBloc>(
+          create: (BuildContext context) => UserBloc(
+            UserDataRepository(),
+          ),
+        ),
       ],
-
       child: MaterialApp(
         title: Constants.appName,
         supportedLocales: application.supportedLocales(),
@@ -122,9 +119,9 @@ class _RootState extends State<Root> {
               ),
             ),
             errorStyle: Theme.of(context).textTheme.subtitle2.copyWith(
-              fontSize: 11,
-              color: Colors.red,
-            ),
+                  fontSize: 11,
+                  color: Colors.red,
+                ),
           ),
         ),
         localizationsDelegates: [

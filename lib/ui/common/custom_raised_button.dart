@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/core.util.dart';
-import '../../utils/core.util.dart';
 import '../style/app.colors.dart';
-import '../style/app.colors.dart';
-import '../style/theme.dart';
 
 class CustomRaisedButton extends StatelessWidget {
   final bool isLoading;
@@ -26,13 +23,18 @@ class CustomRaisedButton extends StatelessWidget {
     this.buttonColor,
     this.textColor,
     this.customWidth = 18,
-    this.customHeight = 18, this.customBorderColor,
+    this.customHeight = 18,
+    this.customBorderColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0),side: customBorderColor!=null?BorderSide(color: customBorderColor):BorderSide.none),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.0),
+          side: customBorderColor != null
+              ? BorderSide(color: customBorderColor)
+              : BorderSide.none),
       padding: EdgeInsets.symmetric(vertical: 14),
       onPressed: isLoading ? () {} : onPress,
       highlightElevation: 0,
@@ -50,7 +52,7 @@ class CustomRaisedButton extends StatelessWidget {
               width: screenAwareWidth(customWidth, context),
               child: Text(
                 label,
-                textAlign:TextAlign.center,
+                textAlign: TextAlign.center,
                 style: style ??
                     Theme.of(context)
                         .textTheme
@@ -58,7 +60,7 @@ class CustomRaisedButton extends StatelessWidget {
                         .copyWith(color: textColor ?? Colors.white),
               ),
             ),
-      color: buttonColor??AppColors.primaryColor5,
+      color: buttonColor ?? AppColors.primaryColor5,
     );
   }
 }
