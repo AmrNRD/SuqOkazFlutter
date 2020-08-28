@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:suqokaz/data/models/product_model.dart';
-import 'package:suqokaz/ui/common/star.rating.dart';
 import 'package:suqokaz/ui/modules/product_details/components/product.description.component.dart';
 import 'package:suqokaz/ui/modules/product_details/components/product.details.button.dart';
 import 'package:suqokaz/ui/modules/product_details/components/product.details.review.component.dart';
 import 'package:suqokaz/ui/modules/product_details/components/product.specification.component.dart';
-import 'package:suqokaz/ui/style/app.colors.dart';
-import 'package:suqokaz/ui/style/app.dimens.dart';
 import 'package:suqokaz/utils/app.localization.dart';
-import 'package:suqokaz/utils/core.util.dart';
 
 class ProductConsultingDetailsComponent extends StatefulWidget {
   final ProductModel productModel;
@@ -104,6 +99,9 @@ class _ProductConsultingDetailsComponentState
           height: 20,
         ),
         body[_selectedIndex],
+        SizedBox(
+          height: 100,
+        ),
       ],
     );
   }
