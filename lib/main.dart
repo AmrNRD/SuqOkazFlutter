@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:suqokaz/bloc/cart/cart_bloc.dart';
 import 'package:suqokaz/bloc/user/user_bloc.dart';
+import 'package:suqokaz/data/repositories/cart.repository.dart';
+import 'package:suqokaz/data/repositories/products_repository.dart';
+import 'package:suqokaz/data/sources/local/local.database.dart';
 import 'package:suqokaz/utils/constants.dart';
 
 import 'app.dart';
@@ -21,6 +25,7 @@ class Root extends StatefulWidget {
   // This widget is the root of your application.
   static String fontFamily;
   static Locale locale;
+  static AppDataBase appDataBase = AppDataBase();
 
   static void setLocale(BuildContext context, Locale newLocale) async {
     context.findAncestorStateOfType<_RootState>().changeLocale(newLocale);
@@ -69,6 +74,12 @@ class _RootState extends State<Root> {
         BlocProvider<UserBloc>(
           create: (BuildContext context) => UserBloc(
             UserDataRepository(),
+          ),
+        ),
+        BlocProvider<CartBloc>(
+          create: (BuildContext context) => CartBloc(
+            CartDataRepository(Root.appDataBase),
+            ProductsRepository(),
           ),
         ),
       ],

@@ -9,8 +9,15 @@ import '../style/app.colors.dart';
 class ProductCardComponent extends StatelessWidget {
   final Function onItemTap;
   final ProductModel product;
+  final bool allowMargin;
+  final bool isInCart;
 
-  const ProductCardComponent({Key key, this.onItemTap, @required this.product})
+  const ProductCardComponent(
+      {Key key,
+      this.onItemTap,
+      @required this.product,
+      this.isInCart = false,
+      this.allowMargin = true})
       : super(key: key);
 
   @override
@@ -19,7 +26,7 @@ class ProductCardComponent extends StatelessWidget {
       onTap: (onItemTap != null) ? onItemTap : null,
       child: Container(
         width: 140,
-        margin: EdgeInsetsDirectional.only(end: 8),
+        margin: EdgeInsetsDirectional.only(end: allowMargin ? 8 : 0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: Colors.white,
@@ -39,55 +46,64 @@ class ProductCardComponent extends StatelessWidget {
                 height: screenAwareSize(130, context),
                 child: ImageProcessor.image(
                   url: product.imageFeature,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
               ),
-              Container(
-                padding: EdgeInsets.all(12),
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: screenAwareSize(130, context),
-                    ),
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          //widget.product.name,
-                          product.name,
-                          style: Theme.of(context).textTheme.bodyText2,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Expanded(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+              Positioned(
+                top: screenAwareSize(130, context),
+                bottom: 0,
+                right: 0,
+                left: 0,
+                child: Container(
+                  padding: EdgeInsets.all(12),
+                  child: Column(
+                    children: <Widget>[
+                      Column(
                         children: <Widget>[
-                          Expanded(
-                            child: Text(
-                              AppLocalizations.of(context).translate(
-                                "currency",
-                                replacement: product.price,
-                              ),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText2
-                                  .copyWith(fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                          SvgPicture.asset(
-                            "assets/icons/product_cart_icon.svg",
-                            height: 28,
-                            width: 28,
+                          Text(
+                            //widget.product.name,
+                            product.name,
+                            style: Theme.of(context).textTheme.bodyText2,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Expanded(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Expanded(
+                              child: Text(
+                                AppLocalizations.of(context).translate(
+                                  "currency",
+                                  replacement: product.price,
+                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2
+                                    .copyWith(fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                            isInCart
+                                ? SvgPicture.asset(
+                                    "assets/icons/cart_button_selected_icon.svg",
+                                    height: 28,
+                                    width: 28,
+                                  )
+                                : SvgPicture.asset(
+                                    "assets/icons/product_cart_icon.svg",
+                                    height: 28,
+                                    width: 28,
+                                  ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
               Positioned(

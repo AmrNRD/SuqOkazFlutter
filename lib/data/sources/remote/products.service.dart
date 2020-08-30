@@ -15,6 +15,7 @@ class ProductsService {
     String url = "/products/reviews";
     final String oAuthUrl = apiCaller.getOAuthURL("POST", url, true);
     apiCaller.setUrl(oAuthUrl);
+    print(body.toString());
     return await apiCaller.postData(body: body);
   }
 

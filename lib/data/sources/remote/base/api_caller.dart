@@ -175,7 +175,7 @@ class APICaller {
       headers.forEach((key, value) {
         request.headers[key] = value;
       });
-      var dataRetrieved = client.send(request).timeout(
+      var dataRetrieved = await client.send(request).timeout(
           const Duration(
             seconds: 10,
           ), onTimeout: () {
@@ -248,10 +248,10 @@ class APICaller {
   }
 
   _returnResponse(http.Response response) {
-     print(response.statusCode);
-     //print(response.headers);
-     print(response.body);
-     print(response.request);
+    print(response.statusCode);
+    //print(response.headers);
+    print(response.body);
+    print(response.request);
     switch (response.statusCode) {
       case 200:
         final responseBody = json.decode(response.body);

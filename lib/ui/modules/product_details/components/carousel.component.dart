@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:suqokaz/ui/style/app.colors.dart';
 import 'package:suqokaz/utils/core.util.dart';
 
-class CustomCrousalComponent extends StatefulWidget {
+class CustomCarouselComponent extends StatefulWidget {
   final List<String> images;
 
-  const CustomCrousalComponent({
+  const CustomCarouselComponent({
     Key key,
     @required this.images,
   }) : super(key: key);
 
   @override
-  _CustomCrousalComponentState createState() => _CustomCrousalComponentState();
+  _CustomCarouselComponentState createState() =>
+      _CustomCarouselComponentState();
 }
 
-class _CustomCrousalComponentState extends State<CustomCrousalComponent> {
+class _CustomCarouselComponentState extends State<CustomCarouselComponent> {
   int _selectedImage = 0;
   @override
   Widget build(BuildContext context) {

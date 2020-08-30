@@ -1,4 +1,4 @@
-
+import 'package:suqokaz/data/models/review_model.dart';
 import 'package:suqokaz/data/sources/remote/products.service.dart';
 
 abstract class ProductsDataRepository {
@@ -96,7 +96,14 @@ class ProductsRepository extends ProductsDataRepository {
 
   @override
   Future getProductReviews({String productId}) async {
-    return await productsService.getReviews(productId);
+    final rawData = await productsService.getReviews(productId);
+    List<ReviewModel> reviews = [];
+    rawData.forEach((e) {
+      reviews.add(
+        ReviewModel.fromJson(e),
+      );
+    });
+    return reviews;
   }
 
   @override

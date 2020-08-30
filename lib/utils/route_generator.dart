@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:suqokaz/bloc/category/category_bloc.dart';
 import 'package:suqokaz/bloc/product/product_bloc.dart';
+import 'package:suqokaz/bloc/review/review_bloc.dart';
 import 'package:suqokaz/data/repositories/categories.repository.dart';
 import 'package:suqokaz/data/repositories/products_repository.dart';
 import 'package:suqokaz/ui/modules/address/address.page.dart';
 import 'package:suqokaz/ui/modules/auth/auth.page.dart';
 import 'package:suqokaz/ui/modules/navigation/home.navigation.dart';
 import 'package:suqokaz/ui/modules/orders/orders.page.dart';
+import 'package:suqokaz/ui/modules/product_categories/product_categories.page.dart';
 import 'package:suqokaz/ui/modules/product_details/product_details.page.dart';
 import 'package:suqokaz/ui/modules/splash/splash.page.dart';
 import 'constants.dart';
@@ -34,13 +36,37 @@ class RouteGenerator {
       case Constants.productDetailsPage:
         return MaterialPageRoute(
           settings: RouteSettings(name: Constants.productDetailsPage),
-          builder: (_) => ProductDetailsPage(
-            productModel: args,
+          builder: (_) => BlocProvider<ReviewBloc>(
+            create: (BuildContext context) => ReviewBloc(
+              ProductsRepository(),
+            ),
+            child: ProductDetailsPage(
+              productModel: args,
+            ),
           ),
         );
-      case Constants.categoriesPage:
+      case Constants.productCategoriesPage:
+        print(args.runtimeType);
+        if (args is List) {
+          print(args.runtimeType);
+          return MaterialPageRoute(
+            settings: RouteSettings(name: Constants.productCategoriesPage),
+            builder: (_) => BlocProvider<ProductBloc>(
+              create: (BuildContext context) => ProductBloc(
+                ProductsRepository(),
+              ),
+              child: ProductCategoriesPage(
+                appBarTitle: args[0],
+                subCategories: args[1],
+                parentId: args[2],
+              ),
+            ),
+          );
+        }
+        return _errorRoute();
+      case Constants.categoryPage:
         return MaterialPageRoute(
-          settings: RouteSettings(name: Constants.categoriesPage),
+          settings: RouteSettings(name: Constants.categoryPage),
           builder: (_) => LandingSplashScreen(),
         );
       case Constants.homePage:

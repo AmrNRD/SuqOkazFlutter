@@ -15,7 +15,7 @@ class ProductSpecificationComponent extends StatelessWidget {
       itemCount: productAttributes.length,
       shrinkWrap: true,
       primary: false,
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (BuildContext context, int index) {
         return Container(
@@ -35,7 +35,7 @@ class ProductSpecificationComponent extends StatelessWidget {
               Expanded(
                 child: Text(
                   productAttributes[index].options.toString(),
-                  maxLines: 1,
+                  maxLines: 3,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.headline4,

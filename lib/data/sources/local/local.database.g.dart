@@ -1097,7 +1097,7 @@ class AddressModel extends DataClass implements Insertable<AddressModel> {
       );
   @override
   String toString() {
-    return (StringBuffer('AddressModel(')
+    return (StringBuffer('Addres(')
           ..write('id: $id, ')
           ..write('address1: $address1, ')
           ..write('address2: $address2, ')
@@ -1244,7 +1244,8 @@ class AddressCompanion extends UpdateCompanion<AddressModel> {
   }
 }
 
-class $AddressTable extends Address with TableInfo<$AddressTable, AddressModel> {
+class $AddressTable extends Address
+    with TableInfo<$AddressTable, AddressModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $AddressTable(this._db, [this._alias]);

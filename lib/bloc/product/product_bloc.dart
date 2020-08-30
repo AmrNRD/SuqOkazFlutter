@@ -81,9 +81,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
             // Yield result
             yield ProductsLoadedState(
-                products: dataList,
-                isLoadMoreMode: event.isLoadMoreMode,
-                lastPageReached: lastPageReached);
+              products: dataList,
+              isLoadMoreMode: event.isLoadMoreMode,
+              lastPageReached: lastPageReached,
+            );
           } else {
             // Yield Error
             yield ProductsErrorState(

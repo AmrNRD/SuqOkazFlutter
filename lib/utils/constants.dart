@@ -12,11 +12,12 @@ class Constants {
   static const mainPage = "/";
   static const authPage = "/authPage";
   static const homePage = "/mainPage";
-  static const categoriesPage = "/categoriesPage";
   static const myOrderPage = "/myOrderPage";
   static const orderDetailsPage = "/orderDetailsPage";
   static const addressesPage = "/AddressesPage";
   static const productDetailsPage = "/ProductDetailsPage";
+  static const categoryPage = "/CategoryPage";
+  static const productCategoriesPage = "/ProductCategoriesPage";
 
   // Keys
   static const consumerKey =

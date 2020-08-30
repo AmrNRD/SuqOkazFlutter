@@ -128,9 +128,10 @@ class OrderCard extends StatelessWidget {
                     color: Colors.white,
                     boxShadow: [
                       BoxShadow(
-                          color: Color(0xFFEFEFEF).withOpacity(0.05),
-                          blurRadius: 5,
-                          offset: Offset(0, 1)),
+                        color: Color(0xFFEFEFEF).withOpacity(0.05),
+                        blurRadius: 5,
+                        offset: Offset(0, 1),
+                      ),
                     ],
                     border: Border.all(
                         color: AppColors.customGreyLevels[200], width: 2),

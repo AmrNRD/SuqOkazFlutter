@@ -39,6 +39,7 @@ dependencies:
 
   # Network
   http: ^0.12.0+2
+  dio: ^3.0.10
 
   # Others
   flutter_speed_dial: ^1.2.4

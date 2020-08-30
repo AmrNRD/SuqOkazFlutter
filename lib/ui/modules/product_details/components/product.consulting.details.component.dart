@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:suqokaz/data/models/product_model.dart';
 import 'package:suqokaz/ui/modules/product_details/components/product.description.component.dart';
 import 'package:suqokaz/ui/modules/product_details/components/product.details.button.dart';
@@ -8,10 +9,15 @@ import 'package:suqokaz/utils/app.localization.dart';
 
 class ProductConsultingDetailsComponent extends StatefulWidget {
   final ProductModel productModel;
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  final ScrollController scrollController;
 
-  const ProductConsultingDetailsComponent(
-      {Key key, @required this.productModel})
-      : super(key: key);
+  const ProductConsultingDetailsComponent({
+    Key key,
+    @required this.productModel,
+    @required this.scaffoldKey,
+    @required this.scrollController,
+  }) : super(key: key);
   @override
   _ProductConsultingDetailsComponentState createState() =>
       _ProductConsultingDetailsComponentState();
@@ -27,13 +33,6 @@ class _ProductConsultingDetailsComponentState
   void initState() {
     super.initState();
 
-    widget.productModel.infors.forEach((element) {
-      print(element.name);
-    });
-    widget.productModel.infors.forEach((element) {
-      print(element.options);
-    });
-
     body = [
       ProductDescriptionComponent(
         description: widget.productModel.description,
@@ -41,7 +40,10 @@ class _ProductConsultingDetailsComponentState
       ProductSpecificationComponent(
         productAttributes: widget.productModel.infors,
       ),
-      ProductDetailsReviewComponent(),
+      ProductDetailsReviewComponent(
+        scaffoldKey: widget.scaffoldKey,
+        productId: widget.productModel.id,
+      ),
     ];
   }
 
@@ -65,6 +67,7 @@ class _ProductConsultingDetailsComponentState
                       setState(() {
                         _selectedIndex = 0;
                       });
+                      scrollToTheEnd();
                     },
             ),
             ProductDetailsTab(
@@ -78,6 +81,7 @@ class _ProductConsultingDetailsComponentState
                       setState(() {
                         _selectedIndex = 1;
                       });
+                      scrollToTheEnd();
                     },
             ),
             ProductDetailsTab(
@@ -91,6 +95,7 @@ class _ProductConsultingDetailsComponentState
                       setState(() {
                         _selectedIndex = 2;
                       });
+                      scrollToTheEnd();
                     },
             ),
           ],
@@ -104,5 +109,15 @@ class _ProductConsultingDetailsComponentState
         ),
       ],
     );
+  }
+
+  scrollToTheEnd() {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      widget.scrollController.animateTo(
+        widget.scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    });
   }
 }
