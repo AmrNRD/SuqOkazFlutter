@@ -81,7 +81,8 @@ class ProductItem {
       "product_id": productId,
       "name": name,
       "quantity": quantity,
-      "total": total
+      "total": total,
+      "price": price
     };
   }
 }

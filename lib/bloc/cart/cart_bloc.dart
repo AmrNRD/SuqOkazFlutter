@@ -40,8 +40,11 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         await updateCartItem(true, event.productId);
         totalCartQuantity =
             await _cartDataRepository.getCartItemsCount(cartData.id);
-        yield CartButtonUpdateState(totalCartQuantity, productIdToCartItem);
-        yield CartLoadedState(productIdToProductItem.values.toList());
+        yield CartLoadedState(
+          productIdToProductItem.values.toList(),
+          totalCartQuantity,
+          productIdToCartItem,
+        );
       } else if (event is RemovedItemInCartEvent) {
         totalPrice -=
             double.parse(productIdToProductItem[event.productId].price) *
@@ -56,15 +59,15 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         productIdToProductItem.remove(event.productId);
         totalCartQuantity =
             await _cartDataRepository.getCartItemsCount(cartData.id);
-        yield CartButtonUpdateState(totalCartQuantity, productIdToCartItem);
-        yield CartLoadedState(productIdToProductItem.values.toList());
+        yield CartLoadedState(productIdToProductItem.values.toList(),
+            totalCartQuantity, productIdToCartItem);
       } else if (event is DecreaseItemInCartEvent) {
         //Update all the trackers with the new value
         await updateCartItem(false, event.productId);
         totalCartQuantity =
             await _cartDataRepository.getCartItemsCount(cartData.id);
-        yield CartButtonUpdateState(totalCartQuantity, productIdToCartItem);
-        yield CartLoadedState(productIdToProductItem.values.toList());
+        yield CartLoadedState(productIdToProductItem.values.toList(),
+            totalCartQuantity, productIdToCartItem);
       } else if (event is AddProductToCartEvent) {
         if (firstTimeCall) {
           await loadCart();
@@ -99,9 +102,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         }
         //Else get the saved cart item and update it's quantity
         else {
-          debugPrint("------------");
-          debugPrint("Updating cart Item");
-          debugPrint("------------");
           cartItem = CartItem(
             cartId: cartItem.cartId,
             id: cartItem.id,
@@ -113,31 +113,41 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         }
 
         productIdToCartItem[event._productModel.id] = cartItem;
-        productIdToQuantity[cartItem.id] = cartItem.quantity;
-        productIdToProductItem[event._productModel.id] = ProductItem(
+        productIdToQuantity[event._productModel.id] = cartItem.quantity;
+
+        ProductItem productItem = ProductItem(
           productId: event._productModel.id,
           quantity: productIdToQuantity[event._productModel.id],
           featuredImage: event._productModel.imageFeature,
           name: event._productModel.name,
+          price: event._productModel.price,
           total: (double.parse(event._productModel.price) *
                   productIdToQuantity[event._productModel.id])
               .toStringAsFixed(2),
         );
-        print(productIdToCartItem);
-        print(productIdToCartItem.length);
+
+        productIdToProductItem[event._productModel.id] = productItem;
+        productIdToProductItem[event._productModel.id].total = (double.parse(
+                    productIdToProductItem[event._productModel.id].price) *
+                productIdToQuantity[event._productModel.id])
+            .toStringAsFixed(2);
+        totalPrice += double.parse(productItem.total);
         totalCartQuantity =
             await _cartDataRepository.getCartItemsCount(cartData.id);
 
-        yield CartButtonUpdateState(totalCartQuantity, productIdToCartItem);
-        yield CartItemAddedFromProductDetailsState();
+        yield CartLoadedState(
+          productIdToProductItem.values.toList(),
+          totalCartQuantity,
+          productIdToCartItem,
+        );
       } else if (event is GetCartEvent) {
         yield CartLoadingState();
         if ("test@test.test" != null //Root.user.userEmail != null
             ) {
           totalPrice = 0;
           await loadCart();
-          yield CartButtonUpdateState(totalCartQuantity, productIdToCartItem);
-          yield CartLoadedState(productIdToProductItem.values.toList());
+          yield CartLoadedState(productIdToProductItem.values.toList(),
+              totalCartQuantity, productIdToCartItem);
         } else {
           yield CartNeedLoginState();
         }
@@ -169,7 +179,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         });
         var rawData =
             await _productsDataRepository.getProductsWithInclude(includeList);
-        print(rawData.length);
         rawData.forEach((element) {
           ProductModel productModel;
           productModel = ProductModel.fromJson(element);
@@ -207,6 +216,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     );
     totalCartQuantity++;
     //Update the effected product in the list
+
     productIdToProductItem[productId].quantity = productIdToQuantity[productId];
     productIdToProductItem[productId].total =
         (double.parse(productIdToProductItem[productId].price) *

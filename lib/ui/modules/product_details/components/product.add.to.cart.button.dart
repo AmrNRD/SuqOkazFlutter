@@ -1,12 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:suqokaz/bloc/cart/cart_bloc.dart';
+import 'package:suqokaz/data/models/product_model.dart';
 import 'package:suqokaz/ui/style/app.colors.dart';
 import 'package:suqokaz/ui/style/app.dimens.dart';
 import 'package:suqokaz/utils/app.localization.dart';
 
-class AddToCartButton extends StatelessWidget {
-  const AddToCartButton({
+class AddToCartButton extends StatefulWidget {
+  final int productQuantity;
+  final ProductModel productModel;
+  AddToCartButton({
     Key key,
+    this.productQuantity,
+    @required this.productModel,
   }) : super(key: key);
+
+  @override
+  _AddToCartButtonState createState() => _AddToCartButtonState();
+}
+
+class _AddToCartButtonState extends State<AddToCartButton> {
+  int productQuantity;
+
+  @override
+  void initState() {
+    super.initState();
+    productQuantity = widget.productQuantity ?? 1;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +59,15 @@ class AddToCartButton extends StatelessWidget {
                       child: Material(
                         color: Colors.transparent,
                         child: InkWell(
-                          onTap: null,
+                          onTap: productQuantity > 1
+                              ? () {
+                                  setState(() {
+                                    if (productQuantity > 1) {
+                                      productQuantity--;
+                                    }
+                                  });
+                                }
+                              : null,
                         ),
                       ),
                     ),
@@ -55,7 +83,7 @@ class AddToCartButton extends StatelessWidget {
                   color: Colors.white,
                   child: Center(
                     child: Text(
-                      "1",
+                      productQuantity.toString(),
                       style: Theme.of(context).textTheme.headline2,
                     ),
                   ),
@@ -84,7 +112,11 @@ class AddToCartButton extends StatelessWidget {
                       child: Material(
                         color: Colors.transparent,
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            setState(() {
+                              productQuantity++;
+                            });
+                          },
                         ),
                       ),
                     ),
@@ -117,7 +149,14 @@ class AddToCartButton extends StatelessWidget {
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    BlocProvider.of<CartBloc>(context).add(
+                      AddProductToCartEvent(
+                        widget.productModel,
+                        productQuantity,
+                      ),
+                    );
+                  },
                 ),
               ),
             ),

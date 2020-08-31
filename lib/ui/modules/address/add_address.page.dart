@@ -3,7 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:suqokaz/bloc/address/address_bloc.dart';
 import 'package:suqokaz/data/repositories/address.repository.dart';
 import 'package:suqokaz/data/sources/local/local.database.dart';
+import 'package:suqokaz/main.dart';
 import 'package:suqokaz/ui/common/custom_appbar.dart';
+import 'package:suqokaz/ui/common/custom_cancel_save.component.dart';
+import 'package:suqokaz/ui/common/form_input.dart';
 import 'package:suqokaz/ui/style/app.dimens.dart';
 import 'package:suqokaz/utils/app.localization.dart';
 
@@ -40,8 +43,10 @@ class _AdAddressPageState extends State<AddAddressPage> {
 
   @override
   void initState() {
-    addressBloc = AddressBloc(new AddressDataRepository());
     super.initState();
+    addressBloc = AddressBloc(
+      AddressDataRepository(Root.appDataBase),
+    );
   }
 
   @override
@@ -92,20 +97,49 @@ class _AdAddressPageState extends State<AddAddressPage> {
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
-//                    FormInput(translationKey: "street_address",focusNode: streetAddressFocusNode,nextFocusNode: apartmentFocusNode,onSave: (value)=>_addressData['address1']=value,isRequired: true),
-//                    FormInput(translationKey: "apartment",focusNode: apartmentFocusNode,nextFocusNode: stateCityFocusNode,onSave: (value)=>_addressData['address2']=value,isRequired: true),
-//                    FormInput(translationKey: "state_city",focusNode: stateCityFocusNode,nextFocusNode: countryFocusNode,onSave: (value)=>_addressData['city']=value,isRequired: true),
-//                    FormInput(translationKey: "country",focusNode: countryFocusNode,nextFocusNode: companyHotelFocusNode,onSave: (value)=>_addressData['country']=value,isRequired: true),
-//                    FormInput(translationKey: "company_hotel",focusNode: companyHotelFocusNode,nextFocusNode: postCodeFocusNode,onSave: (value)=>_addressData['company']=value),
-//                    FormInput(translationKey: "post_code",focusNode: postCodeFocusNode,nextFocusNode: addInfoFocusNode,onSave: (value)=>_addressData['post_code']=value,isRequired: true),
-                    SizedBox(height: 26),
-//                    CustomCancelSaveComponent(
-//                      isLoading: isLoading,
-//                      onCancelPress: () {
-//                        Navigator.pop(context);
-//                      },
-//                      onSavePress: onSave,
-//                    ),
+                    FormInput(
+                        translationKey: "street_address",
+                        focusNode: streetAddressFocusNode,
+                        nextFocusNode: apartmentFocusNode,
+                        onSave: (value) => _addressData['address1'] = value,
+                        isRequired: true),
+                    FormInput(
+                        translationKey: "apartment",
+                        focusNode: apartmentFocusNode,
+                        nextFocusNode: stateCityFocusNode,
+                        onSave: (value) => _addressData['address2'] = value,
+                        isRequired: true),
+                    FormInput(
+                        translationKey: "state_city",
+                        focusNode: stateCityFocusNode,
+                        nextFocusNode: countryFocusNode,
+                        onSave: (value) => _addressData['city'] = value,
+                        isRequired: true),
+                    FormInput(
+                        translationKey: "country",
+                        focusNode: countryFocusNode,
+                        nextFocusNode: companyHotelFocusNode,
+                        onSave: (value) => _addressData['country'] = value,
+                        isRequired: true),
+                    FormInput(
+                        translationKey: "company_hotel",
+                        focusNode: companyHotelFocusNode,
+                        nextFocusNode: postCodeFocusNode,
+                        onSave: (value) => _addressData['company'] = value),
+                    FormInput(
+                        translationKey: "post_code",
+                        focusNode: postCodeFocusNode,
+                        nextFocusNode: addInfoFocusNode,
+                        onSave: (value) => _addressData['post_code'] = value,
+                        isRequired: true),
+                    SizedBox(height: 60),
+                    CustomCancelSaveComponent(
+                      isLoading: isLoading,
+                      onCancelPress: () {
+                        Navigator.pop(context);
+                      },
+                      onSavePress: onSave,
+                    ),
                   ],
                 ),
               ),
@@ -123,12 +157,18 @@ class _AdAddressPageState extends State<AddAddressPage> {
     }
     _formKey.currentState.save();
     //ignore: missing_required_param
-    addressBloc.add(AddAddressEvent(new AddressModel(
-        address1: _addressData['address1'],
-        address2: _addressData['address2'],
-        company: _addressData['company'],
-        city: _addressData['city'],
-        postCode: _addressData['post_code'],
-        country: _addressData['country'])));
+    addressBloc.add(
+      AddAddressEvent(
+        // ignore: missing_required_param
+        new AddressModel(
+          address1: _addressData['address1'],
+          address2: _addressData['address2'],
+          company: _addressData['company'],
+          city: _addressData['city'],
+          postCode: _addressData['post_code'],
+          country: _addressData['country'],
+        ),
+      ),
+    );
   }
 }

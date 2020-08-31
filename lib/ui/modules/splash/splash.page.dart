@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:suqokaz/bloc/cart/cart_bloc.dart';
 import 'package:suqokaz/bloc/user/user_bloc.dart';
 import 'package:suqokaz/bloc/user/user_state.dart';
 import 'package:suqokaz/ui/modules/auth/auth.page.dart';
@@ -29,6 +30,7 @@ class _LandingSplashScreenState extends State<LandingSplashScreen> {
   void initState() {
     startTime();
     super.initState();
+    BlocProvider.of<CartBloc>(context).add(GetCartEvent());
   }
 
   @override

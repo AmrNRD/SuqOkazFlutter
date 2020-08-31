@@ -107,7 +107,7 @@ class _ProductGridViewComponentState extends State<ProductGridViewComponent>
         animationController: animationController,
         child: BlocListener<CartBloc, CartState>(
           listener: (context, state) {
-            if (state is CartButtonUpdateState) {
+            if (state is CartLoadedState) {
               setState(() {
                 productIdToCartItem = state.productIdToCartItem;
               });

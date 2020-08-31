@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:suqokaz/utils/constants.dart';
 
 class CustomAppBar extends PreferredSize {
   final text;
   final double height;
+  final double elevation;
   final bool canPop;
 
   CustomAppBar({
     @required this.text,
     this.height = kToolbarHeight,
     this.canPop = false,
+    this.elevation,
   });
 
   @override
@@ -18,6 +21,7 @@ class CustomAppBar extends PreferredSize {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      elevation: elevation ?? null,
       title: Center(
         child: text is String
             ? Text(
@@ -38,7 +42,12 @@ class CustomAppBar extends PreferredSize {
                 width: 16,
                 fit: BoxFit.contain,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  Constants.categoryPage,
+                );
+              },
             ),
       actions: <Widget>[
         IconButton(

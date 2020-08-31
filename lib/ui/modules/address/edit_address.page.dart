@@ -3,7 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:suqokaz/bloc/address/address_bloc.dart';
 import 'package:suqokaz/data/repositories/address.repository.dart';
 import 'package:suqokaz/data/sources/local/local.database.dart';
+import 'package:suqokaz/main.dart';
 import 'package:suqokaz/ui/common/custom_appbar.dart';
+import 'package:suqokaz/ui/common/custom_cancel_save.component.dart';
+import 'package:suqokaz/ui/common/form_input.dart';
 import 'package:suqokaz/ui/style/app.dimens.dart';
 import 'package:suqokaz/utils/app.localization.dart';
 
@@ -44,7 +47,11 @@ class _EditAddressPageState extends State<EditAddressPage> {
 
   @override
   void initState() {
-    addressBloc = AddressBloc(new AddressDataRepository());
+    addressBloc = AddressBloc(
+      new AddressDataRepository(
+        Root.appDataBase,
+      ),
+    );
     super.initState();
   }
 
@@ -86,7 +93,7 @@ class _EditAddressPageState extends State<EditAddressPage> {
         child: Scaffold(
           key: scaffoldKey,
           appBar: CustomAppBar(
-            text: AppLocalizations.of(context).translate("add_address"),
+            text: AppLocalizations.of(context).translate("edit_address"),
             canPop: true,
           ),
           body: SingleChildScrollView(
@@ -96,20 +103,56 @@ class _EditAddressPageState extends State<EditAddressPage> {
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
-//                    FormInput(translationKey: "street_address",focusNode: streetAddressFocusNode,nextFocusNode: apartmentFocusNode,onSave: (value)=>_addressData['address1']=value,isRequired: true,defaultValue: widget.addressModel?.address1,),
-//                    FormInput(translationKey: "apartment",focusNode: apartmentFocusNode,nextFocusNode: stateCityFocusNode,onSave: (value)=>_addressData['address2']=value,isRequired: true,defaultValue: widget.addressModel?.address2),
-//                    FormInput(translationKey: "state_city",focusNode: stateCityFocusNode,nextFocusNode: countryFocusNode,onSave: (value)=>_addressData['city']=value,isRequired: true,defaultValue: widget.addressModel?.city),
-//                    FormInput(translationKey: "country",focusNode: countryFocusNode,nextFocusNode: companyHotelFocusNode,onSave: (value)=>_addressData['country']=value,isRequired: true,defaultValue: widget.addressModel?.country),
-//                    FormInput(translationKey: "company_hotel",focusNode: companyHotelFocusNode,nextFocusNode: postCodeFocusNode,onSave: (value)=>_addressData['company']=value,defaultValue: widget.addressModel?.company),
-//                    FormInput(translationKey: "post_code",focusNode: postCodeFocusNode,nextFocusNode: addInfoFocusNode,onSave: (value)=>_addressData['post_code']=value,isRequired: true,defaultValue: widget.addressModel?.postCode),
+                    FormInput(
+                      translationKey: "street_address",
+                      focusNode: streetAddressFocusNode,
+                      nextFocusNode: apartmentFocusNode,
+                      onSave: (value) => _addressData['address1'] = value,
+                      isRequired: true,
+                      defaultValue: widget.addressModel?.address1,
+                    ),
+                    FormInput(
+                        translationKey: "apartment",
+                        focusNode: apartmentFocusNode,
+                        nextFocusNode: stateCityFocusNode,
+                        onSave: (value) => _addressData['address2'] = value,
+                        isRequired: true,
+                        defaultValue: widget.addressModel?.address2),
+                    FormInput(
+                        translationKey: "state_city",
+                        focusNode: stateCityFocusNode,
+                        nextFocusNode: countryFocusNode,
+                        onSave: (value) => _addressData['city'] = value,
+                        isRequired: true,
+                        defaultValue: widget.addressModel?.city),
+                    FormInput(
+                        translationKey: "country",
+                        focusNode: countryFocusNode,
+                        nextFocusNode: companyHotelFocusNode,
+                        onSave: (value) => _addressData['country'] = value,
+                        isRequired: true,
+                        defaultValue: widget.addressModel?.country),
+                    FormInput(
+                        translationKey: "company_hotel",
+                        focusNode: companyHotelFocusNode,
+                        nextFocusNode: postCodeFocusNode,
+                        onSave: (value) => _addressData['company'] = value,
+                        defaultValue: widget.addressModel?.company),
+                    FormInput(
+                        translationKey: "post_code",
+                        focusNode: postCodeFocusNode,
+                        nextFocusNode: addInfoFocusNode,
+                        onSave: (value) => _addressData['post_code'] = value,
+                        isRequired: true,
+                        defaultValue: widget.addressModel?.postCode),
                     SizedBox(height: 26),
-//                    CustomCancelSaveComponent(
-//                      isLoading: isLoading,
-//                      onCancelPress: () {
-//                        Navigator.pop(context);
-//                      },
-//                      onSavePress: onSave,
-//                    ),
+                    CustomCancelSaveComponent(
+                      isLoading: isLoading,
+                      onCancelPress: () {
+                        Navigator.pop(context);
+                      },
+                      onSavePress: onSave,
+                    ),
                   ],
                 ),
               ),
@@ -126,13 +169,18 @@ class _EditAddressPageState extends State<EditAddressPage> {
       return;
     }
     _formKey.currentState.save();
-    addressBloc.add(EditAddressEvent(new AddressModel(
-        id: widget.addressModel.id,
-        address1: _addressData['address1'],
-        address2: _addressData['address2'],
-        company: _addressData['company'],
-        city: _addressData['city'],
-        postCode: _addressData['post_code'],
-        country: _addressData['country'])));
+    addressBloc.add(
+      EditAddressEvent(
+        new AddressModel(
+          id: widget.addressModel.id,
+          address1: _addressData['address1'],
+          address2: _addressData['address2'],
+          company: _addressData['company'],
+          city: _addressData['city'],
+          postCode: _addressData['post_code'],
+          country: _addressData['country'],
+        ),
+      ),
+    );
   }
 }

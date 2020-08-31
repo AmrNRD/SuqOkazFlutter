@@ -16,15 +16,10 @@ class CartErrorState extends CartState {
 
 class CartLoadedState extends CartState {
   final List<ProductItem> products;
-
-  CartLoadedState(this.products);
-}
-
-class CartButtonUpdateState extends CartState {
   final Map<int, CartItem> productIdToCartItem;
   final int counter;
 
-  CartButtonUpdateState(this.counter, this.productIdToCartItem);
+  CartLoadedState(this.products, this.counter, this.productIdToCartItem);
 }
 
 class CartNeedLoginState extends CartState {}

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:suqokaz/data/models/category_model.dart';
 import 'package:suqokaz/ui/common/custom_appbar.dart';
 import 'package:suqokaz/ui/common/loading.component.dart';
@@ -11,12 +12,14 @@ class ProductCategoriesPage extends StatefulWidget {
   final String appBarTitle;
   final int parentId;
   final List<CategoryModel> subCategories;
+  final int selectedSubCategoryId;
 
   const ProductCategoriesPage({
     Key key,
     @required this.appBarTitle,
     @required this.subCategories,
     @required this.parentId,
+    this.selectedSubCategoryId = 0,
   }) : super(key: key);
 
   @override
@@ -29,22 +32,24 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
   List<Tab> tabs = [];
   List<Widget> tabBarView = [];
   bool isFirstTime = true;
+  int selectedSubCategory = 0;
 
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (isFirstTime) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
       isFirstTime = false;
       createSubCategoryTabs();
       createTabBarView();
-      _tabController =
-          TabController(vsync: this, length: widget.subCategories.length + 1);
-    }
+      print(selectedSubCategory);
+      setState(() {
+        _tabController = TabController(
+          vsync: this,
+          length: widget.subCategories.length + 1,
+          initialIndex: selectedSubCategory,
+        );
+      });
+    });
   }
 
   @override
@@ -60,31 +65,35 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
             margin: EdgeInsets.only(right: 16, left: 16, top: 16),
             height: screenAwareSize(30, context),
             width: double.infinity,
-            child: (_tabController.length == 0)
-                ? Container()
-                : TabBar(
-                    tabs: tabs,
-                    labelPadding: EdgeInsets.symmetric(horizontal: 4),
-                    indicatorPadding: EdgeInsets.zero,
-                    controller: _tabController,
-                    isScrollable: true,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    labelColor: Colors.white,
-                    unselectedLabelColor: AppColors.customGreyLevels[50],
-                    indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(18),
-                      color: AppColors.primaryColors[50],
-                    ),
-                  ),
+            child: (_tabController != null)
+                ? (_tabController.length == 0)
+                    ? Container()
+                    : TabBar(
+                        tabs: tabs,
+                        labelPadding: EdgeInsets.symmetric(horizontal: 4),
+                        indicatorPadding: EdgeInsets.zero,
+                        controller: _tabController,
+                        isScrollable: true,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        labelColor: Colors.white,
+                        unselectedLabelColor: AppColors.customGreyLevels[50],
+                        indicator: BoxDecoration(
+                          borderRadius: BorderRadius.circular(18),
+                          color: AppColors.primaryColors[50],
+                        ),
+                      )
+                : Container(),
           ),
           Expanded(
             child: Container(
-              child: (_tabController.length == 0)
-                  ? LoadingWidget()
-                  : TabBarView(
-                      controller: _tabController,
-                      children: [...tabBarView],
-                    ),
+              child: ((_tabController != null)
+                  ? (_tabController.length == 0)
+                      ? LoadingWidget()
+                      : TabBarView(
+                          controller: _tabController,
+                          children: [...tabBarView],
+                        )
+                  : LoadingWidget()),
             ),
           ),
         ],
@@ -143,6 +152,12 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
     );
 
     for (int i = 0; i < widget.subCategories.length; i++) {
+      print(widget.subCategories[i].name);
+      print(widget.subCategories[i].id);
+      print(widget.selectedSubCategoryId);
+      if (widget.selectedSubCategoryId == widget.subCategories[i].id) {
+        selectedSubCategory = i + 1;
+      }
       tabBarView.add(
         ProductGridViewComponent(
           categoryId: widget.subCategories[i].id,

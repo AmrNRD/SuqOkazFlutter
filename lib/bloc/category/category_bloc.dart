@@ -18,6 +18,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final CategoriesRepository _categoriesDataRepository;
 
   List<CategoryModel> nestedCategories = [];
+  List<CategoryModel> categories = [];
 
   int selectedParentCategoryIndex = 0;
   int currentParentCategoryId = 0;
@@ -36,9 +37,21 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     try {
       if (event is GetCategoriesEvent) {
         yield CategoryLoadingState();
-        await loadCategories();
+        if (nestedCategories == null || nestedCategories.isEmpty) {
+          categories = [];
+          await loadCategories();
+          nestedCategories = CategoriesUtil.nestCategories(categories);
+          yield CategoryLoadedState(
+            nestedCategories: nestedCategories,
+            currentParentCatId: currentParentCategoryId,
+            subSelectedCategoryIndex: selectSubCategoryIndex,
+            selectedCategoryIndex: selectedParentCategoryIndex,
+            currentRootSubCategoryId: currentRootSubCategoryId,
+          );
+        }
+        //return cached category
         yield CategoryLoadedState(
-          nestedCategories: CategoriesUtil.nestCategories(categories),
+          nestedCategories: nestedCategories,
           currentParentCatId: currentParentCategoryId,
           subSelectedCategoryIndex: selectSubCategoryIndex,
           selectedCategoryIndex: selectedParentCategoryIndex,
@@ -70,7 +83,6 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     }
   }
 
-  List<CategoryModel> categories = [];
   Future<List<CategoryModel>> loadCategories() async {
     if ((dataCurrentPage > 1 && !dataHasNextPage)) {
       return [];

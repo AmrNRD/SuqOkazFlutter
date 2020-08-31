@@ -58,16 +58,12 @@ class ProductCardComponent extends StatelessWidget {
                   padding: EdgeInsets.all(12),
                   child: Column(
                     children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Text(
-                            //widget.product.name,
-                            product.name,
-                            style: Theme.of(context).textTheme.bodyText2,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+                      Text(
+                        //widget.product.name,
+                        product.name,
+                        style: Theme.of(context).textTheme.bodyText2,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       SizedBox(
                         height: 4,

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:suqokaz/bloc/category/category_bloc.dart';
 import 'package:suqokaz/bloc/product/product_bloc.dart';
 import 'package:suqokaz/data/repositories/products_repository.dart';
+import 'package:suqokaz/ui/common/custom_appbar.dart';
+import 'package:suqokaz/ui/modules/cart/cart.page.dart';
 import 'package:suqokaz/ui/modules/home/home.tab.dart';
 import 'package:suqokaz/ui/modules/profile/profile.page.dart';
 
@@ -11,6 +14,8 @@ import '../../../utils/app.localization.dart';
 import '../home/home.tab.dart';
 
 class HomeNavigationPage extends StatefulWidget {
+  static final GlobalKey<ScaffoldState> scaffoldKey =
+      GlobalKey<ScaffoldState>();
   @override
   _HomeNavigationPageState createState() => _HomeNavigationPageState();
 }
@@ -26,9 +31,10 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
       latestBloc: _latestProducts,
     ),
     Container(),
-    Container(),
+    CartPage(),
     ProfilePage(),
   ];
+  final List<String> appBarTitle = [];
   @override
   initState() {
     super.initState();
@@ -44,6 +50,35 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
         ),
       );
     BlocProvider.of<CategoryBloc>(context).add(GetCategoriesEvent());
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      appBarTitle.add(
+        AppLocalizations.of(context).translate(
+          "todo",
+          defaultText: "Home",
+        ),
+      );
+      appBarTitle.add(
+        AppLocalizations.of(context).translate(
+          "todo",
+          defaultText: "Wishlist",
+        ),
+      );
+      appBarTitle.add(
+        AppLocalizations.of(context).translate(
+          "todo",
+          defaultText: "Cart",
+        ),
+      );
+      appBarTitle.add(
+        AppLocalizations.of(context).translate(
+          "todo",
+          defaultText: "Profile",
+        ),
+      );
+      setState(() {
+        appBarTitle;
+      });
+    });
   }
 
   int _currentSelectedTab = 0;
@@ -57,6 +92,13 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: HomeNavigationPage.scaffoldKey,
+      appBar: CustomAppBar(
+        text: AppLocalizations.of(context).translate(
+          "todo",
+          defaultText: appBarTitle[_currentSelectedTab],
+        ),
+      ),
       body: Center(
         child: body[_currentSelectedTab],
       ),

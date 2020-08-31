@@ -17,6 +17,8 @@ class Constants {
   static const addressesPage = "/AddressesPage";
   static const productDetailsPage = "/ProductDetailsPage";
   static const categoryPage = "/CategoryPage";
+  static const addAddressScreen = "/addLocation";
+  static const editAddressScreen = "/editLocation";
   static const productCategoriesPage = "/ProductCategoriesPage";
 
   // Keys

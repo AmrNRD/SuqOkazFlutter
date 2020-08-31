@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:suqokaz/bloc/address/address_bloc.dart';
 import 'package:suqokaz/data/sources/local/local.database.dart';
 import 'package:suqokaz/ui/common/custom_appbar.dart';
+import 'package:suqokaz/ui/modules/address/components/empty_address.component.dart';
 import 'package:suqokaz/utils/app.localization.dart';
+import 'package:suqokaz/utils/constants.dart';
 
 import 'components/address.card.component.dart';
 
@@ -12,58 +17,115 @@ class AddressesPage extends StatefulWidget {
 
 class _AddressesPageState extends State<AddressesPage> {
   @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<AddressBloc>(context).add(GetAllAddressEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(
-            canPop: true,
-            text: AppLocalizations.of(context)
-                .translate("addresses", defaultText: "Addresses")),
-        floatingActionButton: FloatingActionButton.extended(
-          icon: Icon(Icons.add),
-          label: Text(
-            AppLocalizations.of(context)
-                .translate("add", defaultText: "Add Address"),
-            style: Theme.of(context).textTheme.subtitle1,
-          ),
-          onPressed: () {},
-          backgroundColor: Color(0xFFE4E4E4),
+      appBar: CustomAppBar(
+        canPop: true,
+        text: AppLocalizations.of(context)
+            .translate("addresses", defaultText: "Addresses"),
+      ),
+      floatingActionButton: AddAddressCustomButton(
+        onPress: goToAddAddressPage,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      body: Center(
+        child: BlocBuilder<AddressBloc, AddressState>(
+          builder: (context, state) {
+            if (state is AddressesLoadedState) {
+              if (state.addresses.isEmpty || state.addresses == null) {
+                return EmptyAddressCard();
+              } else {
+                return Container(
+                  margin: EdgeInsets.all(16),
+                  child: Column(
+                    children: state.addresses
+                        .map((e) => AddressCard(
+                              address: e,
+                              onUpdate: () {
+                                goToUpdateAddressPage(e);
+                              },
+                              onDelete: () {
+                                BlocProvider.of<AddressBloc>(context).add(
+                                  DeleteAddressEvent(e.id),
+                                );
+                              },
+                            ))
+                        .toList(),
+                  ),
+                );
+              }
+            }
+            return EmptyAddressCard();
+          },
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              AddressCard(
-                address: AddressModel(
-                    id: 1,
-                    address1: "Address",
-                    address2: "aaaaaaaaaaaa",
-                    city: "Alexandria",
-                    company: "Company",
-                    country: "Egypt",
-                    postCode: "A"),
-              ),
-              AddressCard(
-                address: AddressModel(
-                    id: 2,
-                    address1: "Address2",
-                    address2: "aaaaaaaaaaaa",
-                    city: "Cairo",
-                    company: "Company",
-                    country: "Egypt",
-                    postCode: "A"),
-              ),
-              AddressCard(
-                address: AddressModel(
-                    id: 3,
-                    address1: "Address",
-                    address2: "aaaaaaaaaaaa",
-                    city: "Jedaah",
-                    company: "Company",
-                    country: "Egypt",
-                    postCode: "A"),
-              ),
-            ],
+      ),
+    );
+  }
+
+  goToAddAddressPage() async {
+    await Navigator.pushNamed(context, Constants.addAddressScreen);
+    BlocProvider.of<AddressBloc>(context).add(GetAllAddressEvent());
+  }
+
+  goToUpdateAddressPage(AddressModel addressModel) async {
+    await Navigator.pushNamed(context, Constants.editAddressScreen,
+        arguments: addressModel);
+    BlocProvider.of<AddressBloc>(context).add(GetAllAddressEvent());
+  }
+}
+
+class AddAddressCustomButton extends StatelessWidget {
+  final Function onPress;
+  const AddAddressCustomButton({
+    Key key,
+    @required this.onPress,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 40),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(24.5),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 19,
+            offset: Offset(0, 2),
           ),
-        ));
+        ],
+      ),
+      child: InkWell(
+        onTap: onPress,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SvgPicture.asset(
+              "assets/icons/add_location_icon.svg",
+              height: 20,
+              width: 20,
+            ),
+            SizedBox(
+              width: 12,
+            ),
+            Text(
+              AppLocalizations.of(context)
+                  .translate("add", defaultText: "Add Address"),
+              style: Theme.of(context).textTheme.subtitle1,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

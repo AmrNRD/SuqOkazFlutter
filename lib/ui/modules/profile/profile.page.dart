@@ -14,22 +14,14 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        text: AppLocalizations.of(context).translate(
-          "todo",
-          defaultText: "Profile",
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ProfileTagComponent(),
-            HorizontalButtonsComponent(),
-            SettingsButtonComponent(),
-          ],
-        ),
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ProfileTagComponent(),
+          HorizontalButtonsComponent(),
+          SettingsButtonComponent(),
+        ],
       ),
     );
   }

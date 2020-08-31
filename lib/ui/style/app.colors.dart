@@ -40,6 +40,7 @@ class AppColors {
       400: Color(0xFFF5F5F5),
       500: Color(0xFFEFEFEF),
       600: Color(0xFF636363),
+      700: Color(0xFFACACAC),
     },
   );
 

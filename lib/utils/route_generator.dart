@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:suqokaz/bloc/address/address_bloc.dart';
 import 'package:suqokaz/bloc/category/category_bloc.dart';
 import 'package:suqokaz/bloc/product/product_bloc.dart';
 import 'package:suqokaz/bloc/review/review_bloc.dart';
+import 'package:suqokaz/data/repositories/address.repository.dart';
 import 'package:suqokaz/data/repositories/categories.repository.dart';
 import 'package:suqokaz/data/repositories/products_repository.dart';
+import 'package:suqokaz/main.dart';
+import 'package:suqokaz/ui/modules/address/add_address.page.dart';
 import 'package:suqokaz/ui/modules/address/address.page.dart';
+import 'package:suqokaz/ui/modules/address/edit_address.page.dart';
 import 'package:suqokaz/ui/modules/auth/auth.page.dart';
+import 'package:suqokaz/ui/modules/category/category.page.dart';
 import 'package:suqokaz/ui/modules/navigation/home.navigation.dart';
 import 'package:suqokaz/ui/modules/orders/orders.page.dart';
 import 'package:suqokaz/ui/modules/product_categories/product_categories.page.dart';
@@ -46,9 +52,7 @@ class RouteGenerator {
           ),
         );
       case Constants.productCategoriesPage:
-        print(args.runtimeType);
         if (args is List) {
-          print(args.runtimeType);
           return MaterialPageRoute(
             settings: RouteSettings(name: Constants.productCategoriesPage),
             builder: (_) => BlocProvider<ProductBloc>(
@@ -59,6 +63,7 @@ class RouteGenerator {
                 appBarTitle: args[0],
                 subCategories: args[1],
                 parentId: args[2],
+                selectedSubCategoryId: args.length > 4 ? args[3] : 0,
               ),
             ),
           );
@@ -67,7 +72,12 @@ class RouteGenerator {
       case Constants.categoryPage:
         return MaterialPageRoute(
           settings: RouteSettings(name: Constants.categoryPage),
-          builder: (_) => LandingSplashScreen(),
+          builder: (_) => BlocProvider<CategoryBloc>(
+            create: (BuildContext context) => CategoryBloc(
+              CategoriesRepository(),
+            ),
+            child: CategoryPage(),
+          ),
         );
       case Constants.homePage:
         return MaterialPageRoute(
@@ -93,12 +103,28 @@ class RouteGenerator {
           settings: RouteSettings(name: Constants.myOrderPage),
           builder: (_) => MyOrdersPage(),
         );
+      case Constants.addAddressScreen:
+        return MaterialPageRoute(
+          settings: RouteSettings(name: Constants.addAddressScreen),
+          builder: (_) => AddAddressPage(),
+        );
+      case Constants.editAddressScreen:
+        return MaterialPageRoute(
+          settings: RouteSettings(name: Constants.editAddressScreen),
+          builder: (_) => EditAddressPage(
+            addressModel: args,
+          ),
+        );
       case Constants.addressesPage:
         return MaterialPageRoute(
-          settings: RouteSettings(name: Constants.addressesPage),
-          builder: (_) => AddressesPage(),
+          settings: RouteSettings(name: Constants.myOrderPage),
+          builder: (_) => BlocProvider<AddressBloc>(
+            create: (BuildContext context) => AddressBloc(
+              AddressDataRepository(Root.appDataBase),
+            ),
+            child: AddressesPage(),
+          ),
         );
-
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return _errorRoute();

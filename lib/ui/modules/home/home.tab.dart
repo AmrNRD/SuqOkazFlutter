@@ -29,68 +29,59 @@ class HomeTabPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        text: SvgPicture.asset(
-          "assets/images/colored_logo.svg",
-          height: screenAwareSize(24, context),
-          width: screenAwareWidth(80, context),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.symmetric(vertical: 24),
-          child: Column(
-            children: <Widget>[
-              BlocBuilder<CategoryBloc, CategoryState>(
-                builder: (context, state) {
-                  if (state is CategoryLoadedState) {
-                    return CategoryHorizontalListViewComponent(
-                      categories: state.nestedCategories,
-                    );
-                  } else if (state is CategoryLoadingState) {
-                    return Center(
-                      child: LoadingWidget(
-                        size: 40,
-                      ),
-                    );
-                  } else if (state is CategoryErrorState) {
-                    return GenericState(
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 24),
+        child: Column(
+          children: <Widget>[
+            BlocBuilder<CategoryBloc, CategoryState>(
+              builder: (context, state) {
+                if (state is CategoryLoadedState) {
+                  return CategoryHorizontalListViewComponent(
+                    categories: state.nestedCategories,
+                  );
+                } else if (state is CategoryLoadingState) {
+                  return Center(
+                    child: LoadingWidget(
                       size: 40,
-                      margin: 8,
-                      fontSize: 16,
-                      removeButton: true,
-                      imagePath: Constants.imagePath["error"],
-                      //TODO: Translate
-                      titleKey: AppLocalizations.of(context)
-                          .translate("todo", defaultText: "Sad Error Title :("),
-                      bodyKey: AppLocalizations.of(context).translate(
-                        "todo",
-                        defaultText: state.message,
-                      ),
-                    );
-                  }
-                  return Container();
-                },
-              ),
-              SizedBox(
-                height: AppDimens.marginSeparator16,
-              ),
-              HomeProductDisplayComponent(
-                labelKey: "FEATURED",
-                productBloc: featuredBloc,
-              ),
-              SizedBox(
-                height: AppDimens.marginDefault12,
-              ),
-              CategoriesBannerGridComponent(),
-              HomeProductDisplayComponent(
-                labelKey: "LATEST",
-                productBloc: latestBloc,
-              ),
-              CategoriesBannerGridComponent(),
-            ],
-          ),
+                    ),
+                  );
+                } else if (state is CategoryErrorState) {
+                  return GenericState(
+                    size: 40,
+                    margin: 8,
+                    fontSize: 16,
+                    removeButton: true,
+                    imagePath: Constants.imagePath["error"],
+                    //TODO: Translate
+                    titleKey: AppLocalizations.of(context)
+                        .translate("todo", defaultText: "Sad Error Title :("),
+                    bodyKey: AppLocalizations.of(context).translate(
+                      "todo",
+                      defaultText: state.message,
+                    ),
+                  );
+                }
+                return Container();
+              },
+            ),
+            SizedBox(
+              height: AppDimens.marginSeparator16,
+            ),
+            HomeProductDisplayComponent(
+              labelKey: "FEATURED",
+              productBloc: featuredBloc,
+            ),
+            SizedBox(
+              height: AppDimens.marginDefault12,
+            ),
+            CategoriesBannerGridComponent(),
+            HomeProductDisplayComponent(
+              labelKey: "LATEST",
+              productBloc: latestBloc,
+            ),
+            CategoriesBannerGridComponent(),
+          ],
         ),
       ),
     );
