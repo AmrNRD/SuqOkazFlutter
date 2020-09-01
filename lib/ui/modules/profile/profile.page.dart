@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:suqokaz/ui/common/custom_appbar.dart';
 import 'package:suqokaz/ui/modules/profile/components/profile.horizontal.buttons.component.dart';
 import 'package:suqokaz/ui/modules/profile/components/profile.settings.button.component.dart';
 import 'package:suqokaz/ui/modules/profile/components/profile.tag.component.dart';
-
-import '../../../utils/app.localization.dart';
 
 class ProfilePage extends StatefulWidget {
   @override

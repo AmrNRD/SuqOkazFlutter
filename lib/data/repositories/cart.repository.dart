@@ -3,7 +3,7 @@ import 'package:suqokaz/data/sources/local/local.database.dart';
 import 'package:suqokaz/data/sources/remote/cart.service.dart';
 
 abstract class CartRepository {
-  Future<CartData> getCart(String userToken);
+  Future<CartData> getCart();
   Future deleteCart(int id);
   Future createCart(CartData cartData);
   Future updateCart(CartData cartData);
@@ -55,8 +55,8 @@ class CartDataRepository extends CartRepository {
   }
 
   @override
-  Future<CartData> getCart(String userEmail) async {
-    return _cartService.getCart(userEmail);
+  Future<CartData> getCart() async {
+    return _cartService.getCart();
   }
 
   @override

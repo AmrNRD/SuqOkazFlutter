@@ -73,17 +73,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           await loadCart();
         }
         //If the user has not created a cart before, create one
+
+        cartData = await _cartDataRepository.getCart();
         if (cartData == null) {
           await _cartDataRepository.createCart(
             // ignore: missing_required_param
-            CartData(
-              userEmail: "test@test.test", //Root.user.userEmail,
-            ),
+            CartData(),
           );
-          cartData = await _cartDataRepository.getCart(
-            "test@test.test",
-            //Root.user.userEmail,
-          );
+          cartData = await _cartDataRepository.getCart();
         }
         //Check if the product exisit in the cart before adding
         CartItem cartItem =
@@ -142,15 +139,11 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         );
       } else if (event is GetCartEvent) {
         yield CartLoadingState();
-        if ("test@test.test" != null //Root.user.userEmail != null
-            ) {
-          totalPrice = 0;
-          await loadCart();
-          yield CartLoadedState(productIdToProductItem.values.toList(),
-              totalCartQuantity, productIdToCartItem);
-        } else {
-          yield CartNeedLoginState();
-        }
+        cartData = await _cartDataRepository.getCart();
+        totalPrice = 0;
+        await loadCart();
+        yield CartLoadedState(productIdToProductItem.values.toList(),
+            totalCartQuantity, productIdToCartItem);
       } else if (event is CheckoutCartEvent) {}
     } catch (e) {
       yield CartErrorState(e.toString());
@@ -159,10 +152,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   loadCart() async {
     //Load cart items for the first time the app loads
-    cartData = await _cartDataRepository.getCart(
-      "test@test.test",
-      //Root.user.userEmail,
-    );
+    cartData = await _cartDataRepository.getCart();
     //If cartData is not null, then get the cart Items count
     if (cartData != null) {
       List<CartItem> cartItems = await _cartDataRepository.getCartItems(

@@ -142,11 +142,11 @@ class _ProductGridViewComponentState extends State<ProductGridViewComponent>
                 products = [];
                 products = state.products;
                 return ProductGridViewBuilder(
-                    scrollController: _scrollController,
-                    products: products,
-                    productIdToCartItem: productIdToCartItem,
-                    showLoading: showLoading,
-                    lastPageReached: lastPageReached);
+                  scrollController: _scrollController,
+                  products: products,
+                  showLoading: showLoading,
+                  lastPageReached: lastPageReached,
+                );
               } else if (state is ProductsLoadingState) {
                 return LoadingWidget();
               } else if (state is ProductsErrorState) {

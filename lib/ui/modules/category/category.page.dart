@@ -10,6 +10,8 @@ import 'package:suqokaz/utils/app.localization.dart';
 import 'package:suqokaz/utils/constants.dart';
 
 class CategoryPage extends StatefulWidget {
+  static final GlobalKey<ScaffoldState> scaffoldKey =
+      GlobalKey<ScaffoldState>();
   @override
   _CategoryPageState createState() => _CategoryPageState();
 }
@@ -34,6 +36,7 @@ class _CategoryPageState extends State<CategoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: CategoryPage.scaffoldKey,
       appBar: CustomAppBar(
         canPop: true,
         elevation: 0,

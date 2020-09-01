@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:suqokaz/bloc/cart/cart_bloc.dart';
 import 'package:suqokaz/data/models/product_model.dart';
 import 'package:suqokaz/utils/app.localization.dart';
 import 'package:suqokaz/utils/core.util.dart';
@@ -84,17 +86,33 @@ class ProductCardComponent extends StatelessWidget {
                                     .copyWith(fontWeight: FontWeight.w700),
                               ),
                             ),
-                            isInCart
-                                ? SvgPicture.asset(
-                                    "assets/icons/cart_button_selected_icon.svg",
-                                    height: 28,
-                                    width: 28,
-                                  )
-                                : SvgPicture.asset(
-                                    "assets/icons/product_cart_icon.svg",
-                                    height: 28,
-                                    width: 28,
-                                  ),
+                            InkWell(
+                              onTap: () {
+                                isInCart
+                                    ? BlocProvider.of<CartBloc>(context).add(
+                                        RemovedItemInCartEvent(
+                                          product.id,
+                                        ),
+                                      )
+                                    : BlocProvider.of<CartBloc>(context).add(
+                                        AddProductToCartEvent(
+                                          product,
+                                          1,
+                                        ),
+                                      );
+                              },
+                              child: isInCart
+                                  ? SvgPicture.asset(
+                                      "assets/icons/cart_button_selected_icon.svg",
+                                      height: 28,
+                                      width: 28,
+                                    )
+                                  : SvgPicture.asset(
+                                      "assets/icons/product_cart_icon.svg",
+                                      height: 28,
+                                      width: 28,
+                                    ),
+                            ),
                           ],
                         ),
                       )

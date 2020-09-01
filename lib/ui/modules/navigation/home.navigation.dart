@@ -9,6 +9,7 @@ import 'package:suqokaz/ui/common/custom_appbar.dart';
 import 'package:suqokaz/ui/modules/cart/cart.page.dart';
 import 'package:suqokaz/ui/modules/home/home.tab.dart';
 import 'package:suqokaz/ui/modules/profile/profile.page.dart';
+import 'package:suqokaz/ui/modules/search/search.page.dart';
 
 import '../../../utils/app.localization.dart';
 import '../home/home.tab.dart';
@@ -96,7 +97,8 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
       appBar: CustomAppBar(
         text: AppLocalizations.of(context).translate(
           "todo",
-          defaultText: appBarTitle[_currentSelectedTab],
+          defaultText:
+              appBarTitle.length < 3 ? "" : appBarTitle[_currentSelectedTab],
         ),
       ),
       body: Center(
@@ -119,7 +121,7 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
             icon: SvgPicture.asset(
               _currentSelectedTab == 1
                   ? "assets/icons/heart_selected_icon.svg"
-                  : "assets/icons/heart_icon.svg",
+                  : "assets/icons/heart_nav_icon.svg",
             ),
             title: Text(
               AppLocalizations.of(context)

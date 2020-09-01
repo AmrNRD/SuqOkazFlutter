@@ -13,12 +13,15 @@ class Constants {
   static const authPage = "/authPage";
   static const homePage = "/mainPage";
   static const myOrderPage = "/myOrderPage";
+  static const checkoutPage = "/checkoutPage";
+  static const paymentPage = "/paymentPage";
   static const orderDetailsPage = "/orderDetailsPage";
   static const addressesPage = "/AddressesPage";
   static const productDetailsPage = "/ProductDetailsPage";
   static const categoryPage = "/CategoryPage";
   static const addAddressScreen = "/addLocation";
   static const editAddressScreen = "/editLocation";
+  static const searchScreen = "/searchScreen";
   static const productCategoriesPage = "/ProductCategoriesPage";
 
   // Keys
@@ -53,7 +56,7 @@ class Constants {
   static final Map<String, String> imagePath = {
     "delivery_success": "assets/icons/done_icon.svg",
     "empty_box": "assets/icons/box_icon.svg",
-    "search_magnifier": "assets/icons/search_icon.svg",
+    "search_magnifier": "assets/icons/magnifier_icon.svg",
     "error": "assets/icons/error_icon.svg",
   };
   static String kDefaultImage =

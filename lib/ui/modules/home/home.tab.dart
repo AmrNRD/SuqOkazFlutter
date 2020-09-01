@@ -99,64 +99,67 @@ class HomeProductDisplayComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: AppDimens.marginDefault16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                AppLocalizations.of(context)
-                    .translate(labelKey, defaultText: labelKey),
-                style: Theme.of(context).textTheme.headline2,
-              ),
-              GestureDetector(
-                child: Text(
+    return Center(
+      child: Column(
+        children: <Widget>[
+          Container(
+            padding:
+                EdgeInsets.symmetric(horizontal: AppDimens.marginDefault16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
                   AppLocalizations.of(context)
-                      .translate("all_items", defaultText: "More"),
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
-                      color: AppColors.primaryColors[50],
-                      fontWeight: FontWeight.w600),
+                      .translate(labelKey, defaultText: labelKey),
+                  style: Theme.of(context).textTheme.headline2,
                 ),
-                onTap: () {},
-              )
-            ],
+                GestureDetector(
+                  child: Text(
+                    AppLocalizations.of(context)
+                        .translate("all_items", defaultText: "More"),
+                    style: Theme.of(context).textTheme.bodyText1.copyWith(
+                        color: AppColors.primaryColors[50],
+                        fontWeight: FontWeight.w600),
+                  ),
+                  onTap: () {},
+                )
+              ],
+            ),
           ),
-        ),
-        BlocBuilder<ProductBloc, ProductState>(
-          cubit: productBloc,
-          builder: (context, state) {
-            if (state is ProductsLoadedState) {
-              return ProductHorizontalListView(
-                products: state.products,
-              );
-            } else if (state is ProductsLoadingState) {
-              return Center(
-                child: LoadingWidget(
+          BlocBuilder<ProductBloc, ProductState>(
+            cubit: productBloc,
+            builder: (context, state) {
+              if (state is ProductsLoadedState) {
+                return ProductHorizontalListView(
+                  products: state.products,
+                );
+              } else if (state is ProductsLoadingState) {
+                return Center(
+                  child: LoadingWidget(
+                    size: 40,
+                  ),
+                );
+              } else if (state is ProductsErrorState) {
+                return GenericState(
                   size: 40,
-                ),
-              );
-            } else if (state is ProductsErrorState) {
-              return GenericState(
-                size: 40,
-                margin: 8,
-                fontSize: 16,
-                removeButton: true,
-                imagePath: Constants.imagePath["error"],
-                //TODO: Translate
-                titleKey: AppLocalizations.of(context)
-                    .translate("todo", defaultText: "Sad Error Title :("),
-                bodyKey: AppLocalizations.of(context).translate(
-                  "todo",
-                  defaultText: state.message,
-                ),
-              );
-            }
-            return Container();
-          },
-        ),
-      ],
+                  margin: 8,
+                  fontSize: 16,
+                  removeButton: true,
+                  imagePath: Constants.imagePath["error"],
+                  //TODO: Translate
+                  titleKey: AppLocalizations.of(context)
+                      .translate("todo", defaultText: "Sad Error Title :("),
+                  bodyKey: AppLocalizations.of(context).translate(
+                    "todo",
+                    defaultText: state.message,
+                  ),
+                );
+              }
+              return Container();
+            },
+          ),
+        ],
+      ),
     );
   }
 }

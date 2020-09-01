@@ -35,7 +35,7 @@ class _RestPasswordScreenState extends State<RestPasswordScreen> {
         child: Form(
           key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               Padding(
@@ -66,10 +66,10 @@ class _RestPasswordScreenState extends State<RestPasswordScreen> {
                   isRequired: true),
 
               CustomRaisedButton(
-                  label: AppLocalizations.of(context).translate("send"),
-                  onPress: onReset,
-                  isLoading: isLoading,
-                  customWidth: 212),
+                label: AppLocalizations.of(context).translate("send"),
+                onPress: onReset,
+                isLoading: isLoading,
+              ),
               SizedBox(height: 140),
 
               FlatButton(

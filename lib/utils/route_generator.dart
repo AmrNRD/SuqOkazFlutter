@@ -13,10 +13,13 @@ import 'package:suqokaz/ui/modules/address/address.page.dart';
 import 'package:suqokaz/ui/modules/address/edit_address.page.dart';
 import 'package:suqokaz/ui/modules/auth/auth.page.dart';
 import 'package:suqokaz/ui/modules/category/category.page.dart';
+import 'package:suqokaz/ui/modules/checkout/checkout.page.dart';
 import 'package:suqokaz/ui/modules/navigation/home.navigation.dart';
 import 'package:suqokaz/ui/modules/orders/orders.page.dart';
+import 'package:suqokaz/ui/modules/payment/payment.page.dart';
 import 'package:suqokaz/ui/modules/product_categories/product_categories.page.dart';
 import 'package:suqokaz/ui/modules/product_details/product_details.page.dart';
+import 'package:suqokaz/ui/modules/search/search.page.dart';
 import 'package:suqokaz/ui/modules/splash/splash.page.dart';
 import 'constants.dart';
 
@@ -79,6 +82,11 @@ class RouteGenerator {
             child: CategoryPage(),
           ),
         );
+      case Constants.searchScreen:
+        return MaterialPageRoute(
+          settings: RouteSettings(name: Constants.searchScreen),
+          builder: (_) => SearchPage(),
+        );
       case Constants.homePage:
         return MaterialPageRoute(
           settings: RouteSettings(name: Constants.homePage),
@@ -108,6 +116,23 @@ class RouteGenerator {
           settings: RouteSettings(name: Constants.addAddressScreen),
           builder: (_) => AddAddressPage(),
         );
+      case Constants.checkoutPage:
+        return MaterialPageRoute(
+          settings: RouteSettings(name: Constants.checkoutPage),
+          builder: (_) => CheckoutPage(),
+        );
+      case Constants.paymentPage:
+        if (args is List) {
+          return MaterialPageRoute(
+            settings: RouteSettings(name: Constants.paymentPage),
+            builder: (_) => PaymentPage(
+              addressModel: args[0],
+              shippingMethod: args[1],
+            ),
+          );
+        }
+        return _errorRoute();
+
       case Constants.editAddressScreen:
         return MaterialPageRoute(
           settings: RouteSettings(name: Constants.editAddressScreen),

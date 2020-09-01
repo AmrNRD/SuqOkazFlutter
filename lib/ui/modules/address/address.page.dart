@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:suqokaz/bloc/address/address_bloc.dart';
+import 'package:suqokaz/data/repositories/address.repository.dart';
 import 'package:suqokaz/data/sources/local/local.database.dart';
+import 'package:suqokaz/main.dart';
 import 'package:suqokaz/ui/common/custom_appbar.dart';
 import 'package:suqokaz/ui/modules/address/components/empty_address.component.dart';
 import 'package:suqokaz/utils/app.localization.dart';
 import 'package:suqokaz/utils/constants.dart';
+import 'package:suqokaz/utils/snack_bar.dart';
 
 import 'components/address.card.component.dart';
 
@@ -19,12 +22,16 @@ class _AddressesPageState extends State<AddressesPage> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<AddressBloc>(context).add(GetAllAddressEvent());
+    addressBloc = AddressBloc(new AddressDataRepository(Root.appDataBase));
+    addressBloc.add(GetAllAddressEvent());
   }
 
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  AddressBloc addressBloc;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: CustomAppBar(
         canPop: true,
         text: AppLocalizations.of(context)
@@ -35,34 +42,48 @@ class _AddressesPageState extends State<AddressesPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Center(
-        child: BlocBuilder<AddressBloc, AddressState>(
-          builder: (context, state) {
-            if (state is AddressesLoadedState) {
-              if (state.addresses.isEmpty || state.addresses == null) {
-                return EmptyAddressCard();
-              } else {
-                return Container(
-                  margin: EdgeInsets.all(16),
-                  child: Column(
-                    children: state.addresses
-                        .map((e) => AddressCard(
-                              address: e,
-                              onUpdate: () {
-                                goToUpdateAddressPage(e);
-                              },
-                              onDelete: () {
-                                BlocProvider.of<AddressBloc>(context).add(
-                                  DeleteAddressEvent(e.id),
-                                );
-                              },
-                            ))
-                        .toList(),
-                  ),
+        child: BlocProvider(
+          create: (context) => addressBloc,
+          child: BlocListener<AddressBloc, AddressState>(
+            listener: (context, state) {
+              if (state is AddressDeletedState) {
+                showScaffoldSnackBar(
+                  context: context,
+                  scaffoldKey: scaffoldKey,
+                  message: AppLocalizations.of(context)
+                      .translate("address_removed_successfully"),
                 );
+                addressBloc.add(GetAllAddressEvent());
               }
-            }
-            return EmptyAddressCard();
-          },
+            },
+            child: BlocBuilder<AddressBloc, AddressState>(
+              builder: (context, state) {
+                if (state is AddressesLoadedState) {
+                  if (state.addresses.isEmpty || state.addresses == null) {
+                    return EmptyAddressCard();
+                  } else {
+                    return Container(
+                      margin: EdgeInsets.all(16),
+                      child: Column(
+                        children: state.addresses
+                            .map((e) => AddressCard(
+                                  address: e,
+                                  onUpdate: () {
+                                    goToUpdateAddressPage(e);
+                                  },
+                                  onDelete: () {
+                                    addressBloc.add(DeleteAddressEvent(e.id));
+                                  },
+                                ))
+                            .toList(),
+                      ),
+                    );
+                  }
+                }
+                return EmptyAddressCard();
+              },
+            ),
+          ),
         ),
       ),
     );
@@ -70,13 +91,13 @@ class _AddressesPageState extends State<AddressesPage> {
 
   goToAddAddressPage() async {
     await Navigator.pushNamed(context, Constants.addAddressScreen);
-    BlocProvider.of<AddressBloc>(context).add(GetAllAddressEvent());
+    addressBloc.add(GetAllAddressEvent());
   }
 
   goToUpdateAddressPage(AddressModel addressModel) async {
     await Navigator.pushNamed(context, Constants.editAddressScreen,
         arguments: addressModel);
-    BlocProvider.of<AddressBloc>(context).add(GetAllAddressEvent());
+    addressBloc.add(GetAllAddressEvent());
   }
 }
 

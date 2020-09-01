@@ -20,6 +20,8 @@
     "status": "Status: ",
     "payment": "Payment: ",
     "payment_title": "PAYMENT",
+    "payment_small": "Payment",
+    "login_message": "please enter your details to sign in",
     "checkout_title": "CHECKOUT",
     "ship_address": "Shipping Address",
     "select_payment_method": "Select and enter your payment details",
@@ -80,7 +82,7 @@
     "home_truck_icon_title": "And Delivery",
     "home_truck_icon_body": "To your doorstep, at the hour you choose.",
     "featured_products": "Featured Products",
-    "currency": "EGP %s",
+    "currency": "SAR %s",
     "description": "Description",
     "review": "Review",
     "review_count": "(%s Reviews)",
@@ -149,6 +151,8 @@
     "address_removed_successfully": "address removed successfully",
     "please_select_address": "Please select an address",
     "please_select_shipping_method": "Please select shipping method",
+    "location": "Location",
+    "delivery_details": "Delivery Details",
     "discount_title": "Enter discount coupon",
     "please_select_payment_method": "Please select payment method"
 }

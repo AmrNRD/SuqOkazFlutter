@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:suqokaz/bloc/cart/cart_bloc.dart';
 import 'package:suqokaz/data/models/order_model.dart';
+import 'package:suqokaz/ui/common/custom_raised_button.dart';
 import 'package:suqokaz/ui/common/input_field.dart';
+import 'package:suqokaz/ui/common/invoice.component.dart';
 import 'package:suqokaz/ui/modules/cart/components/cart.product.component.dart';
-import 'package:suqokaz/ui/style/app.colors.dart';
 import 'package:suqokaz/ui/style/app.dimens.dart';
 import 'package:suqokaz/utils/app.localization.dart';
+import 'package:suqokaz/utils/constants.dart';
 import 'package:suqokaz/utils/core.util.dart';
 
 class CartDetailsScreen extends StatelessWidget {
@@ -20,47 +22,49 @@ class CartDetailsScreen extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Positioned.fill(
-          child: Container(
-            margin: EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                ListView.builder(
-                  shrinkWrap: true,
-                  primary: false,
-                  itemCount: productItems.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ProductCartComponent(
-                      productItem: productItems[index],
-                    );
-                  },
-                ),
-                SizedBox(
-                  height: AppDimens.marginDefault20,
-                ),
-                Text(
-                  AppLocalizations.of(context).translate("discount_title"),
-                  style: Theme.of(context).textTheme.headline2,
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: AppDimens.marginDefault12,
-                ),
-                CustomInputTextField(
-                  controller: discountController,
-                  validator: (value) {
-                    return true;
-                  },
-                  maxLines: 1,
-                  minLines: 1,
-                  textInputType: TextInputType.multiline,
-                  isCollapes: true,
-                  onFieldSubmit: (_) {},
-                ),
-                SizedBox(
-                  height: screenAwareSize(120, context),
-                ),
-              ],
+          child: SingleChildScrollView(
+            child: Container(
+              margin: EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  ListView.builder(
+                    shrinkWrap: true,
+                    primary: false,
+                    itemCount: productItems.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ProductCartComponent(
+                        productItem: productItems[index],
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: AppDimens.marginDefault20,
+                  ),
+                  Text(
+                    AppLocalizations.of(context).translate("discount_title"),
+                    style: Theme.of(context).textTheme.headline2,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: AppDimens.marginDefault12,
+                  ),
+                  CustomInputTextField(
+                    controller: discountController,
+                    validator: (value) {
+                      return true;
+                    },
+                    maxLines: 1,
+                    minLines: 1,
+                    textInputType: TextInputType.multiline,
+                    isCollapes: true,
+                    onFieldSubmit: (_) {},
+                  ),
+                  SizedBox(
+                    height: screenAwareSize(180, context),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -81,6 +85,7 @@ class CartDetailsScreen extends StatelessWidget {
               ],
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 InvoiceComponent(
                   startText: AppLocalizations.of(context).translate("order"),
@@ -113,50 +118,20 @@ class CartDetailsScreen extends StatelessWidget {
                         .toStringAsFixed(2),
                   ),
                 ),
+                SizedBox(
+                  height: 16,
+                ),
+                CustomRaisedButton(
+                  isLoading: false,
+                  label: AppLocalizations.of(context).translate("checkout"),
+                  onPress: () {
+                    Navigator.pushNamed(context, Constants.checkoutPage);
+                  },
+                )
               ],
             ),
           ),
         )
-      ],
-    );
-  }
-}
-
-class InvoiceComponent extends StatelessWidget {
-  final bool highlight;
-  final bool isDiscount;
-  final String startText;
-  final String endText;
-
-  const InvoiceComponent({
-    Key key,
-    this.highlight = false,
-    this.isDiscount = false,
-    this.startText,
-    this.endText,
-  }) : super(key: key);
-
-  @override
-  build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          startText,
-          style: Theme.of(context).textTheme.headline2.copyWith(
-              fontWeight: highlight ? FontWeight.w700 : FontWeight.w300),
-          textAlign: TextAlign.center,
-        ),
-        Text(
-          endText,
-          style: Theme.of(context).textTheme.headline2.copyWith(
-                fontWeight: highlight ? FontWeight.w700 : FontWeight.w300,
-                color: isDiscount
-                    ? Color(0xFF2D8F1D)
-                    : AppColors.primaryColors[200],
-              ),
-          textAlign: TextAlign.center,
-        ),
       ],
     );
   }

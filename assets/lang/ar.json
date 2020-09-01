@@ -123,7 +123,7 @@
     "add_cart": "اضف الي العربة",
     "submit": "حفظ",
     "all_items": "عرض الكل",
-    "currency": "%s جم",
+    "currency": "%s ر.س",
     "google": "جوجل",
     "cancel": "الغاء",
     "facebook": "فيس بوك",
@@ -143,6 +143,10 @@
     "address_updated_successfully": "تم تعديل العنوان بنجاح",
     "address_removed_successfully": "تم حذف العنوان بنجاح",
     "please_select_address": "من فضلك قم بإضافة عنوان",
+    "location": "عنوان التوصيل",
+    "login_message": "بلرجاء ادخل بينات الدخول للمتابعة",
+    "delivery_details": "طريقة الشحن",
+    "payment_small": "طريقة الدفع",
     "please_select_shipping_method": "من فضلك قم بإختيار طريقة الشحن",
     "please_select_payment_method": "من فضلك قم بإختيار طريقة الدفع"
 }

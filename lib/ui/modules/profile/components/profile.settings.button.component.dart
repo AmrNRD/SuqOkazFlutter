@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:suqokaz/utils/constants.dart';
 
 import '../../../../app.dart';
 import '../../../../utils/app.localization.dart';
@@ -62,7 +63,7 @@ class SettingsButtonComponent extends StatelessWidget {
                 "",
                 context,
                 () {
-                  Navigator.pop(context);
+                  Navigator.pushReplacementNamed(context, Constants.authPage);
                 },
                 hideDivider: true,
               ),

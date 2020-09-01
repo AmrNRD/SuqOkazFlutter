@@ -71,14 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding:
                     const EdgeInsets.only(top: AppDimens.paddingEdgeCase40),
                 child: Text(
-                    AppLocalizations.of(context)
-                        .translate("please_enter_your_details"),
-                    style: Theme.of(context).textTheme.subtitle1),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.only(top: AppDimens.marginDefault6),
-                child: Text("to sign in",
+                    AppLocalizations.of(context).translate("login_message"),
                     style: Theme.of(context).textTheme.subtitle1),
               ),
 
@@ -99,40 +92,52 @@ class _LoginScreenState extends State<LoginScreen> {
                 isRequired: true,
                 obscureText: _obscureTextLogin,
                 suffixIcon: GestureDetector(
-                    onTap: () => setState(() {
-                          _obscureTextLogin = !_obscureTextLogin;
-                        }),
-                    child: Icon(
-                        _obscureTextLogin
-                            ? FontAwesomeIcons.eyeSlash
-                            : FontAwesomeIcons.eye,
-                        size: 15.0,
-                        color: Colors.grey)),
+                  onTap: () => setState(() {
+                    _obscureTextLogin = !_obscureTextLogin;
+                  }),
+                  child: Icon(
+                    _obscureTextLogin
+                        ? FontAwesomeIcons.eyeSlash
+                        : FontAwesomeIcons.eye,
+                    size: 15.0,
+                    color: Colors.grey,
+                  ),
+                ),
               ),
               FlatButton(
-                  onPressed: widget.goToForgotPassword,
-                  child: Text(AppLocalizations.of(context).translate("forget"),
-                      style: Theme.of(context).textTheme.subtitle1)),
+                onPressed: widget.goToForgotPassword,
+                child: Text(
+                  AppLocalizations.of(context).translate("forget"),
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+              ),
 
               SizedBox(height: AppDimens.marginEdgeCase32),
 
               Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    CustomRaisedButton(
-                        label:
-                            AppLocalizations.of(context).translate("sign_in"),
+                    Expanded(
+                      flex: 3,
+                      child: CustomRaisedButton(
+                        label: AppLocalizations.of(context).translate("login"),
                         onPress: onLogin,
                         isLoading: isLoading,
-                        customWidth: 212),
-                    CustomRaisedButton(
-                        label: AppLocalizations.of(context).translate("skip"),
-                        onPress: onSkip,
-                        isLoading: isLoading,
-                        customWidth: 97,
-                        buttonColor: Colors.transparent,
-                        textColor: AppColors.primaryColor5,
-                        customBorderColor: AppColors.primaryColor5),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 40,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: CustomRaisedButton(
+                          label: AppLocalizations.of(context).translate("skip"),
+                          onPress: onSkip,
+                          isLoading: isLoading,
+                          buttonColor: Colors.transparent,
+                          textColor: AppColors.primaryColor5,
+                          customBorderColor: AppColors.primaryColor5),
+                    ),
                   ]),
 
               SizedBox(height: AppDimens.marginEdgeCase32),

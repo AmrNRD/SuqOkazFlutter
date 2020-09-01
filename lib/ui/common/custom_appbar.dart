@@ -7,12 +7,14 @@ class CustomAppBar extends PreferredSize {
   final double height;
   final double elevation;
   final bool canPop;
+  final bool removeSearch;
 
   CustomAppBar({
     @required this.text,
     this.height = kToolbarHeight,
     this.canPop = false,
     this.elevation,
+    this.removeSearch = false,
   });
 
   @override
@@ -51,13 +53,20 @@ class CustomAppBar extends PreferredSize {
             ),
       actions: <Widget>[
         IconButton(
-          icon: SvgPicture.asset(
-            "assets/icons/search_icon.svg",
-            height: 16,
-            width: 16,
-            fit: BoxFit.contain,
-          ),
-          onPressed: () {},
+          icon: removeSearch
+              ? Container()
+              : SvgPicture.asset(
+                  "assets/icons/search_icon.svg",
+                  height: 16,
+                  width: 16,
+                  fit: BoxFit.contain,
+                ),
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              Constants.searchScreen,
+            );
+          },
         ),
       ],
     );

@@ -15,6 +15,7 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CartBloc, CartState>(
       builder: (BuildContext context, CartState state) {
+        print(state.runtimeType);
         if (state is CartLoadedState) {
           if (state.products.isEmpty || state.products == null) {
             return Center(
@@ -26,10 +27,6 @@ class CartPage extends StatelessWidget {
               ),
             );
           } else {
-            state.products.forEach((element) {
-              print(element.toJson());
-              print('-----------------------------------------------------');
-            });
             return CartDetailsScreen(
               productItems: state.products,
             );

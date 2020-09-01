@@ -14,7 +14,6 @@ class Category extends Table {
 
 class Cart extends Table {
   IntColumn get id => integer().autoIncrement()();
-  TextColumn get userEmail => text()();
   IntColumn get addressId =>
       integer().nullable().customConstraint("REFERENCES address(id)")();
   TextColumn get shippingMethodId => text().nullable()();
@@ -58,7 +57,7 @@ class AppDataBase extends _$AppDataBase {
   // you should bump this number whenever you change or add a table definition. Migrations
   // are covered later in this readme.
   @override
-  int get schemaVersion => 9;
+  int get schemaVersion => 10;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
@@ -98,7 +97,7 @@ class AppDataBase extends _$AppDataBase {
       .go();
 
   //Cart CRUD
-  Future<CartData> getCart(String userEmail) => (select(cart)..where((c) => c.userEmail.equals(userEmail))).getSingle();
+  Future<CartData> getCart() => select(cart).getSingle();
   Future insertCart(CartData cartData) => into(cart).insert(cartData);
   Future updateCart(CartData cartData) => update(cart).replace(cartData);
   Future deleteCart(int id) => (delete(cart)
@@ -148,7 +147,8 @@ class AppDataBase extends _$AppDataBase {
           (c) => c.id.equals(id),
         ))
       .getSingle();
-  Future insertAddress(AddressModel addressData) => into(address).insert(addressData);
+  Future insertAddress(AddressModel addressData) =>
+      into(address).insert(addressData);
   Future updateAddress(AddressModel addressData) =>
       update(address).replace(addressData);
   Future deleteAddress(int id) => (delete(address)

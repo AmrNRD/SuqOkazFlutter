@@ -9,8 +9,6 @@ class CustomRaisedButton extends StatelessWidget {
   final Function onPress;
   final String label;
   final TextStyle style;
-  final double customWidth;
-  final double customHeight;
   final Color textColor;
   final Color customBorderColor;
 
@@ -22,8 +20,6 @@ class CustomRaisedButton extends StatelessWidget {
     this.style,
     this.buttonColor,
     this.textColor,
-    this.customWidth = 18,
-    this.customHeight = 18,
     this.customBorderColor,
   }) : super(key: key);
 
@@ -41,15 +37,11 @@ class CustomRaisedButton extends StatelessWidget {
       elevation: 0,
       child: isLoading
           ? Container(
-              height: screenAwareSize(customHeight, context),
-              width: screenAwareWidth(customWidth, context),
               child: CircularProgressIndicator(
                 backgroundColor: Colors.white,
               ),
             )
           : Container(
-              height: screenAwareSize(customHeight, context),
-              width: screenAwareWidth(customWidth, context),
               child: Text(
                 label,
                 textAlign: TextAlign.center,
