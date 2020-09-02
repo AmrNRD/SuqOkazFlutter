@@ -3,7 +3,7 @@ import 'package:suqokaz/data/models/category_model.dart';
 import 'package:suqokaz/ui/style/app.colors.dart';
 
 class SideCategoryBuilderComponent extends StatefulWidget {
-  final List<CategoryModel> parentCategories;
+  final List<dynamic> parentCategories;
   final Function(int) changeParentCategory;
 
   const SideCategoryBuilderComponent({

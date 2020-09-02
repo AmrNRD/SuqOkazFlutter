@@ -302,6 +302,7 @@ class PaymentMethodComponent extends StatelessWidget {
                 child: GenericState(
                   imagePath: Constants.imagePath["error"],
                   titleKey: "error_title",
+                  bodyKey: "error_body",
                   removeButton: true,
                 ),
               );

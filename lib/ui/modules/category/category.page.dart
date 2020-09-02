@@ -63,12 +63,11 @@ class _CategoryPageState extends State<CategoryPage> {
                   child: ChildCategoryBuilderComponent(
                     parentName:
                         state.nestedCategories[_selectedParentCategory].name,
-                    childrenCategories:
-                        state.nestedCategories[_selectedParentCategory].children
-                            .where(
-                              (element) => element.children.isNotEmpty,
-                            )
-                            .toList(),
+                    childrenCategories: state
+                        .nestedCategories[_selectedParentCategory].children
+                        .where(
+                            (dynamic element) => element.children.length != 0)
+                        .toList() as List<dynamic>,
                   ),
                 )
               ],

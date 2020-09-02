@@ -31,7 +31,7 @@ class APICaller {
   getOAuthURL(String requestMethod, String endpoint, bool isHttps) {
     var token = "";
     String url = Endpoints.login.auth
-            .replaceFirst("langCode/", Root.locale.languageCode + "/") +
+            .replaceFirst("langCode/", Root.locale.languageCode ?? "en" + "/") +
         endpoint;
     var containsQueryParams = url.contains("?");
 

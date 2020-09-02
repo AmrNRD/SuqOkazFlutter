@@ -113,16 +113,6 @@ class HomeProductDisplayComponent extends StatelessWidget {
                       .translate(labelKey, defaultText: labelKey),
                   style: Theme.of(context).textTheme.headline2,
                 ),
-                GestureDetector(
-                  child: Text(
-                    AppLocalizations.of(context)
-                        .translate("all_items", defaultText: "More"),
-                    style: Theme.of(context).textTheme.bodyText1.copyWith(
-                        color: AppColors.primaryColors[50],
-                        fontWeight: FontWeight.w600),
-                  ),
-                  onTap: () {},
-                )
               ],
             ),
           ),

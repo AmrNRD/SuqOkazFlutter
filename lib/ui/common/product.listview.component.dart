@@ -10,17 +10,17 @@ import 'package:suqokaz/data/sources/local/local.database.dart';
 import 'package:suqokaz/ui/common/delayed_animation.dart';
 import 'package:suqokaz/ui/common/genearic.state.component.dart';
 import 'package:suqokaz/ui/common/loading.component.dart';
-import 'package:suqokaz/ui/common/product.gridview.builder.dart';
+import 'package:suqokaz/ui/common/product.listview.builder.dart';
 import 'package:suqokaz/utils/app.localization.dart';
 import 'package:suqokaz/utils/constants.dart';
 
-class ProductGridViewComponent extends StatefulWidget {
+class ProductListViewComponent extends StatefulWidget {
   final ScrollController scrollController;
   final String orderBy;
   final String order;
   final int categoryId;
 
-  const ProductGridViewComponent({
+  const ProductListViewComponent({
     Key key,
     this.scrollController,
     this.categoryId,
@@ -29,13 +29,13 @@ class ProductGridViewComponent extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ProductGridViewComponentState createState() =>
-      _ProductGridViewComponentState();
+  _ProductListViewComponentState createState() =>
+      _ProductListViewComponentState();
 }
 
-class _ProductGridViewComponentState extends State<ProductGridViewComponent>
+class _ProductListViewComponentState extends State<ProductListViewComponent>
     with
-        AutomaticKeepAliveClientMixin<ProductGridViewComponent>,
+        AutomaticKeepAliveClientMixin<ProductListViewComponent>,
         TickerProviderStateMixin {
   @override
   bool get wantKeepAlive {
@@ -51,6 +51,7 @@ class _ProductGridViewComponentState extends State<ProductGridViewComponent>
   @override
   void dispose() {
     super.dispose();
+    animationController.dispose();
   }
 
   @override
@@ -63,15 +64,14 @@ class _ProductGridViewComponentState extends State<ProductGridViewComponent>
       ProductsRepository(),
     );
 
-    productBloc
-      ..add(
-        GetProductsEvent(
-          categoryID: widget.categoryId,
-          isLoadMoreMode: false,
-          order: widget.order,
-          orderBy: widget.orderBy,
-        ),
-      );
+    productBloc.add(
+      GetProductsEvent(
+        categoryID: widget.categoryId,
+        isLoadMoreMode: false,
+        order: widget.order,
+        orderBy: widget.orderBy,
+      ),
+    );
 
     if (widget.categoryId != null) {
       _scrollController.addListener(
@@ -148,7 +148,7 @@ class _ProductGridViewComponentState extends State<ProductGridViewComponent>
               if (state is ProductsLoadedState) {
                 products = [];
                 products = state.products;
-                return ProductGridViewBuilder(
+                return ProductListViewBuilder(
                   scrollController: _scrollController,
                   products: products,
                   showLoading: showLoading,

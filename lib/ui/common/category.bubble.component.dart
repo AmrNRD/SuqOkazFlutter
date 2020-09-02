@@ -10,7 +10,7 @@ class CategoryBubbleComponent extends StatelessWidget {
     @required this.index,
   }) : super(key: key);
 
-  final CategoryModel category;
+  final dynamic category;
   final int index;
 
   @override

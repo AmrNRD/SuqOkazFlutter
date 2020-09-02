@@ -59,7 +59,7 @@ class _ProductHorizontalListViewState extends State<ProductHorizontalListView> {
       child: Column(
         children: <Widget>[
           Container(
-            height: screenAwareSize(230, context),
+            height: screenAwareSize(250, context),
             child: ListView.builder(
               itemCount: widget.products.length,
               padding: EdgeInsets.all(10),

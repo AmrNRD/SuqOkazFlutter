@@ -28,7 +28,7 @@ class CategoryForceReloadState extends CategoryState {
 }
 
 class CategoryLoadedState extends CategoryState {
-  final List<CategoryModel> nestedCategories;
+  final List<dynamic> nestedCategories;
   final int selectedCategoryIndex;
   final int currentParentCatId;
   final int subSelectedCategoryIndex;

@@ -1,18 +1,24 @@
 import 'dart:async';
 
-import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:suqokaz/bloc/cart/cart_bloc.dart';
 import 'package:suqokaz/data/models/product_model.dart';
 import 'package:suqokaz/data/repositories/products_repository.dart';
+import 'package:suqokaz/data/sources/local/local.database.dart';
 import 'package:suqokaz/libraries/search_bar/flappy_search_bar.dart';
 import 'package:suqokaz/libraries/search_bar/scaled_tile.dart';
 import 'package:suqokaz/libraries/search_bar/search_bar_style.dart';
 import 'package:suqokaz/ui/common/custom_appbar.dart';
 import 'package:suqokaz/ui/common/delayed_animation.dart';
+import 'package:suqokaz/ui/common/filter.sheet.component.dart';
 import 'package:suqokaz/ui/common/genearic.state.component.dart';
 import 'package:suqokaz/ui/common/loading.component.dart';
 import 'package:suqokaz/ui/common/product.card.component.dart';
+import 'package:suqokaz/ui/common/product.card.long.component.dart';
+import 'package:suqokaz/ui/common/product.view.modification.component.dart';
 import 'package:suqokaz/ui/style/app.colors.dart';
 import 'package:suqokaz/ui/style/app.dimens.dart';
 import 'package:suqokaz/utils/app.localization.dart';
@@ -23,7 +29,7 @@ class SearchPage extends StatefulWidget {
   _SearchPageState createState() => _SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   // Repos
   ProductsRepository productsRepository = ProductsRepository();
 
@@ -34,25 +40,44 @@ class _SearchPageState extends State<SearchPage> {
   bool lastPageReached = false;
   bool showLoading = false;
   ScrollController listController = ScrollController();
+  AnimationController _controller;
 
   // Data holder
   List<ProductModel> dataList = [];
 
   StreamSubscription<dynamic> dataListStream;
-
+  String orderBy;
+  String order;
   Future productsFuture;
+  bool isList = false;
 
   @override
   void initState() {
     super.initState();
     searchBarController = SearchBarController();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 500),
+    );
+
+    productIdToCartItem =
+        BlocProvider.of<CartBloc>(context).productIdToCartItem;
     listController.addListener(() {
       if (listController.position.pixels ==
           listController.position.maxScrollExtent) {
-        setState(() {
-          showLoading = true;
-        });
-        _loadNextSearch();
+        if (!lastPageReached) {
+          setState(() {
+            showLoading = true;
+          });
+          _loadNextSearch();
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            listController.animateTo(
+              listController.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+            );
+          });
+        }
       }
     });
   }
@@ -62,24 +87,100 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void onSearchComplete() {
-    print("done");
     setState(() {
       showLoading = false;
     });
   }
 
+  void _showModalSheet({Function onExit}) {
+    showModalBottomSheet(
+      context: context,
+      barrierColor: Colors.white.withOpacity(0),
+      backgroundColor: Colors.white,
+      elevation: 10,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20),
+          topLeft: Radius.circular(20),
+        ),
+      ),
+      builder: (builder) {
+        return SafeArea(
+          child: FilterSheet(
+            onFilterChange: changeActiveFilter,
+            orderBy: orderBy,
+            order: order,
+          ),
+        );
+      },
+    );
+  }
+
+  changeActiveFilter(String _orderByParam, String _order) {
+    if (_orderByParam != orderBy || _order != order) {
+      setState(() {
+        orderBy = _orderByParam;
+        order = _order;
+      });
+      searchBarController.replayLastSearch();
+    }
+  }
+
+  ScaledTile scaledTile = ScaledTile.count(1, 1.44);
+  onChangeViewClick() {
+    setState(() {
+      isList = !isList;
+      if (isList) {
+        scaledTile = ScaledTile.count(2, 0.8);
+      } else {
+        scaledTile = ScaledTile.count(1, 1.44);
+      }
+    });
+  }
+
+  GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+  Map<int, CartItem> productIdToCartItem = {};
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _globalKey,
       appBar: CustomAppBar(
         text: AppLocalizations.of(context).translate("search"),
         canPop: true,
         removeSearch: true,
+        elevation: 0,
       ),
       body: Column(
         children: <Widget>[
+          ProductViewModificationComponent(
+            onViewChangeClick: onChangeViewClick,
+            onSortClick: _showModalSheet,
+          ),
           Expanded(
-            child: searchScreen(),
+            child: BlocListener<CartBloc, CartState>(
+              listener: (context, state) {
+                if (state is CartLoadedState) {
+                  setState(() {
+                    productIdToCartItem = state.productIdToCartItem;
+                  });
+                } else if (state is CartErrorState) {
+                  _globalKey.currentState.showSnackBar(
+                    SnackBar(
+                      duration: Duration(seconds: 1),
+                      backgroundColor: Colors.green,
+                      content: Text(
+                        AppLocalizations.of(context).translate(state.message),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline2
+                            .copyWith(color: Colors.red),
+                      ),
+                    ),
+                  );
+                }
+              },
+              child: searchScreen(),
+            ),
           ),
           showLoading
               ? SafeArea(
@@ -111,15 +212,16 @@ class _SearchPageState extends State<SearchPage> {
         lang: AppLocalizations.of(context).locale.toLanguageTag(),
         pageIndex: currentPage,
         perPage: 10,
+        order: order,
+        orderBy: orderBy,
         search: search,
       );
       productsFuture.then((value) => onSearchComplete());
-      dataListStream = productsFuture.asStream().listen((productsList) {
-        // Process data
-        if (productsList is List) {
+      try {
+        dataListStream = productsFuture.asStream().listen((productsList) {
+          // Process data
           // Init data holder
           //if(currentPage == 1) dataList = List();
-
           // Loop on data
           for (var item in productsList) {
             if (!Constants.hideOutOfStock || item["in_stock"]) {
@@ -138,11 +240,10 @@ class _SearchPageState extends State<SearchPage> {
           setState(() {
             isSearching = false;
           });
-        } else {
-          // Throw error
-          throw Exception("Error occurred");
-        }
-      });
+        });
+      } catch (e) {
+        throw Exception("Error occurred");
+      }
     }
     return dataList;
   }
@@ -157,6 +258,7 @@ class _SearchPageState extends State<SearchPage> {
           dataList: dataList,
           forceLoading: (isSearching && currentPage == 1),
           crossAxisCount: 2,
+          crossAxisSpacing: 16,
           searchBarPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
           cancellationWidget: Text(
             AppLocalizations.of(context).translate("cancel"),
@@ -187,7 +289,7 @@ class _SearchPageState extends State<SearchPage> {
             end: AppDimens.marginDefault16,
             bottom: AppDimens.marginDefault16,
           ),
-          indexedScaledTileBuilder: (int index) => ScaledTile.count(1, 1.3),
+          indexedScaledTileBuilder: (int index) => scaledTile,
           searchBarController: searchBarController,
           placeHolder: Center(
             child: GenericState(
@@ -215,15 +317,38 @@ class _SearchPageState extends State<SearchPage> {
           ),
           onItemFound: (ProductModel productData, int index) {
             return DelayedAnimation(
-              delay: 500,
-              child: Container(
-                margin: EdgeInsets.only(
-                  bottom: AppDimens.marginDefault16,
-                ),
-                child: ProductCardComponent(
-                  product: dataList[index],
-                ),
-              ),
+              animationController: _controller,
+              child: isList
+                  ? ProductCardLongComponent(
+                      product: productData,
+                      isInCart:
+                          productIdToCartItem.containsKey(productData.id) ??
+                              false,
+                      onItemTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          Constants.productDetailsPage,
+                          arguments: productData,
+                        );
+                      },
+                    )
+                  : Container(
+                      margin: EdgeInsets.only(bottom: 16),
+                      child: ProductCardComponent(
+                        product: productData,
+                        allowMargin: false,
+                        isInCart:
+                            productIdToCartItem.containsKey(productData.id) ??
+                                false,
+                        onItemTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            Constants.productDetailsPage,
+                            arguments: productData,
+                          );
+                        },
+                      ),
+                    ),
             );
           },
           onError: (_) {
@@ -244,6 +369,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void dispose() {
     super.dispose();
+    _controller.dispose();
     if (dataListStream != null) dataListStream.cancel();
   }
 }

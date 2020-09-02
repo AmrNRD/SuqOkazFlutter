@@ -13,7 +13,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           ProfileTagComponent(),
           HorizontalButtonsComponent(),

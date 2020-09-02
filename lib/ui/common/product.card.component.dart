@@ -13,14 +13,16 @@ class ProductCardComponent extends StatelessWidget {
   final ProductModel product;
   final bool allowMargin;
   final bool isInCart;
+  final bool inInFav;
 
-  const ProductCardComponent(
-      {Key key,
-      this.onItemTap,
-      @required this.product,
-      this.isInCart = false,
-      this.allowMargin = true})
-      : super(key: key);
+  const ProductCardComponent({
+    Key key,
+    this.onItemTap,
+    @required this.product,
+    this.isInCart = false,
+    this.allowMargin = true,
+    this.inInFav = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,10 @@ class ProductCardComponent extends StatelessWidget {
       onTap: (onItemTap != null) ? onItemTap : null,
       child: Container(
         width: 140,
-        margin: EdgeInsetsDirectional.only(end: allowMargin ? 8 : 0),
+        margin: EdgeInsetsDirectional.only(
+          end: allowMargin ? 8 : 0,
+          bottom: allowMargin ? 8 : 0,
+        ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: Colors.white,
@@ -59,6 +64,7 @@ class ProductCardComponent extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(12),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
                         //widget.product.name,
@@ -67,12 +73,9 @@ class ProductCardComponent extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(
-                        height: 4,
-                      ),
                       Expanded(
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
                             Expanded(
                               child: Text(
@@ -104,13 +107,13 @@ class ProductCardComponent extends StatelessWidget {
                               child: isInCart
                                   ? SvgPicture.asset(
                                       "assets/icons/cart_button_selected_icon.svg",
-                                      height: 28,
-                                      width: 28,
+                                      height: 32,
+                                      width: 32,
                                     )
                                   : SvgPicture.asset(
                                       "assets/icons/product_cart_icon.svg",
-                                      height: 28,
-                                      width: 28,
+                                      height: 32,
+                                      width: 32,
                                     ),
                             ),
                           ],
@@ -156,10 +159,19 @@ class ProductCardComponent extends StatelessWidget {
                           shape: BoxShape.circle,
                           color: Colors.white.withOpacity(0.4),
                         ),
-                        child: Icon(
-                          Icons.favorite_border,
-                          color: Colors.grey,
-                          size: 22,
+                        child: InkWell(
+                          onTap: () {},
+                          child: inInFav
+                              ? SvgPicture.asset(
+                                  "assets/icons/fav_selected_icon.svg",
+                                  height: 20,
+                                  width: 24,
+                                )
+                              : SvgPicture.asset(
+                                  "assets/icons/fav_icon.svg",
+                                  height: 20,
+                                  width: 20,
+                                ),
                         ),
                       ),
                     ],

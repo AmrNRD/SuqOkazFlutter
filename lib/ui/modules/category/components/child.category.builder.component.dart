@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:suqokaz/data/models/category_model.dart';
-import 'package:suqokaz/ui/modules/home/components/categories.banner.grid.component.dart';
 import 'package:suqokaz/ui/modules/home/components/category.banner.box.dart';
 import 'package:suqokaz/ui/style/app.colors.dart';
 import 'package:suqokaz/utils/constants.dart';
 import 'package:suqokaz/utils/core.util.dart';
 
 class ChildCategoryBuilderComponent extends StatelessWidget {
-  final List<CategoryModel> childrenCategories;
+  final List<dynamic> childrenCategories;
   final String parentName;
 
   const ChildCategoryBuilderComponent({

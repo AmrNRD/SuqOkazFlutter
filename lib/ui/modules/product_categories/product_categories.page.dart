@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:suqokaz/data/models/category_model.dart';
 import 'package:suqokaz/ui/common/custom_appbar.dart';
+import 'package:suqokaz/ui/common/filter.sheet.component.dart';
 import 'package:suqokaz/ui/common/loading.component.dart';
 import 'package:suqokaz/ui/common/product.gridview.component.dart';
+import 'package:suqokaz/ui/common/product.listview.component.dart';
+import 'package:suqokaz/ui/common/product.view.modification.component.dart';
 import 'package:suqokaz/ui/style/app.colors.dart';
 import 'package:suqokaz/utils/app.localization.dart';
 import 'package:suqokaz/utils/core.util.dart';
@@ -11,7 +13,7 @@ import 'package:suqokaz/utils/core.util.dart';
 class ProductCategoriesPage extends StatefulWidget {
   final String appBarTitle;
   final int parentId;
-  final List<CategoryModel> subCategories;
+  final List<dynamic> subCategories;
   final int selectedSubCategoryId;
 
   const ProductCategoriesPage({
@@ -32,7 +34,66 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
   List<Tab> tabs = [];
   List<Widget> tabBarView = [];
   bool isFirstTime = true;
+  bool isList = false;
   int selectedSubCategory = 0;
+  String orderBy;
+  String order;
+
+  onChangeViewClick() {
+    tabBarView.clear();
+    setState(() {
+      isList = !isList;
+      createTabBarView(isList);
+    });
+  }
+
+  void _showModalSheet({Function onExit}) {
+    showModalBottomSheet(
+      context: context,
+      barrierColor: Colors.white.withOpacity(0),
+      backgroundColor: Colors.white,
+      elevation: 10,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20),
+          topLeft: Radius.circular(20),
+        ),
+      ),
+      builder: (builder) {
+        return SafeArea(
+          child: FilterSheet(
+            onFilterChange: changeActiveSort,
+            orderBy: orderBy,
+            order: order,
+          ),
+        );
+      },
+    );
+  }
+
+  changeActiveSort(String _orderByParam, String _order) {
+    if (_orderByParam != orderBy || _order != order) {
+      setState(() {
+        tabBarView.clear();
+        _tabController = TabController(
+          vsync: this,
+          length: 0,
+        );
+      });
+      orderBy = _orderByParam;
+      order = _order;
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          createTabBarView(isList);
+          _tabController = TabController(
+            vsync: this,
+            length: widget.subCategories.length + 1,
+            initialIndex: selectedSubCategory,
+          );
+        });
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -40,7 +101,7 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
     SchedulerBinding.instance.addPostFrameCallback((_) {
       isFirstTime = false;
       createSubCategoryTabs();
-      createTabBarView();
+      createTabBarView(isList);
       print(selectedSubCategory);
       setState(() {
         _tabController = TabController(
@@ -56,11 +117,17 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
+        elevation: 0,
         canPop: true,
         text: widget.appBarTitle ?? "",
       ),
       body: Column(
         children: <Widget>[
+          ProductViewModificationComponent(
+            isListView: isList,
+            onViewChangeClick: onChangeViewClick,
+            onSortClick: _showModalSheet,
+          ),
           Container(
             margin: EdgeInsets.only(right: 16, left: 16, top: 16),
             height: screenAwareSize(30, context),
@@ -70,8 +137,9 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
                     ? Container()
                     : TabBar(
                         tabs: tabs,
-                        labelPadding: EdgeInsets.symmetric(horizontal: 4),
-                        indicatorPadding: EdgeInsets.zero,
+                        labelPadding:
+                            EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+                        indicatorPadding: EdgeInsets.symmetric(horizontal: 4),
                         controller: _tabController,
                         isScrollable: true,
                         indicatorSize: TabBarIndicatorSize.tab,
@@ -139,31 +207,37 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
     }
   }
 
-  String orderBy;
-  String order;
-
-  createTabBarView() {
+  createTabBarView(bool isList) {
     tabBarView.add(
-      ProductGridViewComponent(
-        categoryId: widget.parentId,
-        order: order,
-        orderBy: orderBy,
-      ),
+      isList
+          ? ProductListViewComponent(
+              categoryId: widget.parentId,
+              order: order,
+              orderBy: orderBy,
+            )
+          : ProductGridViewComponent(
+              categoryId: widget.parentId,
+              order: order,
+              orderBy: orderBy,
+            ),
     );
 
     for (int i = 0; i < widget.subCategories.length; i++) {
-      print(widget.subCategories[i].name);
-      print(widget.subCategories[i].id);
-      print(widget.selectedSubCategoryId);
       if (widget.selectedSubCategoryId == widget.subCategories[i].id) {
         selectedSubCategory = i + 1;
       }
       tabBarView.add(
-        ProductGridViewComponent(
-          categoryId: widget.subCategories[i].id,
-          order: order,
-          orderBy: orderBy,
-        ),
+        isList
+            ? ProductListViewComponent(
+                categoryId: widget.parentId,
+                order: order,
+                orderBy: orderBy,
+              )
+            : ProductGridViewComponent(
+                categoryId: widget.subCategories[i].id,
+                order: order,
+                orderBy: orderBy,
+              ),
       );
     }
   }

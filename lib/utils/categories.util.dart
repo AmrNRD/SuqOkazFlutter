@@ -1,15 +1,15 @@
 import 'package:suqokaz/data/models/category_model.dart';
 
 class CategoriesUtil {
-  static List<CategoryModel> nestCategories(List<CategoryModel> categories) {
-    List<CategoryModel> nestedCategories = [];
+  static List<dynamic> nestCategories(var categories) {
+    var nestedCategories = [];
 
-    for (CategoryModel category in categories) {
+    for (var category in categories) {
       if (category.parent == 0) {
         nestedCategories.add(category);
         category.sorted = true;
       } else {
-        CategoryModel parentCategory = categories.firstWhere(
+        var parentCategory = categories.firstWhere(
             (element) => element.id == category.parent,
             orElse: () => null);
         if (parentCategory != null) {
@@ -22,6 +22,7 @@ class CategoriesUtil {
     nestedCategories.addAll(
       categories.where((element) => element.sorted == false).toList(),
     );
+
     return nestedCategories;
   }
 }

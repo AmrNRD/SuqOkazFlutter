@@ -24,17 +24,16 @@ class CustomAppBar extends PreferredSize {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: elevation ?? null,
-      title: Center(
-        child: text is String
-            ? Text(
-                text,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline1
-                    .copyWith(fontWeight: FontWeight.w500),
-              )
-            : text,
-      ),
+      centerTitle: true,
+      title: text is String
+          ? Text(
+              text,
+              style: Theme.of(context)
+                  .textTheme
+                  .headline1
+                  .copyWith(fontWeight: FontWeight.w500),
+            )
+          : text,
       leading: canPop
           ? BackButton()
           : IconButton(
@@ -52,22 +51,22 @@ class CustomAppBar extends PreferredSize {
               },
             ),
       actions: <Widget>[
-        IconButton(
-          icon: removeSearch
-              ? Container()
-              : SvgPicture.asset(
+        removeSearch
+            ? Container()
+            : IconButton(
+                icon: SvgPicture.asset(
                   "assets/icons/search_icon.svg",
                   height: 16,
                   width: 16,
                   fit: BoxFit.contain,
                 ),
-          onPressed: () {
-            Navigator.pushNamed(
-              context,
-              Constants.searchScreen,
-            );
-          },
-        ),
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    Constants.searchScreen,
+                  );
+                },
+              ),
       ],
     );
   }

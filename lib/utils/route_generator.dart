@@ -75,12 +75,7 @@ class RouteGenerator {
       case Constants.categoryPage:
         return MaterialPageRoute(
           settings: RouteSettings(name: Constants.categoryPage),
-          builder: (_) => BlocProvider<CategoryBloc>(
-            create: (BuildContext context) => CategoryBloc(
-              CategoriesRepository(),
-            ),
-            child: CategoryPage(),
-          ),
+          builder: (_) => CategoryPage(),
         );
       case Constants.searchScreen:
         return MaterialPageRoute(
@@ -92,11 +87,6 @@ class RouteGenerator {
           settings: RouteSettings(name: Constants.homePage),
           builder: (_) => MultiBlocProvider(
             providers: [
-              BlocProvider<CategoryBloc>(
-                create: (BuildContext context) => CategoryBloc(
-                  CategoriesRepository(),
-                ),
-              ),
               BlocProvider<ProductBloc>(
                 create: (BuildContext context) => ProductBloc(
                   ProductsRepository(),

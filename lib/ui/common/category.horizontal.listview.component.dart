@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-import 'package:suqokaz/bloc/cart/cart_bloc.dart';
-import 'package:suqokaz/data/models/category_model.dart';
 import 'package:suqokaz/data/sources/local/local.database.dart';
 import 'package:suqokaz/ui/common/category.bubble.component.dart';
 
 class CategoryHorizontalListViewComponent extends StatefulWidget {
   final int selectedCategory;
-  final List<CategoryModel> categories;
+  final List<dynamic> categories;
 
   const CategoryHorizontalListViewComponent({
     Key key,

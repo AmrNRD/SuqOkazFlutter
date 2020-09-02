@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:suqokaz/data/models/order_model.dart';
 import 'package:suqokaz/ui/common/custom_appbar.dart';
+import 'package:suqokaz/ui/common/genearic.state.component.dart';
 import 'package:suqokaz/ui/style/app.colors.dart';
 import 'package:suqokaz/ui/style/app.dimens.dart';
 import 'package:suqokaz/utils/app.localization.dart';
+import 'package:suqokaz/utils/constants.dart';
 import 'package:suqokaz/utils/core.util.dart';
 
 class MyOrdersPage extends StatefulWidget {
@@ -16,63 +18,73 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(
-            canPop: true,
-            text: AppLocalizations.of(context)
-                .translate("orders", defaultText: "Orders")),
-        body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              OrderCard(
-                  order: OrderModel(
-                      id: 1,
-                      number: "4444444444",
-                      total: 15000.22,
-                      createdAt: DateTime.now(),
-                      status: "completed"),
-                  onTap: () {}),
-              Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: AppDimens.marginEdgeCase24),
-                  child: Divider()),
-              OrderCard(
-                order: OrderModel(
-                    id: 2,
-                    number: "555555555555555555",
-                    total: 133444.22,
-                    createdAt: DateTime.now(),
-                    status: "pending"),
-                onTap: () {},
-              ),
-              Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: AppDimens.marginEdgeCase24),
-                  child: Divider()),
-              OrderCard(
-                order: OrderModel(
-                    id: 2,
-                    number: "3333",
-                    total: 133444.22,
-                    createdAt: DateTime.now(),
-                    status: "on-hold"),
-                onTap: () {},
-              ),
-              Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: AppDimens.marginEdgeCase24),
-                  child: Divider()),
-              OrderCard(
-                order: OrderModel(
-                    id: 2,
-                    number: "3333",
-                    total: 133444.22,
-                    createdAt: DateTime.now(),
-                    status: "failed"),
-                onTap: () {},
-              ),
-            ],
-          ),
-        ));
+      appBar: CustomAppBar(
+          canPop: true,
+          text: AppLocalizations.of(context)
+              .translate("orders", defaultText: "Orders")),
+      body: Center(
+        child: GenericState(
+          imagePath: Constants.imagePath["empty_box"],
+          titleKey: "You don't have any orders yet",
+          bodyKey: "Feature will be added in next relese.",
+          removeButton: true,
+        ),
+      ),
+    );
+    //       body: SafeArea(
+    //         child: Column(
+    //           children: <Widget>[
+    //             OrderCard(
+    //                 order: OrderModel(
+    //                     id: 1,
+    //                     number: "4444444444",
+    //                     total: 15000.22,
+    //                     createdAt: DateTime.now(),
+    //                     status: "completed"),
+    //                 onTap: () {}),
+    //             Padding(
+    //                 padding: const EdgeInsets.symmetric(
+    //                     horizontal: AppDimens.marginEdgeCase24),
+    //                 child: Divider()),
+    //             OrderCard(
+    //               order: OrderModel(
+    //                   id: 2,
+    //                   number: "555555555555555555",
+    //                   total: 133444.22,
+    //                   createdAt: DateTime.now(),
+    //                   status: "pending"),
+    //               onTap: () {},
+    //             ),
+    //             Padding(
+    //                 padding: const EdgeInsets.symmetric(
+    //                     horizontal: AppDimens.marginEdgeCase24),
+    //                 child: Divider()),
+    //             OrderCard(
+    //               order: OrderModel(
+    //                   id: 2,
+    //                   number: "3333",
+    //                   total: 133444.22,
+    //                   createdAt: DateTime.now(),
+    //                   status: "on-hold"),
+    //               onTap: () {},
+    //             ),
+    //             Padding(
+    //                 padding: const EdgeInsets.symmetric(
+    //                     horizontal: AppDimens.marginEdgeCase24),
+    //                 child: Divider()),
+    //             OrderCard(
+    //               order: OrderModel(
+    //                   id: 2,
+    //                   number: "3333",
+    //                   total: 133444.22,
+    //                   createdAt: DateTime.now(),
+    //                   status: "failed"),
+    //               onTap: () {},
+    //             ),
+    //           ],
+    //         ),
+    //       ));
+    // }
   }
 }
 

@@ -41,18 +41,6 @@ class SettingsButtonComponent extends StatelessWidget {
                 },
               ),
               buildSettingsButtton(
-                "Rate us",
-                "",
-                context,
-                () {},
-              ),
-              buildSettingsButtton(
-                "Share app with friends",
-                "",
-                context,
-                () {},
-              ),
-              buildSettingsButtton(
                 "Terms of use",
                 "",
                 context,

@@ -1,15 +1,18 @@
 import 'package:moor/moor.dart';
 import 'package:moor_flutter/moor_flutter.dart';
+import 'package:suqokaz/data/models/category_model.dart';
 
 part 'local.database.g.dart';
 
 class Category extends Table {
-  IntColumn get id => integer().autoIncrement()();
+  IntColumn get id => integer()();
   TextColumn get name => text()();
   TextColumn get image => text()();
   IntColumn get parent => integer()();
   IntColumn get menuOrder => integer()();
   IntColumn get totalProduct => integer()();
+  @override
+  Set<Column> get primaryKey => {id};
 }
 
 class Cart extends Table {
@@ -27,6 +30,11 @@ class CartItems extends Table {
 
   @override
   Set<Column> get primaryKey => {id};
+}
+
+class Wishlist extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get productId => integer().nullable()();
 }
 
 class Address extends Table {
@@ -57,7 +65,7 @@ class AppDataBase extends _$AppDataBase {
   // you should bump this number whenever you change or add a table definition. Migrations
   // are covered later in this readme.
   @override
-  int get schemaVersion => 10;
+  int get schemaVersion => 11;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
@@ -76,6 +84,9 @@ class AppDataBase extends _$AppDataBase {
   // Category CRUD
   Stream<List<CategoryData>> watchAllCategories() => select(category).watch();
   Future<List<CategoryData>> getAllCategories() => select(category).get();
+
+  List<CategoryModel> categoryModelList = [];
+
   Future<List<CategoryData>> getAllParentCategories() => (select(category)
         ..where(
           (c) => c.parent.equals(0),

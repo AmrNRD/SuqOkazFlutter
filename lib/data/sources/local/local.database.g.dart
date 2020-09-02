@@ -14,6 +14,8 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
   final int parent;
   final int menuOrder;
   final int totalProduct;
+  bool sorted = false;
+  List<dynamic> children = [];
   CategoryData(
       {@required this.id,
       @required this.name,
@@ -263,8 +265,11 @@ class $CategoryTable extends Category
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
   GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+    return GeneratedIntColumn(
+      'id',
+      $tableName,
+      false,
+    );
   }
 
   final VerificationMeta _nameMeta = const VerificationMeta('name');

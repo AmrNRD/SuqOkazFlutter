@@ -10,6 +10,7 @@ import 'package:suqokaz/ui/modules/cart/cart.page.dart';
 import 'package:suqokaz/ui/modules/home/home.tab.dart';
 import 'package:suqokaz/ui/modules/profile/profile.page.dart';
 import 'package:suqokaz/ui/modules/search/search.page.dart';
+import 'package:suqokaz/ui/modules/wishlist/wishlist.page.dart';
 
 import '../../../utils/app.localization.dart';
 import '../home/home.tab.dart';
@@ -31,7 +32,7 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
       featuredBloc: _featuredProducts,
       latestBloc: _latestProducts,
     ),
-    Container(),
+    WishlistPage(),
     CartPage(),
     ProfilePage(),
   ];
@@ -101,9 +102,7 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
               appBarTitle.length < 3 ? "" : appBarTitle[_currentSelectedTab],
         ),
       ),
-      body: Center(
-        child: body[_currentSelectedTab],
-      ),
+      body: body[_currentSelectedTab],
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(

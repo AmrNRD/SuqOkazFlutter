@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:suqokaz/data/models/category_model.dart';
 import 'package:suqokaz/data/repositories/categories.repository.dart';
+import 'package:suqokaz/data/sources/local/local.database.dart';
 import 'package:suqokaz/utils/categories.util.dart';
 
 part 'category_event.dart';
@@ -17,7 +18,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
   final CategoriesRepository _categoriesDataRepository;
 
-  List<CategoryModel> nestedCategories = [];
+  List<dynamic> nestedCategories = [];
   List<CategoryModel> categories = [];
 
   int selectedParentCategoryIndex = 0;
@@ -37,19 +38,17 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     try {
       if (event is GetCategoriesEvent) {
         yield CategoryLoadingState();
-        if (nestedCategories == null || nestedCategories.isEmpty) {
-          categories = [];
-          await loadCategories();
-          nestedCategories = CategoriesUtil.nestCategories(categories);
-          yield CategoryLoadedState(
-            nestedCategories: nestedCategories,
-            currentParentCatId: currentParentCategoryId,
-            subSelectedCategoryIndex: selectSubCategoryIndex,
-            selectedCategoryIndex: selectedParentCategoryIndex,
-            currentRootSubCategoryId: currentRootSubCategoryId,
-          );
+        if (nestedCategories.isEmpty) {
+          List<CategoryData> localCategories =
+              await _categoriesDataRepository.getAllCategories();
+          nestedCategories = CategoriesUtil.nestCategories(localCategories);
+          if (nestedCategories.isEmpty) {
+            categories = [];
+            await loadCategories();
+            _categoriesDataRepository.saveLocalCategories(categories);
+            nestedCategories = CategoriesUtil.nestCategories(categories);
+          }
         }
-        //return cached category
         yield CategoryLoadedState(
           nestedCategories: nestedCategories,
           currentParentCatId: currentParentCategoryId,

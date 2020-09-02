@@ -8,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:suqokaz/bloc/cart/cart_bloc.dart';
+import 'package:suqokaz/bloc/category/category_bloc.dart';
 import 'package:suqokaz/bloc/user/user_bloc.dart';
 import 'package:suqokaz/bloc/user/user_state.dart';
 import 'package:suqokaz/ui/modules/auth/auth.page.dart';
@@ -28,41 +29,54 @@ class _LandingSplashScreenState extends State<LandingSplashScreen> {
 
   @override
   void initState() {
-    startTime();
     super.initState();
     BlocProvider.of<CartBloc>(context).add(GetCartEvent());
+    BlocProvider.of<CategoryBloc>(context).add(GetCategoriesEvent());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<UserBloc, UserState>(
-      listener: (BuildContext context, UserState state) async {
-        if (state is UserLoaded) {
-        } else if (state is UserError) {}
+    return BlocListener<CategoryBloc, CategoryState>(
+      listener: (BuildContext context, CategoryState state) async {
+        if (state is CategoryLoadedState) {
+          await startTime();
+        } else if (state is CategoryErrorState) {
+          await startTime();
+        }
       },
-      child: Scaffold(
-        backgroundColor: AppColors.primaryColor5,
-        body: Stack(
-          children: <Widget>[
-            Positioned.fill(
+      child: BlocListener<UserBloc, UserState>(
+        listener: (BuildContext context, UserState state) async {
+          if (state is UserLoaded) {
+          } else if (state is UserError) {}
+        },
+        child: Scaffold(
+          backgroundColor: AppColors.primaryColor5,
+          body: Stack(
+            children: <Widget>[
+              Positioned.fill(
                 child: Shimmer.fromColors(
-              baseColor: AppColors.primaryColor1,
-              highlightColor: AppColors.primaryColor5,
-              child: SvgPicture.asset(
-                "assets/images/splash_background_pattern.svg",
-                alignment: Alignment.centerRight,
+                  baseColor: AppColors.primaryColor1,
+                  highlightColor: AppColors.primaryColor5,
+                  child: SvgPicture.asset(
+                    "assets/images/splash_background_pattern.svg",
+                    alignment: Alignment.centerRight,
+                  ),
+                ),
               ),
-            )),
-            Align(
-              alignment: Alignment.center,
-              child: Hero(
+              Align(
+                alignment: Alignment.center,
+                child: Hero(
                   tag: "Logo",
-                  child: SvgPicture.asset("assets/images/colored_logo.svg",
-                      color: Colors.white,
-                      height: screenAwareSize(32, context),
-                      width: screenAwareWidth(108.12, context))),
-            ),
-          ],
+                  child: SvgPicture.asset(
+                    "assets/images/colored_logo.svg",
+                    color: Colors.white,
+                    height: screenAwareSize(32, context),
+                    width: screenAwareWidth(108.12, context),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

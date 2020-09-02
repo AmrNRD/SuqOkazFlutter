@@ -306,18 +306,32 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             context: context,
                             scaffoldKey: CheckoutPage.scaffoldKey,
                             backgroundColor: Colors.amber,
-                            message: AppLocalizations.of(context)
-                                .translate("please_select_payment_method"),
+                            message: AppLocalizations.of(context).translate(
+                                "TODO",
+                                defaultText:
+                                    "Please Selected valid shpping method"),
                           );
                         }
-                      : () => Navigator.pushNamed(
-                            context,
-                            Constants.paymentPage,
-                            arguments: [
-                              _selectedAddressModel,
-                              _selectedShippingMethod
-                            ],
-                          ),
+                      : _selectedAddressModel == null
+                          ? () {
+                              showScaffoldSnackBar(
+                                context: context,
+                                scaffoldKey: CheckoutPage.scaffoldKey,
+                                backgroundColor: Colors.amber,
+                                message: AppLocalizations.of(context).translate(
+                                    "TODO",
+                                    defaultText:
+                                        "Plesae Select or create a valid shipping address"),
+                              );
+                            }
+                          : () => Navigator.pushNamed(
+                                context,
+                                Constants.paymentPage,
+                                arguments: [
+                                  _selectedAddressModel,
+                                  _selectedShippingMethod
+                                ],
+                              ),
                 ),
               ],
             ),
