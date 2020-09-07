@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:incrementally_loading_listview/incrementally_loading_listview.dart';
 import 'package:suqokaz/bloc/address/address_bloc.dart';
 import 'package:suqokaz/bloc/cart/cart_bloc.dart';
 import 'package:suqokaz/bloc/shipping/shipping_bloc.dart';

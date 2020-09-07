@@ -1,11 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:suqokaz/ui/common/custom_raised_button.dart';
 import 'package:suqokaz/ui/common/form.input.dart';
+import 'package:suqokaz/ui/style/theme.dart';
 
 import '../../../../utils/app.localization.dart';
 import '../../../../utils/constants.dart';
@@ -252,5 +255,38 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void initiateGoogleLogin() {}
 
-  void initiateFacebookLogin() {}
+  void initiateFacebookLogin() async {
+    try {
+      var facebookLogin = FacebookLogin();
+      var facebookLoginResult = await facebookLogin.logIn(['email']);
+      switch (facebookLoginResult.status) {
+        case FacebookLoginStatus.error:
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text("Error has has occurred: "+facebookLoginResult.errorMessage, style: Theme.of(context).textTheme.headline2.copyWith(color: Colors.white)),
+            backgroundColor: AppColors.accentColor1,
+          ));
+          break;
+        case FacebookLoginStatus.cancelledByUser:
+          debugPrint("CancelledByUser");
+          break;
+        case FacebookLoginStatus.loggedIn:
+          final res = await http.get('https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,picture,email&access_token=${facebookLoginResult.accessToken.token}');
+          final profile = json.decode(res.body);
+          final String providerType = "Facebook";
+          final String userID = facebookLoginResult.accessToken.userId;
+          final String token = facebookLoginResult.accessToken.token;
+          final String name = profile['first_name']??''+profile['last_name']??'';
+          final String email = profile['email']??'';
+          final String profileUrl = profile['picture']['data']['url'];
+
+//          BlocProvider.of<UserBloc>(context)..add(LoginUserWithProvider(providerType, userID, email, name, token, firebaseToken, profileUrl, platform));
+          break;
+      }
+    }catch(error){
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text("Error has has occurred: "+error.toString(), style: Theme.of(context).textTheme.headline2.copyWith(color: Colors.white)),
+        backgroundColor: AppColors.accentColor1,
+      ));
+    }
+  }
 }
