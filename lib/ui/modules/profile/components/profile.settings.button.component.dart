@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:suqokaz/utils/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../app.dart';
 import '../../../../utils/app.localization.dart';
@@ -41,10 +42,10 @@ class SettingsButtonComponent extends StatelessWidget {
                 },
               ),
               buildSettingsButtton(
-                "Terms of use",
+                AppLocalizations.of(context).translate("about_us"),
                 "",
                 context,
-                () {},
+                launchToAboutURL,
               ),
               buildSettingsButtton(
                 "Log out",
@@ -62,6 +63,15 @@ class SettingsButtonComponent extends StatelessWidget {
     );
   }
 
+  launchToAboutURL() async {
+    const url = 'https://suqokaz.com/en/about/';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   Widget buildSettingsButtton(
       String lableKey, String hintKey, BuildContext context, Function onPress,
       {bool hideDivider = false}) {
@@ -76,7 +86,7 @@ class SettingsButtonComponent extends StatelessWidget {
               children: <Widget>[
                 Text(
                   AppLocalizations.of(context).translate(
-                    "todo",
+                    lableKey,
                     defaultText: lableKey,
                   ),
                   style: Theme.of(context).textTheme.button,

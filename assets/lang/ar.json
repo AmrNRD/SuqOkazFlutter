@@ -1,6 +1,6 @@
 {
-    "app_name": "رالف - المخبز الالماني",
-    "copyright": "رالف ٢٠٢٠ ©",
+    "app_name": "سوق عكاظ",
+    "copyright": "© سوق عكاظ 2020",
     "home": "الرئيسية",
     "done": "تم",
     "name": "الأسم",
@@ -150,5 +150,11 @@
     "please_select_shipping_method": "من فضلك قم بإختيار طريقة الشحن",
     "please_select_payment_method": "من فضلك قم بإختيار طريقة الدفع",
     "old_password": "كلمة السر القديمة",
-    "confirm_password": "تأكيد كلمة السر"
+    "confirm_password": "تأكيد كلمة السر",
+    "website": "website",
+    "about_text1": "Your privacy is important to us. It is Brainstorming's policy to respect your privacy regarding any information we may collect from you across our ",
+    "about_text2": ", and other sites we own and operate.",
+    "about_text3": "We only ask for personal information when we truly need it to provide a service to you. We collect it by fair and lawful means, with your knowledge and consent. We also let you know why we’re collecting it and how it will be used.",
+    "about_text4": "We only retain collected information for as long as necessary to provide you with your requested service.",
+    "about_us": "عننا"
 }

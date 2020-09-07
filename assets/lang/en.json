@@ -1,6 +1,6 @@
 {
-    "app_name": "Ralph - German Bakery",
-    "copyright": "© Ralph’s 2020",
+    "app_name": "SUQ OKAZ",
+    "copyright": "© SUQ OKAZ’s 2020",
     "home": "Home",
     "done": "Done",
     "skip": "Skip",
@@ -156,5 +156,12 @@
     "discount_title": "Enter discount coupon",
     "please_select_payment_method": "Please select payment method",
     "old_password": "Old Password",
-    "confirm_password": "Confirm Password"
+    "confirm_password": "Confirm Password",
+    "website": "website",
+    "about_text1": "Your privacy is important to us. It is Brainstorming's policy to respect your privacy regarding any information we may collect from you across our ",
+    "about_text2": ", and other sites we own and operate.",
+    "about_text3": "We only ask for personal information when we truly need it to provide a service to you. We collect it by fair and lawful means, with your knowledge and consent. We also let you know why we’re collecting it and how it will be used.",
+    "about_text4": "We only retain collected information for as long as necessary to provide you with your requested service.",
+    "about_us": "About us"
+
 }

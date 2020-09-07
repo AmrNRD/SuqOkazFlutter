@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:suqokaz/utils/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../utils/app.localization.dart';
 import '../../../style/app.dimens.dart';
@@ -30,9 +31,9 @@ class HorizontalButtonsComponent extends StatelessWidget {
           ),
           buildButton(
             "assets/icons/help_icon.svg",
-            "Help",
+            "terms",
             context,
-            () {},
+            launchToTermsURL,
           ),
           buildButton(
             "assets/icons/info_icon.svg",
@@ -83,5 +84,14 @@ class HorizontalButtonsComponent extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  launchToTermsURL() async {
+    const url = 'https://suqokaz.com/en/terms-and-conditions/';
+    if (await canLaunch(url)) {
+    await launch(url);
+    } else {
+    throw 'Could not launch $url';
+    }
   }
 }
