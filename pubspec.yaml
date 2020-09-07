@@ -25,6 +25,8 @@ dependencies:
   equatable: ^1.2.0
   provider:
 
+  flutter_facebook_login: ^3.0.0
+  
   # Localizations
   intl: ^0.16.0
 
