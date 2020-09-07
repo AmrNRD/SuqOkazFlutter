@@ -154,5 +154,7 @@
     "location": "Location",
     "delivery_details": "Delivery Details",
     "discount_title": "Enter discount coupon",
-    "please_select_payment_method": "Please select payment method"
+    "please_select_payment_method": "Please select payment method",
+    "old_password": "Old Password",
+    "confirm_password": "Confirm Password"
 }

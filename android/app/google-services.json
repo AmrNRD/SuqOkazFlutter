@@ -1,0 +1,71 @@
+{
+  "project_info": {
+    "project_number": "547166427417",
+    "firebase_url": "https://suq-okaz.firebaseio.com",
+    "project_id": "suq-okaz",
+    "storage_bucket": "suq-okaz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:547166427417:android:a7d603b36869c36a544d88",
+        "android_client_info": {
+          "package_name": "com.suqokaz.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "547166427417-ihh3qb74jepi8odqaibou588rkhpc37a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.suqokaz.app",
+            "certificate_hash": "aee9d3ac504cdc84578f20a1a3d5ceaac1a05930"
+          }
+        },
+        {
+          "client_id": "547166427417-13vvh3j97115kirqv6ke0j19ng7dt1kh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.suqokaz.app",
+            "certificate_hash": "d1114c10c94715b0791df2ae2d91367d5cf4a827"
+          }
+        },
+        {
+          "client_id": "547166427417-l1l9lecadfs79t0e3cin46rk1si9d500.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.suqokaz.app",
+            "certificate_hash": "26887b1e9261186d809b0117a2b8e2ce52f3af5b"
+          }
+        },
+        {
+          "client_id": "547166427417-svfcsi7av9emv08voet4nlqs17aj2va6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBL_rT-8YS54DFK8sXqx1OEatcR5gCCVss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "547166427417-p8nk44ljma1k5flottbac6bhioruhjaq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "547166427417-eehjpntqacu76m07fbjjcbvf39gmn2pt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.suqokaz.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

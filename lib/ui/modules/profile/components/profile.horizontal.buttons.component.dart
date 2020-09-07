@@ -38,7 +38,7 @@ class HorizontalButtonsComponent extends StatelessWidget {
             "assets/icons/info_icon.svg",
             "My info",
             context,
-            () {},
+                ()=>Navigator.pushNamed(context, Constants.editProfilePage),
           ),
         ],
       ),

@@ -12,6 +12,7 @@ class Constants {
   static const mainPage = "/";
   static const authPage = "/authPage";
   static const homePage = "/mainPage";
+  static const editProfilePage = "/editProfilePage";
   static const myOrderPage = "/myOrderPage";
   static const checkoutPage = "/checkoutPage";
   static const paymentPage = "/paymentPage";

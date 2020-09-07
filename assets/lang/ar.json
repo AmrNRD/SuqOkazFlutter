@@ -148,5 +148,7 @@
     "delivery_details": "طريقة الشحن",
     "payment_small": "طريقة الدفع",
     "please_select_shipping_method": "من فضلك قم بإختيار طريقة الشحن",
-    "please_select_payment_method": "من فضلك قم بإختيار طريقة الدفع"
+    "please_select_payment_method": "من فضلك قم بإختيار طريقة الدفع",
+    "old_password": "كلمة السر القديمة",
+    "confirm_password": "تأكيد كلمة السر"
 }

@@ -14,6 +14,7 @@ import 'package:suqokaz/ui/modules/address/edit_address.page.dart';
 import 'package:suqokaz/ui/modules/auth/auth.page.dart';
 import 'package:suqokaz/ui/modules/category/category.page.dart';
 import 'package:suqokaz/ui/modules/checkout/checkout.page.dart';
+import 'package:suqokaz/ui/modules/edit_profile/edit_profile.dart';
 import 'package:suqokaz/ui/modules/navigation/home.navigation.dart';
 import 'package:suqokaz/ui/modules/orders/orders.page.dart';
 import 'package:suqokaz/ui/modules/payment/payment.page.dart';
@@ -129,6 +130,11 @@ class RouteGenerator {
           builder: (_) => EditAddressPage(
             addressModel: args,
           ),
+        );
+      case Constants.editProfilePage:
+        return MaterialPageRoute(
+          settings: RouteSettings(name: Constants.editProfilePage),
+          builder: (_) => EditProfile(),
         );
       case Constants.addressesPage:
         return MaterialPageRoute(

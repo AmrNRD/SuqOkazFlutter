@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:apple_sign_in/apple_sign_in.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -23,6 +25,7 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen(
       {Key key, @required this.goToSignUp, @required this.goToForgotPassword})
       : super(key: key);
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -251,9 +254,86 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.pushReplacementNamed(context, Constants.homePage);
   }
 
-  void initiateAppleLogin() {}
+  Future<void> initiateAppleLogin() async {
+    try {
+      if (await AppleSignIn.isAvailable()) {
+        final AuthorizationResult result = await AppleSignIn.performRequests([
+          AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+        ]);
+        switch (result.status) {
+          case AuthorizationStatus.authorized:
+            String name;
+            String email;
+            final String providerType = "Apple";
+            final String userID = result.credential.user;
+            final String token = result.credential.user;
 
-  void initiateGoogleLogin() {}
+            if (result.credential.fullName.givenName != null &&
+                result.credential.fullName.familyName != null)
+              name = result.credential.fullName.givenName + ' ' + result.credential.fullName.familyName;
+            else if (result.credential.fullName.givenName != null)
+              name = result.credential.fullName.givenName;
+
+            if (result.credential.email != null)
+              email = result.credential.email.toLowerCase();
+
+            final String profileUrl = "images/profile.png";
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text(name, style: Theme.of(context).textTheme.headline2.copyWith(color: Colors.white)),
+              backgroundColor: AppColors.accentColor1,
+            ));
+//    BlocProvider.of<UserBloc>(context)..add(LoginUserWithProvider(providerType, userID, email, name, token, firebaseToken, profileUrl, platform));
+            break;
+          case AuthorizationStatus.error:
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text("Apple Error " + result.error.localizedDescription,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline2
+                      .copyWith(color: Colors.white)),
+              backgroundColor: AppColors.accentColor1,
+            ));
+            debugPrint("Sign in failed: ${result.error.localizedDescription}");
+            break;
+          case AuthorizationStatus.cancelled:
+            debugPrint('User cancelled');
+            break;
+        }
+      }
+    } catch (error) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text("Error has has occurred: " + error.toString(),
+            style: Theme.of(context)
+                .textTheme
+                .headline2
+                .copyWith(color: Colors.white)),
+        backgroundColor: AppColors.accentColor1,
+      ));
+    }
+  }
+
+  Future<void> initiateGoogleLogin() async {
+    GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email', 'profile']);
+    try {
+      _googleSignIn.onCurrentUserChanged
+          .listen((GoogleSignInAccount account) async {
+        final String providerType = "Google";
+        final String userID = account.id;
+        final String token = (await account.authentication).accessToken;
+        final String name = account.displayName;
+        final String email = account.email;
+        final String profileUrl = account.photoUrl;
+        print(email);
+        print(profileUrl);
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text(profileUrl, style: Theme.of(context).textTheme.headline2.copyWith(color: Colors.white)),
+          backgroundColor: AppColors.accentColor1,
+        ));
+//        BlocProvider.of<UserBloc>(context)..add(LoginUserWithProvider(providerType, userID, email, name, token, firebaseToken, profileUrl, platform));
+      });
+      await _googleSignIn.signIn();
+    } catch (error) {}
+  }
 
   void initiateFacebookLogin() async {
     try {
@@ -262,7 +342,12 @@ class _LoginScreenState extends State<LoginScreen> {
       switch (facebookLoginResult.status) {
         case FacebookLoginStatus.error:
           Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text("Error has has occurred: "+facebookLoginResult.errorMessage, style: Theme.of(context).textTheme.headline2.copyWith(color: Colors.white)),
+            content: Text(
+                "Error has has occurred: " + facebookLoginResult.errorMessage,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline2
+                    .copyWith(color: Colors.white)),
             backgroundColor: AppColors.accentColor1,
           ));
           break;
@@ -270,21 +355,27 @@ class _LoginScreenState extends State<LoginScreen> {
           debugPrint("CancelledByUser");
           break;
         case FacebookLoginStatus.loggedIn:
-          final res = await http.get('https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,picture,email&access_token=${facebookLoginResult.accessToken.token}');
+          final res = await http.get(
+              'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,picture,email&access_token=${facebookLoginResult.accessToken.token}');
           final profile = json.decode(res.body);
           final String providerType = "Facebook";
           final String userID = facebookLoginResult.accessToken.userId;
           final String token = facebookLoginResult.accessToken.token;
-          final String name = profile['first_name']??''+profile['last_name']??'';
-          final String email = profile['email']??'';
+          final String name =
+              profile['first_name'] ?? '' + profile['last_name'] ?? '';
+          final String email = profile['email'] ?? '';
           final String profileUrl = profile['picture']['data']['url'];
 
 //          BlocProvider.of<UserBloc>(context)..add(LoginUserWithProvider(providerType, userID, email, name, token, firebaseToken, profileUrl, platform));
           break;
       }
-    }catch(error){
+    } catch (error) {
       Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text("Error has has occurred: "+error.toString(), style: Theme.of(context).textTheme.headline2.copyWith(color: Colors.white)),
+        content: Text("Error has has occurred: " + error.toString(),
+            style: Theme.of(context)
+                .textTheme
+                .headline2
+                .copyWith(color: Colors.white)),
         backgroundColor: AppColors.accentColor1,
       ));
     }
