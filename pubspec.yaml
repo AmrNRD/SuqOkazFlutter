@@ -18,7 +18,7 @@ dependencies:
   # Media
   extended_image: 0.9.0
   cached_network_image: ^2.1.0+1
-  flutter_svg: ^0.17.4
+  flutter_svg: ^0.18.1
 
   # Bloc
   flutter_bloc: ^6.0.0
