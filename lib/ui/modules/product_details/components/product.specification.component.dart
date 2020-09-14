@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:suqokaz/data/models/product_model.dart';
 
 class ProductSpecificationComponent extends StatelessWidget {
-  final List<ProductAttribute> productAttributes;
+  final List<Attribute> productAttributes;
 
   const ProductSpecificationComponent({
     Key key,
@@ -20,9 +20,7 @@ class ProductSpecificationComponent extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-          color: index % 2 == 0
-              ? Color(0xFFC4C4C4).withOpacity(0.1)
-              : Colors.white,
+          color: index % 2 == 0 ? Color(0xFFC4C4C4).withOpacity(0.1) : Colors.white,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -34,7 +32,7 @@ class ProductSpecificationComponent extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  productAttributes[index].options.toString(),
+                  productAttributes[index].option.toString(),
                   maxLines: 3,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,

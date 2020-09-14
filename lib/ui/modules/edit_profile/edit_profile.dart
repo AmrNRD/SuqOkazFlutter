@@ -33,9 +33,6 @@ class _EditProfileState extends State<EditProfile> {
     'email': null,
   };
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,9 +46,8 @@ class _EditProfileState extends State<EditProfile> {
         canPop: true,
       ),
       body: BlocListener<UserBloc, UserState>(
-        listener: (context, state) {
-          if (state is UserLoaded) {
-
+          listener: (context, state) {
+            if (state is UserLoadedState) {
 //            _scaffoldKey.currentState.showSnackBar(
 //              SnackBar(
 //                duration: Duration(seconds: 1),
@@ -65,100 +61,111 @@ class _EditProfileState extends State<EditProfile> {
 //                ),
 //              ),
 //            );
-
-          Navigator.of(context).pop();
-          }
-        },
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: AppDimens.marginEdgeCase24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(height: AppDimens.marginDefault16),
-                  Center(child: ProfileImage(url: "https://scontent.fcai21-2.fna.fbcdn.net/v/t1.0-9/31955047_1994386694223060_526103944385003520_o.jpg?_nc_cat=104&_nc_sid=09cbfe&_nc_ohc=D-1rMibe_BUAX_3kObW&_nc_ht=scontent.fcai21-2.fna&oh=ec695c0b8e352cbd4b82191ad95da76b&oe=5F7AD683",)),
-                  SizedBox(height: AppDimens.marginEdgeCase24),
-                  Text(AppLocalizations.of(context).translate("my_personal_information",defaultText: "My Personal Information"),style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 14),textAlign: TextAlign.start,),
-                  SizedBox(height: AppDimens.marginDefault16),
-                  //todo:replace with user real data
-                  FormInput(
+              Navigator.of(context).pop();
+            }
+          },
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: AppDimens.marginEdgeCase24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(height: AppDimens.marginDefault16),
+                    Center(
+                        child: ProfileImage(
+                      url:
+                          "https://scontent.fcai21-2.fna.fbcdn.net/v/t1.0-9/31955047_1994386694223060_526103944385003520_o.jpg?_nc_cat=104&_nc_sid=09cbfe&_nc_ohc=D-1rMibe_BUAX_3kObW&_nc_ht=scontent.fcai21-2.fna&oh=ec695c0b8e352cbd4b82191ad95da76b&oe=5F7AD683",
+                    )),
+                    SizedBox(height: AppDimens.marginEdgeCase24),
+                    Text(
+                      AppLocalizations.of(context)
+                          .translate("my_personal_information", defaultText: "My Personal Information"),
+                      style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 14),
+                      textAlign: TextAlign.start,
+                    ),
+                    SizedBox(height: AppDimens.marginDefault16),
+                    //todo:replace with user real data
+                    FormInput(
                       translationKey: "name",
                       focusNode: nameFocusNode,
                       nextFocusNode: phoneFocusNode,
                       onSave: (value) => _profileData['name'] = value,
                       isRequired: true,
                       defaultValue: "Amr Mohamed",
-                  ),
-                  SizedBox(height: AppDimens.marginDefault16),
-                  FormInput(
-                    translationKey: "phone",
-                    focusNode: phoneFocusNode,
-                    nextFocusNode: emailFocusNode,
-                    onSave: (value) => _profileData['phone'] = value,
-                    isRequired: true,
-                    textInputType: TextInputType.number,
-                    defaultValue: "01229307154",
-                  ),
-                  SizedBox(height: AppDimens.marginDefault16),
-                  FormInput(
-                    translationKey: "email",
-                    focusNode: emailFocusNode,
-                    onSave: (value) => _profileData['email'] = value,
-                    isRequired: true,
-                    defaultValue: "amr@amr.com",
-                  ),
-                  SizedBox(height: AppDimens.marginDefault16),
-                  RaisedButton(
-                    onPressed: popUpPasswordModel,
-                    child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.symmetric(vertical: AppDimens.marginDefault14),
-                        child: Text(AppLocalizations.of(context).translate("change_password",defaultText: "Change Password",),style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 14))),
-                  ),
-                  SizedBox(height: AppDimens.marginEdgeCase32),
-                  CustomCancelSaveComponent(
-                    isLoading: isLoading,
-                    onCancelPress: ()=>Navigator.pop(context),
-                    onSavePress: onSave,
-                  ),
-                  SizedBox(height: AppDimens.marginEdgeCase32),
-                ],
+                    ),
+                    SizedBox(height: AppDimens.marginDefault16),
+                    FormInput(
+                      translationKey: "phone",
+                      focusNode: phoneFocusNode,
+                      nextFocusNode: emailFocusNode,
+                      onSave: (value) => _profileData['phone'] = value,
+                      isRequired: true,
+                      textInputType: TextInputType.number,
+                      defaultValue: "01229307154",
+                    ),
+                    SizedBox(height: AppDimens.marginDefault16),
+                    FormInput(
+                      translationKey: "email",
+                      focusNode: emailFocusNode,
+                      onSave: (value) => _profileData['email'] = value,
+                      isRequired: true,
+                      defaultValue: "amr@amr.com",
+                    ),
+                    SizedBox(height: AppDimens.marginDefault16),
+                    RaisedButton(
+                      onPressed: popUpPasswordModel,
+                      child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.symmetric(vertical: AppDimens.marginDefault14),
+                          child: Text(
+                              AppLocalizations.of(context).translate(
+                                "change_password",
+                                defaultText: "Change Password",
+                              ),
+                              style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 14))),
+                    ),
+                    SizedBox(height: AppDimens.marginEdgeCase32),
+                    CustomCancelSaveComponent(
+                      isLoading: isLoading,
+                      onCancelPress: () => Navigator.pop(context),
+                      onSavePress: onSave,
+                    ),
+                    SizedBox(height: AppDimens.marginEdgeCase32),
+                  ],
+                ),
               ),
             ),
-          ),
-        )
-      ),
+          )),
     );
   }
-  void showChangePasswordModel(){
 
-  }
-
+  void showChangePasswordModel() {}
 
   //todo:implement update request
   void onSave() {}
 
   void popUpPasswordModel() {
-    showDialog(context: context,
-        builder: (context){
+    showDialog(
+        context: context,
+        builder: (context) {
           return AlertDialog(
-            content: StatefulBuilder(
-                builder: (context,setState){
-                  return ChangePasswordModel();
-                }
-            ),
+            content: StatefulBuilder(builder: (context, setState) {
+              return ChangePasswordModel();
+            }),
           );
-        }
-    );
+        });
   }
 }
 
 class ProfileImage extends StatelessWidget {
   const ProfileImage({
-    Key key,@required this.url, this.size=88, this.onEdit,
+    Key key,
+    @required this.url,
+    this.size = 88,
+    this.onEdit,
   }) : super(key: key);
 
   final String url;
@@ -183,8 +190,7 @@ class ProfileImage extends StatelessWidget {
           padding: EdgeInsets.all(5),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(
-                color: Colors.white.withOpacity(0.8), width: 2),
+            border: Border.all(color: Colors.white.withOpacity(0.8), width: 2),
             color: Colors.transparent,
           ),
         ),
@@ -193,8 +199,8 @@ class ProfileImage extends StatelessWidget {
           top: 0,
           child: Container(
             padding: EdgeInsets.all(AppDimens.marginDefault8),
-            decoration:  BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
               color: AppColors.customGreyLevels[100],
             ),
             child: Icon(

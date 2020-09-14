@@ -40,3 +40,12 @@ class GetProductsEvent extends ProductEvent {
   @override
   List<Object> get props => [];
 }
+
+class GetProductVariationsEvent extends ProductEvent {
+  final ProductModel productModel;
+
+  GetProductVariationsEvent(this.productModel);
+  @override
+  // TODO: implement props
+  List<Object> get props => throw UnimplementedError();
+}

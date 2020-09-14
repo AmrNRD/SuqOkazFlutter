@@ -13,7 +13,11 @@ class ProductDescriptionComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: EdgeInsets.only(
+        left: 10,
+        right: 10,
+        bottom: 50,
+      ),
       child: description == null || description.isEmpty
           ? Center(
               child: Text(
@@ -21,10 +25,7 @@ class ProductDescriptionComponent extends StatelessWidget {
                   "no_description",
                   defaultText: "No description provided for this product.",
                 ),
-                style: Theme.of(context)
-                    .textTheme
-                    .headline4
-                    .copyWith(color: AppColors.customGreyLevels[600]),
+                style: Theme.of(context).textTheme.headline4.copyWith(color: AppColors.customGreyLevels[600]),
               ),
             )
           : Text(

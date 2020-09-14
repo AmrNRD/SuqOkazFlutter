@@ -17,11 +17,17 @@ class ProductsLoadedState extends ProductState {
   final bool isLoadMoreMode;
   final bool lastPageReached;
 
-  ProductsLoadedState({this.products,this.isLoadMoreMode,this.lastPageReached});
+  ProductsLoadedState({this.products, this.isLoadMoreMode, this.lastPageReached});
 }
 
 class ProductsErrorState extends ProductState {
   final String message;
 
   ProductsErrorState({this.message});
+}
+
+class ProductVariationsLoadedState extends ProductState {
+  final ProductModel productModel;
+
+  ProductVariationsLoadedState({this.productModel});
 }

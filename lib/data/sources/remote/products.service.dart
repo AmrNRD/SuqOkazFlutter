@@ -4,6 +4,13 @@ class ProductsService {
   // Create ApiCaller instance
   APICaller apiCaller = new APICaller();
 
+  Future<dynamic> getProductVariation(int id) async {
+    String url = "/products/$id/variations";
+    final String oAuthUrl = apiCaller.getOAuthURL("GET", url, true);
+    apiCaller.setUrl(oAuthUrl);
+    return await apiCaller.getData(headers: {});
+  }
+
   Future<dynamic> getReviews(String productId) async {
     String url = "/products/reviews?product=$productId";
     final String oAuthUrl = apiCaller.getOAuthURL("GET", url, true);
@@ -57,20 +64,16 @@ class ProductsService {
       print(url);
     } else {
       // Create URL
-      url =
-          "/products?status=publish&lang=$lang&per_page=$perPage&page=$pageIndex";
+      url = "/products?status=publish&lang=$lang&per_page=$perPage&page=$pageIndex";
 
       // Concatenate request extras
       if (categoryID != null) url += "&category=$categoryID";
       if (tagId != null) url += "&tag=$tagId";
-      if (minPrice != null)
-        url += "&min_price=${(minPrice as double).toInt().toString()}";
-      if (maxPrice != null && maxPrice > 0)
-        url += "&max_price=${(maxPrice as double).toInt().toString()}";
+      if (minPrice != null) url += "&min_price=${(minPrice as double).toInt().toString()}";
+      if (maxPrice != null && maxPrice > 0) url += "&max_price=${(maxPrice as double).toInt().toString()}";
       if (order != null) url += "&order=$order";
       if (orderBy != null) url += "&order_by=$orderBy";
-      if (attribute != null && attributeTerm != null)
-        url += "&attribute=$attribute&attribute_term=$attributeTerm";
+      if (attribute != null && attributeTerm != null) url += "&attribute=$attribute&attribute_term=$attributeTerm";
       if (featured != null) url += "&featured=$featured";
       if (onSale != null) url += "&on_sale=$onSale";
       if (search != null) url += "&search=$search";

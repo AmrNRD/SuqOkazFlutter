@@ -5,8 +5,7 @@ import 'package:suqokaz/utils/app.localization.dart';
 class ProductStatusBarComponent extends StatelessWidget {
   final bool inStock;
 
-  const ProductStatusBarComponent({Key key, this.inStock = false})
-      : super(key: key);
+  const ProductStatusBarComponent({Key key, this.inStock = false}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -35,10 +34,13 @@ class ProductStatusBarComponent extends StatelessWidget {
                   )
                 : Row(
                     children: <Widget>[
-                      SvgPicture.asset(
-                        "assets/icons/right_icon.svg",
-                        width: 16,
-                        height: 16,
+                      Icon(
+                        Icons.do_not_disturb_on,
+                        color: Colors.red,
+                        size: 18,
+                      ),
+                      SizedBox(
+                        width: 8,
                       ),
                       Text(
                         AppLocalizations.of(context).translate(

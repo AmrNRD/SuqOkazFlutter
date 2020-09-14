@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:suqokaz/utils/core.util.dart';
 
-import '../../utils/core.util.dart';
 import '../style/app.colors.dart';
 
 class CustomRaisedButton extends StatelessWidget {
@@ -28,15 +28,15 @@ class CustomRaisedButton extends StatelessWidget {
     return RaisedButton(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5.0),
-          side: customBorderColor != null
-              ? BorderSide(color: customBorderColor)
-              : BorderSide.none),
+          side: customBorderColor != null ? BorderSide(color: customBorderColor) : BorderSide.none),
       padding: EdgeInsets.symmetric(vertical: 14),
       onPressed: isLoading ? () {} : onPress,
       highlightElevation: 0,
       elevation: 0,
       child: isLoading
           ? Container(
+              height: screenAwareSize(18, context),
+              width: screenAwareWidth(18, context),
               child: CircularProgressIndicator(
                 backgroundColor: Colors.white,
               ),
@@ -45,11 +45,7 @@ class CustomRaisedButton extends StatelessWidget {
               child: Text(
                 label,
                 textAlign: TextAlign.center,
-                style: style ??
-                    Theme.of(context)
-                        .textTheme
-                        .button
-                        .copyWith(color: textColor ?? Colors.white),
+                style: style ?? Theme.of(context).textTheme.button.copyWith(color: textColor ?? Colors.white),
               ),
             ),
       color: buttonColor ?? AppColors.primaryColor5,

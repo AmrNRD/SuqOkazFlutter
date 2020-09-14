@@ -11,20 +11,20 @@ class ProductConsultingDetailsComponent extends StatefulWidget {
   final ProductModel productModel;
   final GlobalKey<ScaffoldState> scaffoldKey;
   final ScrollController scrollController;
+  final int selectedVariation;
 
   const ProductConsultingDetailsComponent({
     Key key,
     @required this.productModel,
     @required this.scaffoldKey,
     @required this.scrollController,
+    @required this.selectedVariation,
   }) : super(key: key);
   @override
-  _ProductConsultingDetailsComponentState createState() =>
-      _ProductConsultingDetailsComponentState();
+  _ProductConsultingDetailsComponentState createState() => _ProductConsultingDetailsComponentState();
 }
 
-class _ProductConsultingDetailsComponentState
-    extends State<ProductConsultingDetailsComponent> {
+class _ProductConsultingDetailsComponentState extends State<ProductConsultingDetailsComponent> {
   int _selectedIndex = 0;
 
   List<Widget> body;
@@ -32,23 +32,27 @@ class _ProductConsultingDetailsComponentState
   @override
   void initState() {
     super.initState();
+  }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     body = [
       ProductDescriptionComponent(
         description: widget.productModel.description,
       ),
       ProductSpecificationComponent(
-        productAttributes: widget.productModel.infors,
+        productAttributes: widget.productModel.variations[widget.selectedVariation].attributes,
       ),
       ProductDetailsReviewComponent(
         scaffoldKey: widget.scaffoldKey,
         productId: widget.productModel.id,
       ),
     ];
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         SizedBox(
@@ -57,9 +61,7 @@ class _ProductConsultingDetailsComponentState
         Row(
           children: <Widget>[
             ProductDetailsTab(
-              tabName: AppLocalizations.of(context)
-                  .translate("todo", defaultText: "Description")
-                  .toUpperCase(),
+              tabName: AppLocalizations.of(context).translate("todo", defaultText: "Description").toUpperCase(),
               isSelected: _selectedIndex == 0,
               onTap: _selectedIndex == 0
                   ? null
@@ -71,9 +73,7 @@ class _ProductConsultingDetailsComponentState
                     },
             ),
             ProductDetailsTab(
-              tabName: AppLocalizations.of(context)
-                  .translate("todo", defaultText: "Specifications")
-                  .toUpperCase(),
+              tabName: AppLocalizations.of(context).translate("todo", defaultText: "Specifications").toUpperCase(),
               isSelected: _selectedIndex == 1,
               onTap: _selectedIndex == 1
                   ? null
@@ -85,9 +85,7 @@ class _ProductConsultingDetailsComponentState
                     },
             ),
             ProductDetailsTab(
-              tabName: AppLocalizations.of(context)
-                  .translate("todo", defaultText: "Reviews")
-                  .toUpperCase(),
+              tabName: AppLocalizations.of(context).translate("todo", defaultText: "Reviews").toUpperCase(),
               isSelected: _selectedIndex == 2,
               onTap: _selectedIndex == 2
                   ? null
@@ -105,7 +103,7 @@ class _ProductConsultingDetailsComponentState
         ),
         body[_selectedIndex],
         SizedBox(
-          height: 100,
+          height: 130,
         ),
       ],
     );

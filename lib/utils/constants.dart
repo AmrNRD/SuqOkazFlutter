@@ -4,7 +4,7 @@ class Constants {
 
   // Base
   static const appName = "SuqOkaz";
-  static const baseUrl = "https://suqokaz.com";
+  static const baseUrl = "https://add1.joovlly.net";
   static bool isRTL = false;
   static const dummyProfilePic = "";
 
@@ -26,10 +26,8 @@ class Constants {
   static const productCategoriesPage = "/ProductCategoriesPage";
 
   // Keys
-  static const consumerKey =
-      "ck_84bf021fb3836e4daa569acf30a4ed7b67485163"; // suqokaz
-  static const consumerSecret =
-      "cs_c1c1fd46e311cd7c2625012b9f6337623034490b"; // suqokaz
+  static const consumerKey = "ck_cafce6ef4f584a33bb060243680ab920bac3e63d"; // suqokaz
+  static const consumerSecret = "cs_a43a0c3bb4b73b1f8428b43f9e1261677e9cd4b2"; // suqokaz
 
   // Local Keys
   static const kLocalKey = {
@@ -45,12 +43,7 @@ class Constants {
 
   static const kAdvanceConfig = {
     "DefaultLanguage": "ar",
-    "DefaultCurrency": {
-      "symbol": "EGP ",
-      "decimalDigits": 1,
-      "symbolBeforeTheNumber": false,
-      "currency": "EGP"
-    },
+    "DefaultCurrency": {"symbol": "EGP ", "decimalDigits": 1, "symbolBeforeTheNumber": false, "currency": "EGP"},
   };
 
   // Images

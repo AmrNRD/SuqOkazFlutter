@@ -10,6 +10,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:suqokaz/bloc/cart/cart_bloc.dart';
 import 'package:suqokaz/bloc/category/category_bloc.dart';
 import 'package:suqokaz/bloc/user/user_bloc.dart';
+import 'package:suqokaz/bloc/user/user_event.dart';
 import 'package:suqokaz/bloc/user/user_state.dart';
 import 'package:suqokaz/ui/modules/auth/auth.page.dart';
 import 'package:suqokaz/ui/style/app.colors.dart';
@@ -30,6 +31,7 @@ class _LandingSplashScreenState extends State<LandingSplashScreen> {
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<UserBloc>(context).add(GetUser());
     BlocProvider.of<CartBloc>(context).add(GetCartEvent());
     BlocProvider.of<CategoryBloc>(context).add(GetCategoriesEvent());
   }
@@ -46,8 +48,8 @@ class _LandingSplashScreenState extends State<LandingSplashScreen> {
       },
       child: BlocListener<UserBloc, UserState>(
         listener: (BuildContext context, UserState state) async {
-          if (state is UserLoaded) {
-          } else if (state is UserError) {}
+          if (state is UserLoadedState) {
+          } else if (state is UserErrorState) {}
         },
         child: Scaffold(
           backgroundColor: AppColors.primaryColor5,

@@ -18,8 +18,7 @@ class ProductHorizontalListView extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ProductHorizontalListViewState createState() =>
-      _ProductHorizontalListViewState();
+  _ProductHorizontalListViewState createState() => _ProductHorizontalListViewState();
 }
 
 class _ProductHorizontalListViewState extends State<ProductHorizontalListView> {
@@ -28,8 +27,7 @@ class _ProductHorizontalListViewState extends State<ProductHorizontalListView> {
   @override
   void initState() {
     super.initState();
-    productIdToCartItem =
-        BlocProvider.of<CartBloc>(context).productIdToCartItem;
+    productIdToCartItem = BlocProvider.of<CartBloc>(context).productIdToCartItem;
   }
 
   @override
@@ -47,16 +45,14 @@ class _ProductHorizontalListViewState extends State<ProductHorizontalListView> {
               backgroundColor: Colors.green,
               content: Text(
                 AppLocalizations.of(context).translate(state.message),
-                style: Theme.of(context)
-                    .textTheme
-                    .headline2
-                    .copyWith(color: Colors.red),
+                style: Theme.of(context).textTheme.headline2.copyWith(color: Colors.red),
               ),
             ),
           );
         }
       },
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
             height: screenAwareSize(250, context),
@@ -75,9 +71,7 @@ class _ProductHorizontalListViewState extends State<ProductHorizontalListView> {
                   ),
                   child: ProductCardComponent(
                     product: widget.products[index],
-                    isInCart: productIdToCartItem
-                            .containsKey(widget.products[index].id) ??
-                        false,
+                    isInCart: productIdToCartItem.containsKey(widget.products[index].id) ?? false,
                   ),
                 );
               },

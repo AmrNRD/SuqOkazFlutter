@@ -28,18 +28,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   FocusNode _emailFocusNode;
   FocusNode _passwordFocusNode;
 
-  Map<String, String> _authData = {
-    'phone': '',
-    'password': '',
-    'password_confermation': ''
-  };
+  Map<String, String> _authData = {'phone': '', 'password': '', 'password_confermation': ''};
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: AppDimens.marginEdgeCase24),
+        padding: const EdgeInsets.symmetric(horizontal: AppDimens.marginEdgeCase24),
         margin: EdgeInsets.only(top: AppDimens.paddingEdgeCase40),
         child: Form(
           key: _formKey,
@@ -48,20 +43,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               Padding(
-                padding:
-                    const EdgeInsets.only(top: AppDimens.paddingEdgeCase40),
-                child: Hero(
-                    tag: "Logo",
-                    child: SvgPicture.asset("assets/images/colored_logo.svg")),
+                padding: const EdgeInsets.only(top: AppDimens.paddingEdgeCase40),
+                child: Hero(tag: "Logo", child: SvgPicture.asset("assets/images/colored_logo.svg")),
               ),
 
               SizedBox(height: AppDimens.marginEdgeCase64),
 
-              Text(AppLocalizations.of(context).translate("sign_up") + "!",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline1
-                      .copyWith(fontSize: 25, fontWeight: FontWeight.bold)),
+              Text(AppLocalizations.of(context).translate("signup") + "!",
+                  style: Theme.of(context).textTheme.headline1.copyWith(fontSize: 25, fontWeight: FontWeight.bold)),
 
               SizedBox(height: AppDimens.marginEdgeCase24),
 
@@ -83,12 +72,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     onTap: () => setState(() {
                           _obscureTextLogin = !_obscureTextLogin;
                         }),
-                    child: Icon(
-                        _obscureTextLogin
-                            ? FontAwesomeIcons.eyeSlash
-                            : FontAwesomeIcons.eye,
-                        size: 15.0,
-                        color: Colors.grey)),
+                    child: Icon(_obscureTextLogin ? FontAwesomeIcons.eyeSlash : FontAwesomeIcons.eye,
+                        size: 15.0, color: Colors.grey)),
               ),
 
               FormInputField(
@@ -101,19 +86,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     onTap: () => setState(() {
                           _obscureTextLogin = !_obscureTextLogin;
                         }),
-                    child: Icon(
-                        _obscureTextLogin
-                            ? FontAwesomeIcons.eyeSlash
-                            : FontAwesomeIcons.eye,
-                        size: 15.0,
-                        color: Colors.grey)),
+                    child: Icon(_obscureTextLogin ? FontAwesomeIcons.eyeSlash : FontAwesomeIcons.eye,
+                        size: 15.0, color: Colors.grey)),
               ),
 
               SizedBox(height: AppDimens.marginEdgeCase32),
 
               Center(
                   child: CustomRaisedButton(
-                      label: AppLocalizations.of(context).translate("sign_up"),
+                      label: AppLocalizations.of(context).translate("signup"),
                       onPress: onSignUp,
                       isLoading: isLoading)),
 
@@ -121,10 +102,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
               Center(
                   child: Text(AppLocalizations.of(context).translate("or"),
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle1
-                          .copyWith(fontSize: 14))),
+                      style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 14))),
 
               SizedBox(height: AppDimens.marginEdgeCase24),
 
@@ -137,11 +115,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onTap: initiateFacebookLogin,
                       child: Container(
                         padding: const EdgeInsets.all(15.0),
-                        decoration: new BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.customGreyLevels[300]),
-                        child: new Icon(FontAwesomeIcons.facebookF,
-                            color: Color(0xFF0084ff)),
+                        decoration: new BoxDecoration(shape: BoxShape.circle, color: AppColors.customGreyLevels[300]),
+                        child: new Icon(FontAwesomeIcons.facebookF, color: Color(0xFF0084ff)),
                       ),
                     ),
                   ),
@@ -151,11 +126,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onTap: initiateGoogleLogin,
                       child: Container(
                         padding: const EdgeInsets.all(15.0),
-                        decoration: new BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.customGreyLevels[300]),
-                        child: new Icon(FontAwesomeIcons.google,
-                            color: Color(0xFFdb3236)),
+                        decoration: new BoxDecoration(shape: BoxShape.circle, color: AppColors.customGreyLevels[300]),
+                        child: new Icon(FontAwesomeIcons.google, color: Color(0xFFdb3236)),
                       ),
                     ),
                   ),
@@ -166,11 +138,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             onTap: initiateAppleLogin,
                             child: Container(
                               padding: const EdgeInsets.all(15.0),
-                              decoration: new BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppColors.customGreyLevels[300]),
-                              child: new Icon(FontAwesomeIcons.apple,
-                                  color: Colors.black45),
+                              decoration:
+                                  new BoxDecoration(shape: BoxShape.circle, color: AppColors.customGreyLevels[300]),
+                              child: new Icon(FontAwesomeIcons.apple, color: Colors.black45),
                             ),
                           ),
                         )
@@ -186,17 +156,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: RichText(
                     textAlign: TextAlign.left,
                     text: TextSpan(
-                      text: AppLocalizations.of(context)
-                          .translate("already_registered"),
+                      text: AppLocalizations.of(context).translate("already_registered"),
                       style: Theme.of(context).textTheme.subtitle1,
                       children: [
                         TextSpan(
-                          text:
-                              AppLocalizations.of(context).translate("sign_in"),
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1
-                              .copyWith(color: AppColors.primaryColor1),
+                          text: AppLocalizations.of(context).translate("sign_in"),
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(color: AppColors.primaryColor1),
                         )
                       ],
                     ),

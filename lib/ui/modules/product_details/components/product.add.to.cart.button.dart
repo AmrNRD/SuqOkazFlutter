@@ -9,10 +9,12 @@ import 'package:suqokaz/utils/app.localization.dart';
 class AddToCartButton extends StatefulWidget {
   final int productQuantity;
   final ProductModel productModel;
+  final bool activeButton;
   AddToCartButton({
     Key key,
     this.productQuantity,
     @required this.productModel,
+    this.activeButton = true,
   }) : super(key: key);
 
   @override
@@ -129,15 +131,16 @@ class _AddToCartButtonState extends State<AddToCartButton> {
         Stack(
           children: <Widget>[
             Container(
-              color: AppColors.primaryColors[50],
+              color: widget.activeButton ? AppColors.primaryColors[50] : AppColors.customGreyLevels[700],
               child: Center(
                 child: Container(
                   padding: EdgeInsets.symmetric(
-                      vertical: MediaQuery.of(context).padding.bottom <= 20
-                          ? 20
-                          : MediaQuery.of(context).padding.bottom - 5),
+                      vertical:
+                          MediaQuery.of(context).padding.bottom <= 20 ? 20 : MediaQuery.of(context).padding.bottom - 5),
                   child: Text(
-                    AppLocalizations.of(context).translate("add_cart"),
+                    widget.activeButton
+                        ? AppLocalizations.of(context).translate("add_cart")
+                        : AppLocalizations.of(context).translate("todo", defaultText: "Out Of Stock !"),
                     style: Theme.of(context).textTheme.headline2.copyWith(
                           color: Colors.white,
                         ),
@@ -149,14 +152,16 @@ class _AddToCartButtonState extends State<AddToCartButton> {
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  onTap: () {
-                    BlocProvider.of<CartBloc>(context).add(
-                      AddProductToCartEvent(
-                        widget.productModel,
-                        productQuantity,
-                      ),
-                    );
-                  },
+                  onTap: widget.activeButton
+                      ? () {
+                          BlocProvider.of<CartBloc>(context).add(
+                            AddProductToCartEvent(
+                              widget.productModel,
+                              productQuantity,
+                            ),
+                          );
+                        }
+                      : null,
                 ),
               ),
             ),

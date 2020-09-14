@@ -1,5 +1,3 @@
-import 'package:suqokaz/data/models/category_model.dart';
-
 class CategoriesUtil {
   static List<dynamic> nestCategories(var categories) {
     var nestedCategories = [];
@@ -9,9 +7,7 @@ class CategoriesUtil {
         nestedCategories.add(category);
         category.sorted = true;
       } else {
-        var parentCategory = categories.firstWhere(
-            (element) => element.id == category.parent,
-            orElse: () => null);
+        var parentCategory = categories.firstWhere((element) => element.id == category.parent, orElse: () => null);
         if (parentCategory != null) {
           parentCategory.children.add(category);
 

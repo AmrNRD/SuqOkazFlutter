@@ -1,3 +1,4 @@
+import 'package:suqokaz/data/models/product_model.dart';
 import 'package:suqokaz/data/models/review_model.dart';
 import 'package:suqokaz/data/sources/remote/products.service.dart';
 
@@ -34,6 +35,7 @@ abstract class ProductsDataRepository {
   });
 
   Future<dynamic> getProductsWithInclude(List<int> include);
+  Future<List<ProductVariation>> getProductVariations(int id);
 }
 
 class ProductsRepository extends ProductsDataRepository {
@@ -114,5 +116,15 @@ class ProductsRepository extends ProductsDataRepository {
   @override
   Future getProductsWithInclude(List<int> include) async {
     return await productsService.getProductWithInclude(include);
+  }
+
+  @override
+  Future<List<ProductVariation>> getProductVariations(int id) async {
+    List<ProductVariation> temp = [];
+    List<dynamic> rawData = await productsService.getProductVariation(id);
+    rawData.forEach((element) {
+      temp.add(ProductVariation.fromJson(element));
+    });
+    return temp;
   }
 }

@@ -20,6 +20,7 @@ class ProductModel {
   String imageFeature;
   List<ProductAttribute> attributes;
   List<ProductAttribute> infors = [];
+  List<ProductVariation> variations = [];
   int categoryId;
   String videoUrl;
   String status;
@@ -43,33 +44,22 @@ class ProductModel {
     try {
       id = parsedJson["id"];
       categoryName = parsedJson["categories"][0]["name"];
-      name = parsedJson["name"]
-          .toString()
-          .substring(5, parsedJson["name"].toString().indexOf("[:en]"));
+      name = parsedJson["name"];
       type = parsedJson["type"];
-      description = isNotBlank(parsedJson["description"])
-          ? parsedJson["description"]
-          : parsedJson["short_description"];
+      description = isNotBlank(parsedJson["description"]) ? parsedJson["description"] : parsedJson["short_description"];
       permalink = parsedJson["permalink"];
-      price = parsedJson["price"] != null
-          ? double.parse(parsedJson["price"].toString()).toStringAsFixed(2)
-          : "";
+      price = parsedJson["price"] != null ? double.parse(parsedJson["price"].toString()).toStringAsFixed(2) : "";
 
-      regularPrice = parsedJson["regular_price"] != null
-          ? parsedJson["regular_price"].toString()
-          : null;
-      salePrice = parsedJson["sale_price"] != null
-          ? parsedJson["sale_price"].toString()
-          : null;
-      onSale = parsedJson["on_sale"];
-      inStock =
-          parsedJson["in_stock"] ?? parsedJson["stock_status"] == "instock";
+      regularPrice = parsedJson["regular_price"] != null ? parsedJson["regular_price"].toString() : null;
+      salePrice = parsedJson["sale_price"] != null ? parsedJson["sale_price"].toString() : null;
+      onSale = parsedJson["on_sale"] == null ? false : parsedJson["on_sale"];
+      ;
+      inStock = parsedJson["in_stock"] ?? parsedJson["stock_status"] == "instock";
 
       averageRating = double.parse(parsedJson["average_rating"]);
       ratingCount = int.parse(parsedJson["rating_count"].toString());
 
-      categoryId = parsedJson["categories"] != null &&
-              parsedJson["categories"].length > 0
+      categoryId = parsedJson["categories"] != null && parsedJson["categories"].length > 0
           ? parsedJson["categories"][0]["id"]
           : 0;
 
@@ -121,14 +111,11 @@ class ProductModel {
 
       // get video link
       var video = parsedJson['meta_data'].firstWhere(
-        (item) =>
-            item['key'] == '_video_url' || item['key'] == '_woofv_video_embed',
+        (item) => item['key'] == '_video_url' || item['key'] == '_woofv_video_embed',
         orElse: () => null,
       );
       if (video != null) {
-        videoUrl = video['value'] is String
-            ? video['value']
-            : video['value']['url'] ?? '';
+        videoUrl = video['value'] is String ? video['value'] : video['value']['url'] ?? '';
       }
 
       affiliateUrl = parsedJson['external_url'];
@@ -196,14 +183,12 @@ class ProductModel {
       id = json['id'];
       sku = json['sku'];
       name = json['name'];
-      description = parse(GuardParser.safeCast<String>(json['description']))
-          .documentElement
-          .text;
+      description = parse(GuardParser.safeCast<String>(json['description'])).documentElement.text;
       permalink = json['permalink'];
       price = json['price'];
       regularPrice = json['regularPrice'];
       salePrice = json['salePrice'];
-      onSale = json['onSale'];
+      onSale = json['onSale'] == null ? false : json['onSale'];
       inStock = json['inStock'];
       averageRating = json['averageRating'];
       ratingCount = json['ratingCount'];
@@ -240,9 +225,6 @@ class ProductAttribute {
     name = parsedJson["name"];
     parsedJson["options"].forEach(
       (element) {
-        element = element.replaceAll(RegExp("\[[:a-z]*\]"), "");
-        element = element.replaceAll(RegExp("\[[:a-z]*\]"), "");
-        element = element.replaceAll(RegExp("\[[:a-z]*\]"), "");
         options.add(element);
       },
     );
@@ -273,7 +255,13 @@ class Attribute {
   Attribute.fromJson(Map<String, dynamic> parsedJson) {
     id = parsedJson["id"];
     name = parsedJson["name"];
-    option = parsedJson["option"];
+    var sad = int.tryParse(parsedJson["option"]);
+    if (sad == null) {
+      option = Uri.decodeFull(parsedJson["option"]).toString().toUpperCase();
+      print(option);
+    } else {
+      option = parsedJson["option"].toString().toUpperCase();
+    }
   }
 
   Attribute.fromLocalJson(Map<String, dynamic> parsedJson) {
@@ -304,14 +292,19 @@ class ProductVariation {
 
   ProductVariation.fromJson(Map<String, dynamic> parsedJson) {
     id = parsedJson["id"];
-    price = parsedJson["price"];
-    regularPrice = parsedJson["regular_price"];
-    salePrice = parsedJson["sale_price"];
-    onSale = parsedJson["on_sale"];
-    inStock = parsedJson["in_stock"];
+    price = parsedJson["price"] != null || parsedJson["sale_price"].isNotEmpty
+        ? double.parse(parsedJson["price"].toString()).toStringAsFixed(2)
+        : "";
+    regularPrice = parsedJson["regular_price"] != null || parsedJson["sale_price"].isNotEmpty
+        ? double.parse(parsedJson["regular_price"].toString()).toStringAsFixed(2)
+        : "";
+    salePrice = parsedJson["sale_price"] != null && parsedJson["sale_price"].isNotEmpty
+        ? double.parse(parsedJson["sale_price"].toString()).toStringAsFixed(2)
+        : "";
+    onSale = parsedJson["on_sale"] == null ? false : parsedJson["on_sale"];
+    inStock = parsedJson["stock_status"] == "instock";
     inStock ? stockQuantity = parsedJson["stock_quantity"] : stockQuantity = 0;
     imageFeature = parsedJson["image"]["src"];
-
     List<Attribute> attributeList = [];
     parsedJson["attributes"].forEach((item) {
       attributeList.add(Attribute.fromJson(item));
@@ -341,7 +334,7 @@ class ProductVariation {
       id = json['id'];
       price = json['price'];
       regularPrice = json['regularPrice'];
-      onSale = json['onSale'];
+      onSale = json["on_sale"] == null ? false : json["on_sale"];
       salePrice = json['salePrice'];
       inStock = json['inStock'];
       inStock ? stockQuantity = json["stock_quantity"] : stockQuantity = 0;

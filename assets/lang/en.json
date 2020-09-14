@@ -7,6 +7,7 @@
     "login": "Login",
     "profile": "Profile",
     "signup": "Signup",
+    "sign_in": "Sign in",
     "welcome": "Welcome!",
     "phone": "Phone number",
     "password": "Password",
@@ -162,6 +163,13 @@
     "about_text2": ", and other sites we own and operate.",
     "about_text3": "We only ask for personal information when we truly need it to provide a service to you. We collect it by fair and lawful means, with your knowledge and consent. We also let you know why we’re collecting it and how it will be used.",
     "about_text4": "We only retain collected information for as long as necessary to provide you with your requested service.",
-    "about_us": "About us"
-
+    "about_us": "About us",
+    "already_registered": "Already registered? ",
+    "phone_number": "Phone number",
+    "password_confirmation": "Password confirmation",
+    "send": "Send",
+    "back_to_login": "Back to login",
+    "hello": "Hello",
+    "do_you_have_account": "Do you have account?",
+    "please_enter_your_details": "Please enter your details"
 }

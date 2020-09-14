@@ -87,10 +87,15 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             );
           } else {
             // Yield Error
-            yield ProductsErrorState(
-                message: "Error occurred"); // TODO: translate
+            yield ProductsErrorState(message: "Error occurred"); // TODO: translate
           }
         }
+      } else if (event is GetProductVariationsEvent) {
+        yield ProductsLoadingState();
+        List<ProductVariation> productVariations = await productsRepository.getProductVariations(event.productModel.id);
+        ProductModel productModel = event.productModel;
+        productModel.variations = productVariations;
+        yield ProductVariationsLoadedState(productModel: productModel);
       }
     } catch (exception) {
       // Yield error with message, exception can't be casted to string in some cases

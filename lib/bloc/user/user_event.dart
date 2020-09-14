@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:suqokaz/data/models/user_model.dart';
 
-
 abstract class UserEvent extends Equatable {
   UserEvent();
 }
+
 class GetUser extends UserEvent {
   GetUser();
   @override
@@ -23,7 +23,7 @@ class UpdateUserProfilePicture extends UserEvent {
   final String name;
   UpdateUserProfilePicture(this.photo, this.name);
   @override
-  List<Object> get props => [photo,name];
+  List<Object> get props => [photo, name];
 }
 
 class UserReportPurchase extends UserEvent {
@@ -34,18 +34,25 @@ class UserReportPurchase extends UserEvent {
   UserReportPurchase(this.id, this.purchaseToken, this.transactionReceipt, this.productId);
 
   @override
-  List<Object> get props => [id,purchaseToken,transactionReceipt,productId];
+  List<Object> get props => [id, purchaseToken, transactionReceipt, productId];
 }
 
 class LoginUser extends UserEvent {
   final String email;
   final String password;
-  final String firebaseToken;
+  //final String firebaseToken;
   final String platform;
-  LoginUser(this.email,this.password,this.firebaseToken,this.platform);
+  LoginUser({
+    this.email,
+    this.password, //this.firebaseToken
+    this.platform,
+  });
 
   @override
-  List<Object> get props => [email,password,firebaseToken,platform];
+  List<Object> get props => [
+        email, password, // firebaseToken,
+        platform,
+      ];
 }
 
 class LoginUserWithProvider extends UserEvent {
@@ -57,10 +64,11 @@ class LoginUserWithProvider extends UserEvent {
   final String profileUrl;
   final String platform;
 
-  LoginUserWithProvider(this.providerType,this.userID,this.email,this.name,this.token,this.profileUrl,this.platform);
+  LoginUserWithProvider(
+      this.providerType, this.userID, this.email, this.name, this.token, this.profileUrl, this.platform);
 
   @override
-  List<Object> get props => [providerType,userID,email,token,name,profileUrl,platform];
+  List<Object> get props => [providerType, userID, email, token, name, profileUrl, platform];
 }
 
 class SignUpUser extends UserEvent {
@@ -69,12 +77,11 @@ class SignUpUser extends UserEvent {
   final String password;
   final String passwordConfirmation;
   final String platform;
-  SignUpUser(this.email,this.name,this.password,this.passwordConfirmation,this.platform);
+  SignUpUser(this.email, this.name, this.password, this.passwordConfirmation, this.platform);
 
   @override
-  List<Object> get props => [email,name,password,passwordConfirmation,platform];
+  List<Object> get props => [email, name, password, passwordConfirmation, platform];
 }
-
 
 class ForgotPassword extends UserEvent {
   final String email;
@@ -89,7 +96,6 @@ class VerifyEmail extends UserEvent {
   @override
   List<Object> get props => [code];
 }
-
 
 class ResendVerifyEmail extends UserEvent {
   ResendVerifyEmail();
@@ -108,9 +114,9 @@ class ResetPassword extends UserEvent {
   final String email;
   final String token;
   final String newPassword;
-  ResetPassword(this.email,this.token,this.newPassword);
+  ResetPassword(this.email, this.token, this.newPassword);
   @override
-  List<Object> get props => [email,token,newPassword];
+  List<Object> get props => [email, token, newPassword];
 }
 
 class LogoutUser extends UserEvent {
@@ -118,4 +124,3 @@ class LogoutUser extends UserEvent {
   @override
   List<Object> get props => [];
 }
-

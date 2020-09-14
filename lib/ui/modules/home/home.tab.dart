@@ -54,8 +54,7 @@ class HomeTabPage extends StatelessWidget {
                     removeButton: true,
                     imagePath: Constants.imagePath["error"],
                     //TODO: Translate
-                    titleKey: AppLocalizations.of(context)
-                        .translate("todo", defaultText: "Sad Error Title :("),
+                    titleKey: AppLocalizations.of(context).translate("todo", defaultText: "Sad Error Title :("),
                     bodyKey: AppLocalizations.of(context).translate(
                       "todo",
                       defaultText: state.message,
@@ -101,16 +100,15 @@ class HomeProductDisplayComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            padding:
-                EdgeInsets.symmetric(horizontal: AppDimens.marginDefault16),
+            padding: EdgeInsets.symmetric(horizontal: AppDimens.marginDefault16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  AppLocalizations.of(context)
-                      .translate(labelKey, defaultText: labelKey),
+                  AppLocalizations.of(context).translate(labelKey, defaultText: labelKey),
                   style: Theme.of(context).textTheme.headline2,
                 ),
               ],
@@ -137,8 +135,7 @@ class HomeProductDisplayComponent extends StatelessWidget {
                   removeButton: true,
                   imagePath: Constants.imagePath["error"],
                   //TODO: Translate
-                  titleKey: AppLocalizations.of(context)
-                      .translate("todo", defaultText: "Sad Error Title :("),
+                  titleKey: AppLocalizations.of(context).translate("todo", defaultText: "Sad Error Title :("),
                   bodyKey: AppLocalizations.of(context).translate(
                     "todo",
                     defaultText: state.message,
