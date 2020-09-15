@@ -21,6 +21,7 @@ class ProductModel {
   List<ProductAttribute> attributes;
   List<ProductAttribute> infors = [];
   List<ProductVariation> variations = [];
+  List<Attribute> defaultAttributes = [];
   int categoryId;
   String videoUrl;
   String status;
@@ -43,6 +44,11 @@ class ProductModel {
 
   ProductModel.fromJson(Map<String, dynamic> parsedJson) {
     try {
+      List<Attribute> defaultAttributesList = [];
+      parsedJson["default_attributes"].forEach((item) {
+        defaultAttributesList.add(Attribute.fromJson(item));
+      });
+      defaultAttributes = defaultAttributesList;
       id = parsedJson["id"];
       defaultVariationId = parsedJson["variations"][0];
       categoryName = parsedJson["categories"][0]["name"];
@@ -252,7 +258,11 @@ class Attribute {
   String name;
   String option;
 
-  Attribute();
+  Attribute({
+    this.id,
+    this.name,
+    this.option,
+  });
 
   Attribute.fromJson(Map<String, dynamic> parsedJson) {
     id = parsedJson["id"];

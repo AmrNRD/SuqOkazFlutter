@@ -30,7 +30,7 @@ class ProductListViewBuilder extends StatefulWidget {
 }
 
 class _ProductListViewBuilderState extends State<ProductListViewBuilder> {
-  Map<int, CartItem> productIdToCartItem = {};
+  Map<String, CartItem> productIdToCartItem = {};
   @override
   void initState() {
     super.initState();
@@ -88,8 +88,11 @@ class _ProductListViewBuilderState extends State<ProductListViewBuilder> {
                       return ProductCardLongComponent(
                         allowMargin: false,
                         variationId: widget.products[index].defaultVariationId,
+                        attribute: widget.products[index].defaultAttributes,
                         product: widget.products[index],
-                        isInCart: productIdToCartItem.containsKey(widget.products[index].id) ?? false,
+                        isInCart: productIdToCartItem.containsKey(widget.products[index].id.toString() +
+                                widget.products[index].defaultVariationId.toString()) ??
+                            false,
                         onItemTap: () {
                           Navigator.pushNamed(
                             context,

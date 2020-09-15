@@ -16,7 +16,7 @@ class CartErrorState extends CartState {
 
 class CartLoadedState extends CartState {
   final List<ProductItem> products;
-  final Map<int, CartItem> productIdToCartItem;
+  final Map<String, CartItem> productIdToCartItem;
   final int counter;
 
   CartLoadedState(this.products, this.counter, this.productIdToCartItem);

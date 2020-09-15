@@ -11,6 +11,7 @@ import '../style/app.colors.dart';
 class ProductCardComponent extends StatelessWidget {
   final Function onItemTap;
   final ProductModel product;
+  final List<Attribute> attribute;
   final int variationId;
   final bool allowMargin;
   final bool isInCart;
@@ -24,6 +25,7 @@ class ProductCardComponent extends StatelessWidget {
     this.allowMargin = true,
     this.inInFav = false,
     @required this.variationId,
+    @required this.attribute,
   }) : super(key: key);
 
   @override
@@ -88,31 +90,36 @@ class ProductCardComponent extends StatelessWidget {
                                 style: Theme.of(context).textTheme.bodyText2.copyWith(fontWeight: FontWeight.w700),
                               ),
                             ),
-                            InkWell(
-                              onTap: () {
-                                isInCart
-                                    ? BlocProvider.of<CartBloc>(context).add(
-                                        RemovedItemInCartEvent(
-                                          product.id,
-                                          variationId,
-                                        ),
-                                      )
-                                    : BlocProvider.of<CartBloc>(context).add(
-                                        AddProductToCartEvent(product, 1, product.defaultVariationId),
-                                      );
-                              },
-                              child: isInCart
-                                  ? SvgPicture.asset(
-                                      "assets/icons/cart_button_selected_icon.svg",
-                                      height: 32,
-                                      width: 32,
-                                    )
-                                  : SvgPicture.asset(
-                                      "assets/icons/product_cart_icon.svg",
-                                      height: 32,
-                                      width: 32,
-                                    ),
-                            ),
+                            // InkWell(
+                            //   onTap: () {
+                            //     isInCart
+                            //         ? BlocProvider.of<CartBloc>(context).add(
+                            //             RemovedItemInCartEvent(
+                            //               product.id,
+                            //               variationId,
+                            //             ),
+                            //           )
+                            //         : BlocProvider.of<CartBloc>(context).add(
+                            //             AddProductToCartEvent(
+                            //               product,
+                            //               1,
+                            //               variationId,
+                            //               attribute,
+                            //             ),
+                            //           );
+                            //   },
+                            //   child: isInCart
+                            //       ? SvgPicture.asset(
+                            //           "assets/icons/cart_button_selected_icon.svg",
+                            //           height: 32,
+                            //           width: 32,
+                            //         )
+                            //       : SvgPicture.asset(
+                            //           "assets/icons/product_cart_icon.svg",
+                            //           height: 32,
+                            //           width: 32,
+                            //         ),
+                            // ),
                           ],
                         ),
                       )

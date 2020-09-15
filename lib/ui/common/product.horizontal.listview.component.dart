@@ -22,7 +22,7 @@ class ProductHorizontalListView extends StatefulWidget {
 }
 
 class _ProductHorizontalListViewState extends State<ProductHorizontalListView> {
-  Map<int, CartItem> productIdToCartItem = {};
+  Map<String, CartItem> productIdToCartItem = {};
 
   @override
   void initState() {
@@ -72,7 +72,10 @@ class _ProductHorizontalListViewState extends State<ProductHorizontalListView> {
                   child: ProductCardComponent(
                     product: widget.products[index],
                     variationId: widget.products[index].defaultVariationId,
-                    isInCart: productIdToCartItem.containsKey(widget.products[index].id) ?? false,
+                    attribute: widget.products[index].defaultAttributes,
+                    isInCart: productIdToCartItem.containsKey(widget.products[index].id.toString() +
+                            widget.products[index].defaultVariationId.toString()) ??
+                        false,
                   ),
                 );
               },

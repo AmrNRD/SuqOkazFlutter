@@ -137,7 +137,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   }
 
   GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
-  Map<int, CartItem> productIdToCartItem = {};
+  Map<String, CartItem> productIdToCartItem = {};
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -314,7 +314,9 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 ? ProductCardLongComponent(
                     product: productData,
                     variationId: productData.defaultVariationId,
-                    isInCart: productIdToCartItem.containsKey(productData.id) ?? false,
+                    isInCart: productIdToCartItem
+                            .containsKey(productData.id.toString() + productData.defaultVariationId.toString()) ??
+                        false,
                     onItemTap: () {
                       Navigator.pushNamed(
                         context,
@@ -329,7 +331,9 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       product: productData,
                       allowMargin: false,
                       variationId: productData.defaultVariationId,
-                      isInCart: productIdToCartItem.containsKey(productData.id) ?? false,
+                      isInCart: productIdToCartItem
+                              .containsKey(productData.id.toString() + productData.defaultVariationId.toString()) ??
+                          false,
                       onItemTap: () {
                         Navigator.pushNamed(
                           context,

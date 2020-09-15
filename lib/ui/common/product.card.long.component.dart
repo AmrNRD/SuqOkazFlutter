@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:suqokaz/bloc/cart/cart_bloc.dart';
 import 'package:suqokaz/data/models/product_model.dart';
 import 'package:suqokaz/utils/app.localization.dart';
 import 'package:suqokaz/utils/core.util.dart';
@@ -10,6 +8,7 @@ import 'package:suqokaz/utils/core.util.dart';
 class ProductCardLongComponent extends StatelessWidget {
   final Function onItemTap;
   final ProductModel product;
+  final List<Attribute> attribute;
   final int variationId;
   final bool allowMargin;
   final bool isInCart;
@@ -22,6 +21,7 @@ class ProductCardLongComponent extends StatelessWidget {
     this.isInCart = false,
     this.allowMargin = true,
     this.isInFav = false,
+    @required this.attribute,
     @required this.variationId,
   }) : super(key: key);
 
@@ -106,35 +106,36 @@ class ProductCardLongComponent extends StatelessWidget {
                             width: 24,
                           ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      isInCart
-                          ? BlocProvider.of<CartBloc>(context).add(
-                              RemovedItemInCartEvent(
-                                product.id,
-                                variationId,
-                              ),
-                            )
-                          : BlocProvider.of<CartBloc>(context).add(
-                              AddProductToCartEvent(
-                                product,
-                                1,
-                                null,
-                              ),
-                            );
-                    },
-                    child: isInCart
-                        ? SvgPicture.asset(
-                            "assets/icons/cart_button_selected_icon.svg",
-                            height: 28,
-                            width: 28,
-                          )
-                        : SvgPicture.asset(
-                            "assets/icons/product_cart_icon.svg",
-                            height: 28,
-                            width: 28,
-                          ),
-                  ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     isInCart
+                  //         ? BlocProvider.of<CartBloc>(context).add(
+                  //             RemovedItemInCartEvent(
+                  //               product.id,
+                  //               variationId,
+                  //             ),
+                  //           )
+                  //         : BlocProvider.of<CartBloc>(context).add(
+                  //             AddProductToCartEvent(
+                  //               product,
+                  //               1,
+                  //               variationId,
+                  //               attribute,
+                  //             ),
+                  //           );
+                  //   },
+                  //   child: isInCart
+                  //       ? SvgPicture.asset(
+                  //           "assets/icons/cart_button_selected_icon.svg",
+                  //           height: 28,
+                  //           width: 28,
+                  //         )
+                  //       : SvgPicture.asset(
+                  //           "assets/icons/product_cart_icon.svg",
+                  //           height: 28,
+                  //           width: 28,
+                  //         ),
+                  // ),
                 ],
               ),
             ),

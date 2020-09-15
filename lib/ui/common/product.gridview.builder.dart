@@ -30,7 +30,7 @@ class ProductGridViewBuilder extends StatefulWidget {
 }
 
 class _ProductGridViewBuilderState extends State<ProductGridViewBuilder> {
-  Map<int, CartItem> productIdToCartItem = {};
+  Map<String, CartItem> productIdToCartItem = {};
   @override
   void initState() {
     super.initState();
@@ -95,7 +95,10 @@ class _ProductGridViewBuilderState extends State<ProductGridViewBuilder> {
                         allowMargin: false,
                         product: widget.products[index],
                         variationId: widget.products[index].defaultVariationId,
-                        isInCart: productIdToCartItem.containsKey(widget.products[index].id) ?? false,
+                        attribute: widget.products[index].defaultAttributes,
+                        isInCart: productIdToCartItem.containsKey(widget.products[index].id.toString() +
+                                widget.products[index].defaultVariationId.toString()) ??
+                            false,
                         onItemTap: () {
                           Navigator.pushNamed(
                             context,

@@ -9,6 +9,7 @@ import 'package:suqokaz/utils/app.localization.dart';
 class AddToCartButton extends StatefulWidget {
   final int productQuantity;
   final ProductModel productModel;
+  final List<Attribute> attributes;
   final int variationId;
   final bool activeButton;
   AddToCartButton({
@@ -17,6 +18,7 @@ class AddToCartButton extends StatefulWidget {
     @required this.productModel,
     this.activeButton = true,
     @required this.variationId,
+    @required this.attributes,
   }) : super(key: key);
 
   @override
@@ -34,9 +36,6 @@ class _AddToCartButtonState extends State<AddToCartButton> {
 
   @override
   Widget build(BuildContext context) {
-    print("---------------");
-    print(widget.variationId);
-    print("---------------");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -164,6 +163,7 @@ class _AddToCartButtonState extends State<AddToCartButton> {
                               widget.productModel,
                               productQuantity,
                               widget.variationId,
+                              widget.attributes,
                             ),
                           );
                         }

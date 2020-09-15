@@ -8,10 +8,12 @@ class AddProductToCartEvent extends CartEvent {
   final ProductModel _productModel;
   final int quantity;
   final int variationId;
+  final List<Attribute> attributes;
   AddProductToCartEvent(
     this._productModel,
     this.quantity,
     this.variationId,
+    this.attributes,
   );
 
   @override

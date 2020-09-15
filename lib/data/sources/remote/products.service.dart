@@ -18,6 +18,13 @@ class ProductsService {
     return await apiCaller.getData(headers: {});
   }
 
+  Future<dynamic> getProductVariationById(int productId, int varId) async {
+    String url = "/products/$productId/variations/$varId";
+    final String oAuthUrl = apiCaller.getOAuthURL("GET", url, true);
+    apiCaller.setUrl(oAuthUrl);
+    return await apiCaller.getData(headers: {});
+  }
+
   Future<dynamic> submitReview(Map<String, dynamic> body) async {
     String url = "/products/reviews";
     final String oAuthUrl = apiCaller.getOAuthURL("POST", url, true);

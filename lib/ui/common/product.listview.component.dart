@@ -39,7 +39,6 @@ class _ProductListViewComponentState extends State<ProductListViewComponent>
     return true;
   }
 
-  Map<int, CartItem> productIdToCartItem = {};
   ScrollController _scrollController = ScrollController();
   AnimationController animationController;
 
@@ -107,70 +106,61 @@ class _ProductListViewComponentState extends State<ProductListViewComponent>
       margin: EdgeInsets.all(16),
       child: DelayedAnimation(
         animationController: animationController,
-        child: BlocListener<CartBloc, CartState>(
-          listener: (context, state) {
-            if (state is CartLoadedState) {
-              setState(() {
-                productIdToCartItem = state.productIdToCartItem;
-              });
-            }
-          },
-          child: BlocBuilder<ProductBloc, ProductState>(
-            buildWhen: (prev, current) {
-              print(current.runtimeType);
-              if (current is ProductsLoadingState && prev is ProductsLoadedState) {
-                return false;
-              } else if (current is ProductsLoadedState) {
-                if (current.isLoadMoreMode) {
-                  if (current.lastPageReached) {
-                    setState(() {
-                      lastPageReached = true;
-                    });
-                  }
+        child: BlocBuilder<ProductBloc, ProductState>(
+          buildWhen: (prev, current) {
+            print(current.runtimeType);
+            if (current is ProductsLoadingState && prev is ProductsLoadedState) {
+              return false;
+            } else if (current is ProductsLoadedState) {
+              if (current.isLoadMoreMode) {
+                if (current.lastPageReached) {
                   setState(() {
-                    products.addAll(current.products);
-                    showLoading = false;
+                    lastPageReached = true;
                   });
-                  return false;
                 }
-                return true;
+                setState(() {
+                  products.addAll(current.products);
+                  showLoading = false;
+                });
+                return false;
               }
               return true;
-            },
-            cubit: productBloc,
-            builder: (context, state) {
-              if (state is ProductsLoadedState) {
-                products = [];
-                products = state.products;
-                return ProductListViewBuilder(
-                  scrollController: _scrollController,
-                  products: products,
-                  showLoading: showLoading,
-                  lastPageReached: lastPageReached,
-                );
-              } else if (state is ProductsLoadingState) {
-                return LoadingWidget();
-              } else if (state is ProductsErrorState) {
-                return Center(
-                  child: GenericState(
-                    imagePath: Constants.imagePath["error"],
-                    titleKey: AppLocalizations.of(context).translate("error_title"),
-                    bodyKey: state.message,
-                    buttonKey: AppLocalizations.of(context).translate("refresh"),
-                    onPress: () {
-                      productBloc.add(
-                        GetProductsEvent(
-                          categoryID: widget.categoryId,
-                          isLoadMoreMode: false,
-                        ),
-                      );
-                    },
-                  ),
-                );
-              }
-              return Container();
-            },
-          ),
+            }
+            return true;
+          },
+          cubit: productBloc,
+          builder: (context, state) {
+            if (state is ProductsLoadedState) {
+              products = [];
+              products = state.products;
+              return ProductListViewBuilder(
+                scrollController: _scrollController,
+                products: products,
+                showLoading: showLoading,
+                lastPageReached: lastPageReached,
+              );
+            } else if (state is ProductsLoadingState) {
+              return LoadingWidget();
+            } else if (state is ProductsErrorState) {
+              return Center(
+                child: GenericState(
+                  imagePath: Constants.imagePath["error"],
+                  titleKey: AppLocalizations.of(context).translate("error_title"),
+                  bodyKey: state.message,
+                  buttonKey: AppLocalizations.of(context).translate("refresh"),
+                  onPress: () {
+                    productBloc.add(
+                      GetProductsEvent(
+                        categoryID: widget.categoryId,
+                        isLoadMoreMode: false,
+                      ),
+                    );
+                  },
+                ),
+              );
+            }
+            return Container();
+          },
         ),
       ),
     );

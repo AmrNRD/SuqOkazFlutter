@@ -36,6 +36,8 @@ abstract class ProductsDataRepository {
 
   Future<dynamic> getProductsWithInclude(List<int> include);
 
+  Future<dynamic> getProductVariationsById(int id, int varId);
+
   Future<List<ProductVariation>> getProductVariations(int id);
 }
 
@@ -127,5 +129,10 @@ class ProductsRepository extends ProductsDataRepository {
       temp.add(ProductVariation.fromJson(element));
     });
     return temp;
+  }
+
+  @override
+  Future getProductVariationsById(int id, int varId) async {
+    return await productsService.getProductVariationById(id, varId);
   }
 }

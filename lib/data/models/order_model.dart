@@ -1,3 +1,5 @@
+import 'package:suqokaz/data/models/product_model.dart';
+
 import '../../utils/GuardParser.dart';
 import 'address_model.dart';
 
@@ -52,6 +54,7 @@ class ProductItem {
   int quantity;
   String total;
   String price;
+  List<Attribute> attribute;
 
   ProductItem({
     this.productId,
@@ -61,6 +64,7 @@ class ProductItem {
     this.total,
     this.featuredImage,
     this.price,
+    this.attribute,
   });
 
   ProductItem.fromJson(Map<String, dynamic> parsedJson) {
@@ -79,5 +83,35 @@ class ProductItem {
       "total": total,
       "price": price,
     };
+  }
+}
+
+class ProductItemAttribute {
+  int id;
+  String name;
+  String value;
+
+  ProductItemAttribute();
+
+  ProductItemAttribute.fromJson(Map<String, dynamic> parsedJson) {
+    id = parsedJson["id"];
+    name = parsedJson["key"];
+    var sad = int.tryParse(parsedJson["value"]);
+    if (sad == null) {
+      value = Uri.decodeFull(parsedJson["value"]).toString().toUpperCase();
+      print(value);
+    } else {
+      value = parsedJson["value"].toString().toUpperCase();
+    }
+  }
+
+  ProductItemAttribute.fromLocalJson(Map<String, dynamic> parsedJson) {
+    id = parsedJson["id"];
+    name = parsedJson["key"];
+    value = parsedJson["value"];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {"id": id, "key": name, "value": value};
   }
 }

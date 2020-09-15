@@ -147,11 +147,9 @@ class AppDataBase extends _$AppDataBase {
 
   Future insertCartItem(CartItem cartItemData) => into(cartItems).insert(cartItemData);
   Future updateCartItem(CartItem cartItemData) => update(cartItems).replace(cartItemData);
-  Future deleteCartItem(int id) => (delete(cartItems)
-        ..where(
-          (c) => c.id.equals(id),
-        ))
-      .go();
+  Future<void> deleteCartItem(int id, {int varId}) async {
+    return await customStatement("DELETE FROM cart_items WHERE id = ? and variation_id = ?;", [id, varId]);
+  }
 
   // Address CRUD
   Stream<List<AddressModel>> watchAllAddress() => select(address).watch();

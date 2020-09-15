@@ -23,9 +23,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   bool firstTimeCall = true;
 
   CartData cartData;
-  Map<int, int> productIdToQuantity = {};
-  Map<int, CartItem> productIdToCartItem = {};
-  Map<int, ProductItem> productIdToProductItem = {};
+  Map<String, int> productIdToQuantity = {};
+  Map<String, CartItem> productIdToCartItem = {};
+  Map<String, ProductItem> productIdToProductItem = {};
 
   double totalPrice = 0;
 
@@ -42,14 +42,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         productIdToCartItem,
       );
     } else if (event is RemovedItemInCartEvent) {
-      totalPrice -= double.parse(productIdToProductItem[event.productId].price) * productIdToQuantity[event.productId];
-      await _cartDataRepository.deleteCartItem(event.productId);
+      totalPrice -=
+          double.parse(productIdToProductItem[event.productId.toString() + event.variationId.toString()].price) *
+              productIdToQuantity[event.productId.toString() + event.variationId.toString()];
+      await _cartDataRepository.deleteCartItem(event.productId, event.variationId);
       if (productIdToCartItem.values.toList().isEmpty) {
-        await _cartDataRepository.deleteCart(productIdToCartItem[event.productId].cartId);
+        await _cartDataRepository
+            .deleteCart(productIdToCartItem[event.productId.toString() + event.variationId.toString()].cartId);
       }
-      productIdToQuantity.remove(event.productId);
-      productIdToCartItem.remove(event.productId);
-      productIdToProductItem.remove(event.productId);
+      productIdToQuantity.remove(event.productId.toString() + event.variationId.toString());
+      productIdToCartItem.remove(event.productId.toString() + event.variationId.toString());
+      productIdToProductItem.remove(event.productId.toString() + event.variationId.toString());
       totalCartQuantity = await _cartDataRepository.getCartItemsCount(cartData.id);
       yield CartLoadedState(productIdToProductItem.values.toList(), totalCartQuantity, productIdToCartItem);
     } else if (event is DecreaseItemInCartEvent) {
@@ -101,24 +104,29 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         );
       }
 
-      productIdToCartItem[event._productModel.id] = cartItem;
-      productIdToQuantity[event._productModel.id] = cartItem.quantity;
+      productIdToCartItem[event._productModel.id.toString() + event.variationId.toString() ??
+          event._productModel.defaultVariationId.toString()] = cartItem;
+      productIdToQuantity[event._productModel.id.toString() + event.variationId.toString() ??
+          event._productModel.defaultVariationId.toString()] = cartItem.quantity;
 
       ProductItem productItem = ProductItem(
         productId: event._productModel.id,
-        quantity: productIdToQuantity[event._productModel.id],
+        quantity: productIdToQuantity[event._productModel.id.toString() + event.variationId.toString()],
         featuredImage: event._productModel.imageFeature,
         name: event._productModel.name,
         price: event._productModel.price,
-        total:
-            (double.parse(event._productModel.price) * productIdToQuantity[event._productModel.id]).toStringAsFixed(2),
+        variationId: event.variationId,
+        attribute: event.attributes,
+        total: (double.parse(event._productModel.price) *
+                productIdToQuantity[event._productModel.id.toString() + event.variationId.toString()])
+            .toStringAsFixed(2),
       );
 
-      productIdToProductItem[event._productModel.id] = productItem;
-      productIdToProductItem[event._productModel.id].total =
-          (double.parse(productIdToProductItem[event._productModel.id].price) *
-                  productIdToQuantity[event._productModel.id])
-              .toStringAsFixed(2);
+      productIdToProductItem[event._productModel.id.toString() + event.variationId.toString()] = productItem;
+      productIdToProductItem[event._productModel.id.toString() + event.variationId.toString()].total = (double.parse(
+                  productIdToProductItem[event._productModel.id.toString() + event.variationId.toString()].price) *
+              productIdToQuantity[event._productModel.id.toString() + event.variationId.toString()])
+          .toStringAsFixed(2);
       totalPrice += double.parse(productItem.total);
       totalCartQuantity = await _cartDataRepository.getCartItemsCount(cartData.id);
 
@@ -144,28 +152,32 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       List<CartItem> cartItems = await _cartDataRepository.getCartItems(
         cartData.id,
       );
-      print(cartItems);
-      print(cartItems.length);
       if (cartItems.isNotEmpty) {
         totalCartQuantity = await _cartDataRepository.getCartItemsCount(cartData.id);
-        List<int> includeList = [];
-        cartItems.forEach((element) {
-          productIdToQuantity[element.id] = element.quantity;
-          productIdToCartItem[element.id] = element;
-          includeList.add(element.id);
-        });
-        var rawData = await _productsDataRepository.getProductsWithInclude(includeList);
-        rawData.forEach((element) {
-          ProductModel productModel;
-          productModel = ProductModel.fromJson(element);
-          productIdToProductItem[productModel.id] = ProductItem(
+        await Future.forEach(cartItems, (element) async {
+          productIdToQuantity[element.id.toString() + element.variationId.toString()] = element.quantity;
+          productIdToCartItem[element.id.toString() + element.variationId.toString()] = element;
+
+          var productRawData = await _productsDataRepository.getProductDetails(productId: element.id.toString());
+          ProductModel productModel = ProductModel.fromJson(productRawData);
+          var varRawData = await _productsDataRepository.getProductVariationsById(element.id, element.variationId);
+
+          ProductVariation variation = ProductVariation.fromJson(varRawData);
+
+          productIdToProductItem[productModel.id.toString() + element.variationId.toString()] = ProductItem(
             productId: productModel.id,
-            quantity: productIdToQuantity[productModel.id],
+            quantity: productIdToQuantity[productModel.id.toString() + element.variationId.toString()],
             name: productModel.name,
-            price: productModel.price,
-            total: (double.parse(productModel.price) * productIdToQuantity[productModel.id]).toStringAsFixed(2),
+            featuredImage: productModel.imageFeature,
+            variationId: variation.id,
+            price: variation.price,
+            attribute: variation.attributes,
+            total: (double.parse(productModel.price) *
+                    productIdToQuantity[productModel.id.toString() + element.variationId.toString()])
+                .toStringAsFixed(2),
           );
-          totalPrice += (double.parse(productModel.price) * productIdToQuantity[productModel.id]);
+          totalPrice += (double.parse(productModel.price) *
+              productIdToQuantity[productModel.id.toString() + element.variationId.toString()]);
         });
       } else {
         await _cartDataRepository.deleteCart(cartData.id);
@@ -176,11 +188,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   updateCartItem(bool isIncrement, int productId, int variationId) async {
     //Update all the trackers with the new value
-    isIncrement ? productIdToQuantity[productId]++ : productIdToQuantity[productId]--;
+    isIncrement
+        ? productIdToQuantity[productId.toString() + variationId.toString()]++
+        : productIdToQuantity[productId.toString() + variationId.toString()]--;
     CartItem cartItem = CartItem(
-      cartId: productIdToCartItem[productId].cartId,
-      id: productIdToCartItem[productId].id,
-      quantity: productIdToQuantity[productId],
+      cartId: productIdToCartItem[productId.toString() + variationId.toString()].cartId,
+      id: productIdToCartItem[productId.toString() + variationId.toString()].id,
+      quantity: productIdToQuantity[productId.toString() + variationId.toString()],
       variationId: variationId ?? 0,
     );
     await _cartDataRepository.updateCartItem(
@@ -189,11 +203,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     totalCartQuantity++;
     //Update the effected product in the list
 
-    productIdToProductItem[productId].quantity = productIdToQuantity[productId];
-    productIdToProductItem[productId].total =
-        (double.parse(productIdToProductItem[productId].price) * productIdToQuantity[productId]).toStringAsFixed(2);
+    productIdToProductItem[productId.toString() + variationId.toString()].quantity = productIdToQuantity[productId];
+    productIdToProductItem[productId.toString() + variationId.toString()].total =
+        (double.parse(productIdToProductItem[productId.toString() + variationId.toString()].price) *
+                productIdToQuantity[productId.toString() + variationId.toString()])
+            .toStringAsFixed(2);
     totalPrice = isIncrement
-        ? totalPrice + (double.parse(productIdToProductItem[productId].price))
-        : totalPrice - (double.parse(productIdToProductItem[productId].price));
+        ? totalPrice + (double.parse(productIdToProductItem[productId.toString() + variationId.toString()].price))
+        : totalPrice - (double.parse(productIdToProductItem[productId.toString() + variationId.toString()].price));
   }
 }

@@ -53,6 +53,7 @@ class _ProductDetailsComponentState extends State<ProductDetailsComponent> {
       createAttributeList();
       setState(() {
         _attributeList;
+        updateQuantity(1);
       });
     });
   }
@@ -145,7 +146,6 @@ class _ProductDetailsComponentState extends State<ProductDetailsComponent> {
           foundedInCommonVariations = true;
           setState(() {
             _variationHelper.selectedVariation = widget.productModel.variations.indexOf(variation);
-
             _variationHelper.commonVariations = [];
             createAttributeList();
           });

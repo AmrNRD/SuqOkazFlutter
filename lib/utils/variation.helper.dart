@@ -17,14 +17,14 @@ class VariationHelper {
     selectedVariation = selectedVariationIndex;
     commonVariationLocatorBuilder();
     //TODO refactor commonVariationFinder
-    print("TEST");
-    print(productModel.variations[selectedVariationIndex].attributes[0].name);
-    print(productModel.variations[selectedVariationIndex].attributes[0].option);
+    // print("TEST");
+    // print(productModel.variations[selectedVariationIndex].attributes[0].name);
+    // print(productModel.variations[selectedVariationIndex].attributes[0].option);
     commonVariationFinder(
       productModel.variations[selectedVariationIndex].attributes[0].name,
       productModel.variations[selectedVariationIndex].attributes[0].option,
     );
-    print("TEST");
+    //print("TEST");
   }
 
   commonVariationLocatorBuilder() {
@@ -53,7 +53,7 @@ class VariationHelper {
         }
       }
     }
-    print(commonVariationLocator.toString());
+    //print(commonVariationLocator.toString());
   }
 
   commonVariationFinder(String filterName, String filterValue) {

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:suqokaz/data/sources/local/local.database.dart';
 
 class CartService {
@@ -38,8 +39,8 @@ class CartService {
     return appDataBase.insertCartItem(cartItem);
   }
 
-  Future deleteCartItem(int itemId) {
-    return appDataBase.deleteCartItem(itemId);
+  Future deleteCartItem(int itemId, {@required int varId}) async {
+    return await appDataBase.deleteCartItem(itemId, varId: varId);
   }
 
   Future updateCartItem(CartItem cartItem) {
