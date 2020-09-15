@@ -10,10 +10,12 @@ import 'package:suqokaz/utils/core.util.dart';
 
 class CartItemFavRemoveComponent extends StatelessWidget {
   final ProductItem productItem;
+  final int variationId;
 
   const CartItemFavRemoveComponent({
     Key key,
     @required this.productItem,
+    @required this.variationId,
   }) : super(key: key);
 
   @override
@@ -34,8 +36,7 @@ class CartItemFavRemoveComponent extends StatelessWidget {
                 width: AppDimens.marginDefault8,
               ),
               Text(
-                AppLocalizations.of(context).translate("move_wishlist",
-                    defaultText: "Move to wishlist"),
+                AppLocalizations.of(context).translate("move_wishlist", defaultText: "Move to wishlist"),
                 style: Theme.of(context).textTheme.headline3.copyWith(
                       color: Color(0xFFB1B1B1),
                     ),
@@ -52,7 +53,7 @@ class CartItemFavRemoveComponent extends StatelessWidget {
         InkWell(
           onTap: () {
             BlocProvider.of<CartBloc>(context).add(
-              RemovedItemInCartEvent(productItem.productId),
+              RemovedItemInCartEvent(productItem.productId, variationId),
             );
           },
           child: Row(
@@ -65,12 +66,8 @@ class CartItemFavRemoveComponent extends StatelessWidget {
               ),
               SizedBox(width: AppDimens.marginDefault8),
               Text(
-                AppLocalizations.of(context)
-                    .translate("remove", defaultText: "Remove"),
-                style: Theme.of(context)
-                    .textTheme
-                    .headline3
-                    .copyWith(color: Color(0xFFB1B1B1)),
+                AppLocalizations.of(context).translate("remove", defaultText: "Remove"),
+                style: Theme.of(context).textTheme.headline3.copyWith(color: Color(0xFFB1B1B1)),
               ),
             ],
           ),

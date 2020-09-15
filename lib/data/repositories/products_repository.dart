@@ -35,6 +35,7 @@ abstract class ProductsDataRepository {
   });
 
   Future<dynamic> getProductsWithInclude(List<int> include);
+
   Future<List<ProductVariation>> getProductVariations(int id);
 }
 

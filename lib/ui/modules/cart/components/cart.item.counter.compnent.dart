@@ -6,9 +6,13 @@ import 'package:suqokaz/ui/style/app.colors.dart';
 
 class CartItemCounter extends StatelessWidget {
   final ProductItem productItem;
+  final int variationId;
 
-  const CartItemCounter({Key key, @required this.productItem})
-      : super(key: key);
+  const CartItemCounter({
+    Key key,
+    @required this.productItem,
+    @required this.variationId,
+  }) : super(key: key);
   @override
   build(BuildContext context) {
     return Row(
@@ -47,6 +51,7 @@ class CartItemCounter extends StatelessWidget {
                             BlocProvider.of<CartBloc>(context).add(
                               DecreaseItemInCartEvent(
                                 productItem.productId,
+                                variationId,
                               ),
                             );
                           }
@@ -104,6 +109,7 @@ class CartItemCounter extends StatelessWidget {
                           BlocProvider.of<CartBloc>(context).add(
                             IncreaseItemInCartEvent(
                               productItem.productId,
+                              variationId,
                             ),
                           );
                         },

@@ -34,8 +34,7 @@ class _ProductGridViewBuilderState extends State<ProductGridViewBuilder> {
   @override
   void initState() {
     super.initState();
-    productIdToCartItem =
-        BlocProvider.of<CartBloc>(context).productIdToCartItem;
+    productIdToCartItem = BlocProvider.of<CartBloc>(context).productIdToCartItem;
   }
 
   @override
@@ -53,12 +52,10 @@ class _ProductGridViewBuilderState extends State<ProductGridViewBuilder> {
                     removeButton: true,
                     imagePath: Constants.imagePath["empty_box"],
                     //TODO: Translate
-                    titleKey: AppLocalizations.of(context)
-                        .translate("todo", defaultText: "No products founcs"),
+                    titleKey: AppLocalizations.of(context).translate("todo", defaultText: "No products founcs"),
                     bodyKey: AppLocalizations.of(context).translate(
                       "todo",
-                      defaultText:
-                          "Sorry no product were found in this category.",
+                      defaultText: "Sorry no product were found in this category.",
                     ),
                   ),
                 )
@@ -74,12 +71,8 @@ class _ProductGridViewBuilderState extends State<ProductGridViewBuilder> {
                           duration: Duration(seconds: 1),
                           backgroundColor: Colors.green,
                           content: Text(
-                            AppLocalizations.of(context)
-                                .translate(state.message),
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline2
-                                .copyWith(color: Colors.red),
+                            AppLocalizations.of(context).translate(state.message),
+                            style: Theme.of(context).textTheme.headline2.copyWith(color: Colors.red),
                           ),
                         ),
                       );
@@ -101,9 +94,8 @@ class _ProductGridViewBuilderState extends State<ProductGridViewBuilder> {
                       return ProductCardComponent(
                         allowMargin: false,
                         product: widget.products[index],
-                        isInCart: productIdToCartItem
-                                .containsKey(widget.products[index].id) ??
-                            false,
+                        variationId: widget.products[index].defaultVariationId,
+                        isInCart: productIdToCartItem.containsKey(widget.products[index].id) ?? false,
                         onItemTap: () {
                           Navigator.pushNamed(
                             context,

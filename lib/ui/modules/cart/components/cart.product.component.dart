@@ -7,10 +7,12 @@ import 'package:suqokaz/utils/core.util.dart';
 
 class ProductCartComponent extends StatelessWidget {
   final ProductItem productItem;
+  final int variationId;
 
   const ProductCartComponent({
     Key key,
     @required this.productItem,
+    @required this.variationId,
   }) : super(key: key);
 
   @override
@@ -43,10 +45,7 @@ class ProductCartComponent extends StatelessWidget {
                         "currency",
                         replacement: productItem.price,
                       ),
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText2
-                          .copyWith(fontWeight: FontWeight.w700),
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(fontWeight: FontWeight.w700),
                     ),
                   ],
                 ),
@@ -85,9 +84,11 @@ class ProductCartComponent extends StatelessWidget {
             children: <Widget>[
               CartItemCounter(
                 productItem: productItem,
+                variationId: variationId,
               ),
               CartItemFavRemoveComponent(
                 productItem: productItem,
+                variationId: variationId,
               ),
             ],
           ),

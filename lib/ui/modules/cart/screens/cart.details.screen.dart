@@ -35,6 +35,7 @@ class CartDetailsScreen extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       return ProductCartComponent(
                         productItem: productItems[index],
+                        variationId: productItems[index].variationId,
                       );
                     },
                   ),
@@ -91,9 +92,7 @@ class CartDetailsScreen extends StatelessWidget {
                   startText: AppLocalizations.of(context).translate("order"),
                   endText: AppLocalizations.of(context).translate(
                     "currency",
-                    replacement: BlocProvider.of<CartBloc>(context)
-                        .totalPrice
-                        .toStringAsFixed(2),
+                    replacement: BlocProvider.of<CartBloc>(context).totalPrice.toStringAsFixed(2),
                   ),
                   highlight: true,
                 ),
@@ -102,8 +101,7 @@ class CartDetailsScreen extends StatelessWidget {
                 ),
                 InvoiceComponent(
                   startText: AppLocalizations.of(context).translate("discount"),
-                  endText: AppLocalizations.of(context)
-                      .translate("currency", replacement: "0.0"),
+                  endText: AppLocalizations.of(context).translate("currency", replacement: "0.0"),
                   isDiscount: true,
                 ),
                 SizedBox(
@@ -113,9 +111,7 @@ class CartDetailsScreen extends StatelessWidget {
                   startText: AppLocalizations.of(context).translate("total"),
                   endText: AppLocalizations.of(context).translate(
                     "currency",
-                    replacement: BlocProvider.of<CartBloc>(context)
-                        .totalPrice
-                        .toStringAsFixed(2),
+                    replacement: BlocProvider.of<CartBloc>(context).totalPrice.toStringAsFixed(2),
                   ),
                 ),
                 SizedBox(

@@ -60,11 +60,9 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       duration: Duration(milliseconds: 500),
     );
 
-    productIdToCartItem =
-        BlocProvider.of<CartBloc>(context).productIdToCartItem;
+    productIdToCartItem = BlocProvider.of<CartBloc>(context).productIdToCartItem;
     listController.addListener(() {
-      if (listController.position.pixels ==
-          listController.position.maxScrollExtent) {
+      if (listController.position.pixels == listController.position.maxScrollExtent) {
         if (!lastPageReached) {
           setState(() {
             showLoading = true;
@@ -170,10 +168,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       backgroundColor: Colors.green,
                       content: Text(
                         AppLocalizations.of(context).translate(state.message),
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline2
-                            .copyWith(color: Colors.red),
+                        style: Theme.of(context).textTheme.headline2.copyWith(color: Colors.red),
                       ),
                     ),
                   );
@@ -207,8 +202,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       print("searching");
 
       // Search products
-      Future<dynamic> productsFuture =
-          productsRepository.getCustomizableProducts(
+      Future<dynamic> productsFuture = productsRepository.getCustomizableProducts(
         lang: AppLocalizations.of(context).locale.toLanguageTag(),
         pageIndex: currentPage,
         perPage: 10,
@@ -316,14 +310,26 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
             ),
           ),
           onItemFound: (ProductModel productData, int index) {
-            return DelayedAnimation(
-              animationController: _controller,
-              child: isList
-                  ? ProductCardLongComponent(
+            return isList
+                ? ProductCardLongComponent(
+                    product: productData,
+                    variationId: productData.defaultVariationId,
+                    isInCart: productIdToCartItem.containsKey(productData.id) ?? false,
+                    onItemTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        Constants.productDetailsPage,
+                        arguments: productData,
+                      );
+                    },
+                  )
+                : Container(
+                    margin: EdgeInsets.only(bottom: 16),
+                    child: ProductCardComponent(
                       product: productData,
-                      isInCart:
-                          productIdToCartItem.containsKey(productData.id) ??
-                              false,
+                      allowMargin: false,
+                      variationId: productData.defaultVariationId,
+                      isInCart: productIdToCartItem.containsKey(productData.id) ?? false,
                       onItemTap: () {
                         Navigator.pushNamed(
                           context,
@@ -331,25 +337,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                           arguments: productData,
                         );
                       },
-                    )
-                  : Container(
-                      margin: EdgeInsets.only(bottom: 16),
-                      child: ProductCardComponent(
-                        product: productData,
-                        allowMargin: false,
-                        isInCart:
-                            productIdToCartItem.containsKey(productData.id) ??
-                                false,
-                        onItemTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            Constants.productDetailsPage,
-                            arguments: productData,
-                          );
-                        },
-                      ),
                     ),
-            );
+                  );
           },
           onError: (_) {
             return Center(

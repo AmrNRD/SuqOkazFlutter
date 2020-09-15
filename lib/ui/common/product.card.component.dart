@@ -11,6 +11,7 @@ import '../style/app.colors.dart';
 class ProductCardComponent extends StatelessWidget {
   final Function onItemTap;
   final ProductModel product;
+  final int variationId;
   final bool allowMargin;
   final bool isInCart;
   final bool inInFav;
@@ -22,6 +23,7 @@ class ProductCardComponent extends StatelessWidget {
     this.isInCart = false,
     this.allowMargin = true,
     this.inInFav = false,
+    @required this.variationId,
   }) : super(key: key);
 
   @override
@@ -83,10 +85,7 @@ class ProductCardComponent extends StatelessWidget {
                                   "currency",
                                   replacement: product.price,
                                 ),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2
-                                    .copyWith(fontWeight: FontWeight.w700),
+                                style: Theme.of(context).textTheme.bodyText2.copyWith(fontWeight: FontWeight.w700),
                               ),
                             ),
                             InkWell(
@@ -95,13 +94,11 @@ class ProductCardComponent extends StatelessWidget {
                                     ? BlocProvider.of<CartBloc>(context).add(
                                         RemovedItemInCartEvent(
                                           product.id,
+                                          variationId,
                                         ),
                                       )
                                     : BlocProvider.of<CartBloc>(context).add(
-                                        AddProductToCartEvent(
-                                          product,
-                                          1,
-                                        ),
+                                        AddProductToCartEvent(product, 1, product.defaultVariationId),
                                       );
                               },
                               child: isInCart
@@ -147,9 +144,7 @@ class ProductCardComponent extends StatelessWidget {
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline3
-                                    .copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: AppColors.accentColor2),
+                                    .copyWith(fontWeight: FontWeight.w500, color: AppColors.accentColor2),
                               ),
                             )
                           : Container(),

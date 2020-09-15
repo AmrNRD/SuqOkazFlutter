@@ -29,6 +29,7 @@ class ProductModel {
   int stockQuantity;
   int minQuantity;
   int maxQuantity;
+  int defaultVariationId;
   bool manageStock;
 
   /// is to check the type affiliate, simple, variant
@@ -43,6 +44,7 @@ class ProductModel {
   ProductModel.fromJson(Map<String, dynamic> parsedJson) {
     try {
       id = parsedJson["id"];
+      defaultVariationId = parsedJson["variations"][0];
       categoryName = parsedJson["categories"][0]["name"];
       name = parsedJson["name"];
       type = parsedJson["type"];
@@ -281,6 +283,7 @@ class ProductVariation {
   String price;
   String regularPrice;
   String salePrice;
+  String image;
   bool onSale;
   bool inStock;
   int stockQuantity;
@@ -292,6 +295,7 @@ class ProductVariation {
 
   ProductVariation.fromJson(Map<String, dynamic> parsedJson) {
     id = parsedJson["id"];
+    image = parsedJson["image"]["src"];
     price = parsedJson["price"] != null || parsedJson["sale_price"].isNotEmpty
         ? double.parse(parsedJson["price"].toString()).toStringAsFixed(2)
         : "";

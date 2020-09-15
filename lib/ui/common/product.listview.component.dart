@@ -29,14 +29,11 @@ class ProductListViewComponent extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ProductListViewComponentState createState() =>
-      _ProductListViewComponentState();
+  _ProductListViewComponentState createState() => _ProductListViewComponentState();
 }
 
 class _ProductListViewComponentState extends State<ProductListViewComponent>
-    with
-        AutomaticKeepAliveClientMixin<ProductListViewComponent>,
-        TickerProviderStateMixin {
+    with AutomaticKeepAliveClientMixin<ProductListViewComponent>, TickerProviderStateMixin {
   @override
   bool get wantKeepAlive {
     return true;
@@ -57,8 +54,7 @@ class _ProductListViewComponentState extends State<ProductListViewComponent>
   @override
   void initState() {
     super.initState();
-    animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
 
     productBloc = ProductBloc(
       ProductsRepository(),
@@ -76,8 +72,7 @@ class _ProductListViewComponentState extends State<ProductListViewComponent>
     if (widget.categoryId != null) {
       _scrollController.addListener(
         () {
-          if (_scrollController.position.pixels ==
-              _scrollController.position.maxScrollExtent) {
+          if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
             productBloc.add(
               GetProductsEvent(
                   categoryID: widget.categoryId,
@@ -123,8 +118,7 @@ class _ProductListViewComponentState extends State<ProductListViewComponent>
           child: BlocBuilder<ProductBloc, ProductState>(
             buildWhen: (prev, current) {
               print(current.runtimeType);
-              if (current is ProductsLoadingState &&
-                  prev is ProductsLoadedState) {
+              if (current is ProductsLoadingState && prev is ProductsLoadedState) {
                 return false;
               } else if (current is ProductsLoadedState) {
                 if (current.isLoadMoreMode) {
@@ -160,11 +154,9 @@ class _ProductListViewComponentState extends State<ProductListViewComponent>
                 return Center(
                   child: GenericState(
                     imagePath: Constants.imagePath["error"],
-                    titleKey:
-                        AppLocalizations.of(context).translate("error_title"),
+                    titleKey: AppLocalizations.of(context).translate("error_title"),
                     bodyKey: state.message,
-                    buttonKey:
-                        AppLocalizations.of(context).translate("refresh"),
+                    buttonKey: AppLocalizations.of(context).translate("refresh"),
                     onPress: () {
                       productBloc.add(
                         GetProductsEvent(

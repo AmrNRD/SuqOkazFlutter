@@ -23,19 +23,12 @@ class OrderModel {
     customerNote = GuardParser.safeCast<String>(parsedJson["customer_note"]);
     number = GuardParser.safeCast<String>(parsedJson["number"]);
     status = GuardParser.safeCast<String>(parsedJson["status"]);
-    createdAt = parsedJson["date_created"] != null
-        ? DateTime.parse(parsedJson["date_created"])
-        : DateTime.now();
-    dateModified = parsedJson["date_modified"] != null
-        ? DateTime.parse(parsedJson["date_modified"])
-        : DateTime.now();
-    total = GuardParser.safeCast<double>(
-        parsedJson["total"] != null ? double.parse(parsedJson["total"]) : 0.0);
-    totalTax = GuardParser.safeCast<double>(parsedJson["total_tax"] != null
-        ? double.parse(parsedJson["total_tax"])
-        : 0.0);
-    paymentMethodTitle =
-        GuardParser.safeCast<String>(parsedJson["payment_method_title"]);
+    createdAt = parsedJson["date_created"] != null ? DateTime.parse(parsedJson["date_created"]) : DateTime.now();
+    dateModified = parsedJson["date_modified"] != null ? DateTime.parse(parsedJson["date_modified"]) : DateTime.now();
+    total = GuardParser.safeCast<double>(parsedJson["total"] != null ? double.parse(parsedJson["total"]) : 0.0);
+    totalTax =
+        GuardParser.safeCast<double>(parsedJson["total_tax"] != null ? double.parse(parsedJson["total_tax"]) : 0.0);
+    paymentMethodTitle = GuardParser.safeCast<String>(parsedJson["payment_method_title"]);
     currency = GuardParser.safeCast<String>(parsedJson["currency"]);
 
     parsedJson["line_items"].forEach((item) {
@@ -43,8 +36,7 @@ class OrderModel {
     });
 
     billing = Address.fromJson(parsedJson["billing"]);
-    shippingMethodTitle = parsedJson["shipping_lines"] != null &&
-            parsedJson["shipping_lines"].length > 0
+    shippingMethodTitle = parsedJson["shipping_lines"] != null && parsedJson["shipping_lines"].length > 0
         ? parsedJson["shipping_lines"][0]["method_title"]
         : null;
   }
@@ -54,6 +46,7 @@ class OrderModel {
 
 class ProductItem {
   int productId;
+  int variationId;
   String name;
   String featuredImage;
   int quantity;
@@ -62,6 +55,7 @@ class ProductItem {
 
   ProductItem({
     this.productId,
+    this.variationId,
     this.name,
     this.quantity,
     this.total,
@@ -71,6 +65,7 @@ class ProductItem {
 
   ProductItem.fromJson(Map<String, dynamic> parsedJson) {
     productId = GuardParser.safeCast<int>(parsedJson["product_id"]);
+    variationId = GuardParser.safeCast<int>(parsedJson["variation_id"]);
     name = GuardParser.safeCast<String>(parsedJson["name"]);
     quantity = GuardParser.safeCast<int>(parsedJson["quantity"]);
     total = GuardParser.safeCast<String>(parsedJson["total"]);
@@ -82,7 +77,7 @@ class ProductItem {
       "name": name,
       "quantity": quantity,
       "total": total,
-      "price": price
+      "price": price,
     };
   }
 }

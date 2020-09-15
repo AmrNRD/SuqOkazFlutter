@@ -17,19 +17,16 @@ class Category extends Table {
 
 class Cart extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get addressId =>
-      integer().nullable().customConstraint("REFERENCES address(id)")();
+  IntColumn get addressId => integer().nullable().customConstraint("REFERENCES address(id)")();
   TextColumn get shippingMethodId => text().nullable()();
   TextColumn get discountCoupon => text().nullable()();
 }
 
 class CartItems extends Table {
   IntColumn get id => integer()();
+  IntColumn get variationId => integer().nullable()();
   IntColumn get cartId => integer().customConstraint("REFERENCES cart(id)")();
   IntColumn get quantity => integer()();
-
-  @override
-  Set<Column> get primaryKey => {id};
 }
 
 class Wishlist extends Table {
@@ -58,14 +55,13 @@ class AppDataBase extends _$AppDataBase {
   AppDataBase() : super(_openConnection());
 
   static FlutterQueryExecutor _openConnection() {
-    return FlutterQueryExecutor.inDatabaseFolder(
-        path: "db.ralph", logStatements: true);
+    return FlutterQueryExecutor.inDatabaseFolder(path: "db.ralph", logStatements: true);
   }
 
   // you should bump this number whenever you change or add a table definition. Migrations
   // are covered later in this readme.
   @override
-  int get schemaVersion => 11;
+  int get schemaVersion => 13;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
@@ -97,10 +93,8 @@ class AppDataBase extends _$AppDataBase {
           (c) => c.id.equals(id),
         ))
       .get();
-  Future insertCategory(CategoryData categoryData) =>
-      into(category).insert(categoryData);
-  Future updateCategory(CategoryData categoryData) =>
-      update(category).replace(categoryData);
+  Future insertCategory(CategoryData categoryData) => into(category).insert(categoryData);
+  Future updateCategory(CategoryData categoryData) => update(category).replace(categoryData);
   Future deleteCategory(int id) => (delete(category)
         ..where(
           (c) => c.id.equals(id),
@@ -134,15 +128,25 @@ class AppDataBase extends _$AppDataBase {
     return totalQuant;
   }
 
-  Future<CartItem> getCartItemById(int id) => (select(cartItems)
+  Future<CartItem> getCartItemById(int id, {int varId}) async {
+    List<CartItem> cartItems = await _getCartItemById(id);
+    CartItem selectedCartItem;
+    if (cartItems.isNotEmpty) {
+      selectedCartItem = cartItems.firstWhere((element) => element.variationId == varId, orElse: () {
+        return null;
+      });
+    }
+    return selectedCartItem;
+  }
+
+  Future<List<CartItem>> _getCartItemById(int id) => (select(cartItems)
         ..where(
           (c) => c.id.equals(id),
         ))
-      .getSingle();
-  Future insertCartItem(CartItem cartItemData) =>
-      into(cartItems).insert(cartItemData);
-  Future updateCartItem(CartItem cartItemData) =>
-      update(cartItems).replace(cartItemData);
+      .get();
+
+  Future insertCartItem(CartItem cartItemData) => into(cartItems).insert(cartItemData);
+  Future updateCartItem(CartItem cartItemData) => update(cartItems).replace(cartItemData);
   Future deleteCartItem(int id) => (delete(cartItems)
         ..where(
           (c) => c.id.equals(id),
@@ -158,10 +162,8 @@ class AppDataBase extends _$AppDataBase {
           (c) => c.id.equals(id),
         ))
       .getSingle();
-  Future insertAddress(AddressModel addressData) =>
-      into(address).insert(addressData);
-  Future updateAddress(AddressModel addressData) =>
-      update(address).replace(addressData);
+  Future insertAddress(AddressModel addressData) => into(address).insert(addressData);
+  Future updateAddress(AddressModel addressData) => update(address).replace(addressData);
   Future deleteAddress(int id) => (delete(address)
         ..where(
           (c) => c.id.equals(id),

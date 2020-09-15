@@ -71,6 +71,7 @@ class _ProductHorizontalListViewState extends State<ProductHorizontalListView> {
                   ),
                   child: ProductCardComponent(
                     product: widget.products[index],
+                    variationId: widget.products[index].defaultVariationId,
                     isInCart: productIdToCartItem.containsKey(widget.products[index].id) ?? false,
                   ),
                 );

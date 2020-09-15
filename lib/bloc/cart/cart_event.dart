@@ -7,9 +7,11 @@ abstract class CartEvent extends Equatable {
 class AddProductToCartEvent extends CartEvent {
   final ProductModel _productModel;
   final int quantity;
+  final int variationId;
   AddProductToCartEvent(
     this._productModel,
     this.quantity,
+    this.variationId,
   );
 
   @override
@@ -23,24 +25,27 @@ class GetCartEvent extends CartEvent {
 
 class IncreaseItemInCartEvent extends CartEvent {
   final int productId;
+  final int variationId;
 
-  IncreaseItemInCartEvent(this.productId);
+  IncreaseItemInCartEvent(this.productId, this.variationId);
   @override
   List<Object> get props => [this.productId];
 }
 
 class RemovedItemInCartEvent extends CartEvent {
   final int productId;
+  final int variationId;
 
-  RemovedItemInCartEvent(this.productId);
+  RemovedItemInCartEvent(this.productId, this.variationId);
   @override
   List<Object> get props => [this.productId];
 }
 
 class DecreaseItemInCartEvent extends CartEvent {
   final int productId;
+  final int variationId;
 
-  DecreaseItemInCartEvent(this.productId);
+  DecreaseItemInCartEvent(this.productId, this.variationId);
   @override
   List<Object> get props => [this.productId];
 }

@@ -34,8 +34,7 @@ class _ProductListViewBuilderState extends State<ProductListViewBuilder> {
   @override
   void initState() {
     super.initState();
-    productIdToCartItem =
-        BlocProvider.of<CartBloc>(context).productIdToCartItem;
+    productIdToCartItem = BlocProvider.of<CartBloc>(context).productIdToCartItem;
   }
 
   @override
@@ -53,12 +52,10 @@ class _ProductListViewBuilderState extends State<ProductListViewBuilder> {
                     removeButton: true,
                     imagePath: Constants.imagePath["empty_box"],
                     //TODO: Translate
-                    titleKey: AppLocalizations.of(context)
-                        .translate("todo", defaultText: "No products founcs"),
+                    titleKey: AppLocalizations.of(context).translate("todo", defaultText: "No products founcs"),
                     bodyKey: AppLocalizations.of(context).translate(
                       "todo",
-                      defaultText:
-                          "Sorry no product were found in this category.",
+                      defaultText: "Sorry no product were found in this category.",
                     ),
                   ),
                 )
@@ -74,12 +71,8 @@ class _ProductListViewBuilderState extends State<ProductListViewBuilder> {
                           duration: Duration(seconds: 1),
                           backgroundColor: Colors.green,
                           content: Text(
-                            AppLocalizations.of(context)
-                                .translate(state.message),
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline2
-                                .copyWith(color: Colors.red),
+                            AppLocalizations.of(context).translate(state.message),
+                            style: Theme.of(context).textTheme.headline2.copyWith(color: Colors.red),
                           ),
                         ),
                       );
@@ -94,10 +87,9 @@ class _ProductListViewBuilderState extends State<ProductListViewBuilder> {
                     itemBuilder: (BuildContext context, int index) {
                       return ProductCardLongComponent(
                         allowMargin: false,
+                        variationId: widget.products[index].defaultVariationId,
                         product: widget.products[index],
-                        isInCart: productIdToCartItem
-                                .containsKey(widget.products[index].id) ??
-                            false,
+                        isInCart: productIdToCartItem.containsKey(widget.products[index].id) ?? false,
                         onItemTap: () {
                           Navigator.pushNamed(
                             context,

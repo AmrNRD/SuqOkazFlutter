@@ -131,6 +131,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     child: AddToCartButton(
                       productModel: widget.productModel,
                       activeButton: widget.productModel.variations[selectedVariation].inStock,
+                      variationId: variationId,
                     ),
                   ),
                 ],

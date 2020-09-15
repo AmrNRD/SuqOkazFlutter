@@ -10,6 +10,7 @@ import 'package:suqokaz/utils/core.util.dart';
 class ProductCardLongComponent extends StatelessWidget {
   final Function onItemTap;
   final ProductModel product;
+  final int variationId;
   final bool allowMargin;
   final bool isInCart;
   final bool isInFav;
@@ -21,6 +22,7 @@ class ProductCardLongComponent extends StatelessWidget {
     this.isInCart = false,
     this.allowMargin = true,
     this.isInFav = false,
+    @required this.variationId,
   }) : super(key: key);
 
   @override
@@ -76,10 +78,7 @@ class ProductCardLongComponent extends StatelessWidget {
                       "currency",
                       replacement: product.price,
                     ),
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText2
-                        .copyWith(fontWeight: FontWeight.w700),
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(fontWeight: FontWeight.w700),
                   ),
                 ],
               ),
@@ -113,12 +112,14 @@ class ProductCardLongComponent extends StatelessWidget {
                           ? BlocProvider.of<CartBloc>(context).add(
                               RemovedItemInCartEvent(
                                 product.id,
+                                variationId,
                               ),
                             )
                           : BlocProvider.of<CartBloc>(context).add(
                               AddProductToCartEvent(
                                 product,
                                 1,
+                                null,
                               ),
                             );
                     },

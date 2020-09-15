@@ -30,8 +30,8 @@ class CartService {
     return appDataBase.getAllCartItems(cartId);
   }
 
-  Future<CartItem> getCartItemById(int productId) {
-    return appDataBase.getCartItemById(productId);
+  Future<CartItem> getCartItemById(int productId, {int variationId}) {
+    return appDataBase.getCartItemById(productId, varId: variationId);
   }
 
   Future createCartItem(CartItem cartItem) {
