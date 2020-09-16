@@ -19,13 +19,13 @@ class HorizontalButtonsComponent extends StatelessWidget {
         children: <Widget>[
           buildButton(
             "assets/icons/history_icon.svg",
-            "Orders",
+            "orders",
             context,
             ()=>Navigator.pushNamed(context, Constants.myOrderPage),
           ),
           buildButton(
             "assets/icons/location_icon.svg",
-            "Addresses",
+            "addresses",
             context,
                 ()=>Navigator.pushNamed(context, Constants.addressesPage),
           ),

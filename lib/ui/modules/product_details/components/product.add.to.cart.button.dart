@@ -147,10 +147,8 @@ class _AddToCartButtonState extends State<AddToCartButton> {
                   child: Text(
                     widget.activeButton
                         ? AppLocalizations.of(context).translate("add_cart")
-                        : AppLocalizations.of(context).translate("todo", defaultText: "Out Of Stock !"),
-                    style: Theme.of(context).textTheme.headline2.copyWith(
-                          color: Colors.white,
-                        ),
+                        : AppLocalizations.of(context).translate("Out Of Stock !", defaultText: "Out Of Stock !"),
+                    style: Theme.of(context).textTheme.headline2.copyWith(color: Colors.white),
                   ),
                 ),
               ),
@@ -161,14 +159,14 @@ class _AddToCartButtonState extends State<AddToCartButton> {
                 child: InkWell(
                   onTap: widget.activeButton
                       ? () {
-                    BlocProvider.of<CartBloc>(context).add(
-                            AddProductToCartEvent(
-                              widget.productModel,
-                              productQuantity,
-                              widget.variationId,
-                              widget.attributes,
-                            ),
-                          );
+                   Root.user!=null? BlocProvider.of<CartBloc>(context).add(
+                     AddProductToCartEvent(
+                       widget.productModel,
+                       productQuantity,
+                       widget.variationId,
+                       widget.attributes,
+                     ),
+                   ): Navigator.of(context).pushNamedAndRemoveUntil(Constants.authPage, (Route<dynamic> route) => false);;
                   }
                       : null,
                 ),

@@ -37,7 +37,7 @@ class ProductViewModificationComponent extends StatelessWidget {
             icon: SvgPicture.asset("assets/icons/filter_icon.svg"),
             label: Text(
               AppLocalizations.of(context)
-                  .translate("todo", defaultText: "Filter By"),
+                  .translate("Filter By", defaultText: "Filter By"),
             ),
           ),
           Container(
@@ -52,7 +52,7 @@ class ProductViewModificationComponent extends StatelessWidget {
               icon: SvgPicture.asset("assets/icons/sort_icon.svg"),
               label: Text(
                 AppLocalizations.of(context)
-                    .translate("todo", defaultText: "Sort By"),
+                    .translate("Sort By", defaultText: "Sort By"),
               ),
             ),
           ),
@@ -64,9 +64,9 @@ class ProductViewModificationComponent extends StatelessWidget {
             label: Text(
               isListView
                   ? AppLocalizations.of(context)
-                      .translate("todo", defaultText: "GridView")
+                      .translate("GridView", defaultText: "GridView")
                   : AppLocalizations.of(context)
-                      .translate("todo", defaultText: "ListView"),
+                      .translate("ListView", defaultText: "ListView"),
             ),
           ),
         ],

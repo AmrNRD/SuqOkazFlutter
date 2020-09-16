@@ -306,9 +306,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             scaffoldKey: CheckoutPage.scaffoldKey,
                             backgroundColor: Colors.amber,
                             message: AppLocalizations.of(context).translate(
-                                "TODO",
+                                "Please Selected valid shipping method",
                                 defaultText:
-                                    "Please Selected valid shpping method"),
+                                "Please Selected valid shipping method"),
                           );
                         }
                       : _selectedAddressModel == null
@@ -318,7 +318,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 scaffoldKey: CheckoutPage.scaffoldKey,
                                 backgroundColor: Colors.amber,
                                 message: AppLocalizations.of(context).translate(
-                                    "TODO",
+                                    "Please Selected or create valid shipping address",
                                     defaultText:
                                         "Plesae Select or create a valid shipping address"),
                               );

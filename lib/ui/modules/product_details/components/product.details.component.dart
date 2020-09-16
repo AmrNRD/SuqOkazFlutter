@@ -232,7 +232,6 @@ class _ProductDetailsComponentState extends State<ProductDetailsComponent> {
                       label: Text(
                         AppLocalizations.of(context).translate(
                           "review_count",
-                          //TODO : SAD
                           replacement: "0",
                         ),
                         style: Theme.of(context)

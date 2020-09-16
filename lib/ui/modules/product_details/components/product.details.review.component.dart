@@ -47,16 +47,11 @@ class ProductDetailsReviewComponent extends StatelessWidget {
                       fontSize: 16,
                       removeButton: true,
                       imagePath: Constants.imagePath["empty_box"],
-                      //TODO: Translate
-                      titleKey: AppLocalizations.of(context)
-                          .translate("todo", defaultText: "No reviews yet"),
+                      titleKey: AppLocalizations.of(context).translate("No reviews yet", defaultText: "No reviews yet"),
                       bodyKey: AppLocalizations.of(context).translate(
-                        "todo",
-                        defaultText: AppLocalizations.of(context).translate(
-                            "todo",
-                            defaultText:
-                                "No reviews added yet, be the first to rate this product."),
-                      ),
+                          "No reviews added yet, be the first to rate this product.",
+                          defaultText:
+                          "No reviews added yet, be the first to rate this product."),
                     ),
                   );
                 } else {
@@ -88,13 +83,8 @@ class ProductDetailsReviewComponent extends StatelessWidget {
                     fontSize: 16,
                     removeButton: true,
                     imagePath: Constants.imagePath["error"],
-                    //TODO: Translate
-                    titleKey: AppLocalizations.of(context)
-                        .translate("todo", defaultText: "Sad Error Title :("),
-                    bodyKey: AppLocalizations.of(context).translate(
-                      "todo",
-                      defaultText: state.message,
-                    ),
+                    titleKey: AppLocalizations.of(context).translate("sad", defaultText: ":("),
+                    bodyKey: state.message,
                   ),
                 );
               }
@@ -109,7 +99,7 @@ class ProductDetailsReviewComponent extends StatelessWidget {
           child: Container(
             child: Text(
               AppLocalizations.of(context).translate(
-                "todo",
+                "Add Review",
                 defaultText: "Add Review",
               ),
               style: Theme.of(context).textTheme.headline4.copyWith(
@@ -183,7 +173,6 @@ class ReviewComponent extends StatelessWidget {
           child: ImageProcessor().customImage(
             context,
             reviewModel.reviewrImage,
-            //reviewModel.reviewrImage,
           ),
         ),
         const SizedBox(width: 10),

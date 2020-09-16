@@ -29,6 +29,11 @@ class Constants {
   static const consumerKey = "ck_cafce6ef4f584a33bb060243680ab920bac3e63d"; // suqokaz
   static const consumerSecret = "cs_a43a0c3bb4b73b1f8428b43f9e1261677e9cd4b2"; // suqokaz
 
+
+
+  static const testSecretKey="sk_test_eG5EoySq5ZweGKpqmh4PRVi27ojropNCBifSETzg";
+  static const testPublishableKey="pk_test_TekCZgcYEyt6kpsz2sA4ebaPKzUQuFsUp6tyhVJp";
+
   // Local Keys
   static const kLocalKey = {
     "userInfo": "userInfo",

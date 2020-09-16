@@ -7,6 +7,8 @@ import 'package:suqokaz/data/sources/remote/base/api_caller.dart';
 import 'package:suqokaz/data/sources/remote/base/app.exceptions.dart';
 import 'package:suqokaz/data/sources/remote/base/endpoints.dart';
 
+import '../../main.dart';
+
 abstract class UserRepository {
   login(Map body);
 
@@ -89,11 +91,6 @@ class UserDataRepository implements UserRepository {
     throw UnimplementedError();
   }
 
-  @override
-  logout() {
-    // TODO: implement logout
-    throw UnimplementedError();
-  }
 
   @override
   Future<String> resendVerifyEmail() {
@@ -142,5 +139,18 @@ class UserDataRepository implements UserRepository {
   Future<String> verifyEmail(int code) {
     // TODO: implement verifyEmail
     throw UnimplementedError();
+  }
+
+
+
+  @override
+  logout() async {
+    Root.user=null;
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String theme = preferences.getString("theme");
+    String lang=preferences.getString('languageCode');
+    preferences.clear();
+    preferences.setString('theme', theme);
+    preferences.setString('languageCode', lang);
   }
 }

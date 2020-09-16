@@ -99,11 +99,14 @@ class _RootState extends State<Root> {
         listener: (context,state){
           if(state is UserLoadedState)
            {
-             print("a7mos");
              setState(() {
                Root.user=Root.user;
              });
-           }
+           }else if(state is UserLoggedOutState){
+            setState(() {
+              Root.user=null;
+            });
+          }
         },
         child: MaterialApp(
           title: Constants.appName,
