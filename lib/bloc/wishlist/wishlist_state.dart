@@ -14,3 +14,9 @@ class WishlistLoadedState extends WishlistState {
 
   WishlistLoadedState(this.products);
 }
+
+class WishlistErrorState extends WishlistState {
+  final String message;
+
+  WishlistErrorState(this.message);
+}

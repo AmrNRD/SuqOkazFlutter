@@ -12,10 +12,10 @@ class GetWishListEvent extends WishlistEvent {
 }
 
 class AddProductToWishListEvent extends WishlistEvent {
-  final int productId;
+  final ProductModel productModel;
   final int varId;
 
-  AddProductToWishListEvent({this.productId, this.varId});
+  AddProductToWishListEvent(this.productModel, this.varId);
 }
 
 class RemoveWishListItemEvent extends WishlistEvent {

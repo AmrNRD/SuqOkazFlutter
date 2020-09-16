@@ -20,8 +20,7 @@ import '../../../utils/app.localization.dart';
 import '../home/home.tab.dart';
 
 class HomeNavigationPage extends StatefulWidget {
-  static final GlobalKey<ScaffoldState> scaffoldKey =
-      GlobalKey<ScaffoldState>();
+  static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   _HomeNavigationPageState createState() => _HomeNavigationPageState();
@@ -31,9 +30,17 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
   static final ProductBloc _featuredProducts = ProductBloc(ProductsRepository());
   static final ProductBloc _latestProducts = ProductBloc(ProductsRepository());
 
-   List<Widget> body=[];
+  List<Widget> body = [
+    HomeTabPage(
+      featuredBloc: _featuredProducts,
+      latestBloc: _latestProducts,
+    ),
+    WishlistPage(),
+    CartPage(),
+    ProfilePage(),
+  ];
   final List<String> appBarTitle = [];
-  List<BottomNavigationBarItem> items=[];
+  List<BottomNavigationBarItem> items = [];
   @override
   initState() {
     super.initState();
@@ -51,19 +58,21 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
     BlocProvider.of<CategoryBloc>(context).add(GetCategoriesEvent());
 
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      appBarTitle.add(AppLocalizations.of(context).translate("home", defaultText: "Home"),);
+      appBarTitle.add(
+        AppLocalizations.of(context).translate("home", defaultText: "Home"),
+      );
       if (Root.user != null) {
-        appBarTitle.add(AppLocalizations.of(context).translate("wishlist",defaultText: "Wishlist"),);
-        appBarTitle.add(AppLocalizations.of(context).translate("cart", defaultText: "Cart",),);
-
-        body= [
-          HomeTabPage(featuredBloc: _featuredProducts, latestBloc: _latestProducts,),
-          WishlistPage(),
-          CartPage(),
-          ProfilePage(),
-        ];
-      }else{
-        body= [
+        appBarTitle.add(
+          AppLocalizations.of(context).translate("wishlist", defaultText: "Wishlist"),
+        );
+        appBarTitle.add(
+          AppLocalizations.of(context).translate(
+            "cart",
+            defaultText: "Cart",
+          ),
+        );
+      } else {
+        body = [
           HomeTabPage(featuredBloc: _featuredProducts, latestBloc: _latestProducts),
           ProfilePage(),
         ];
@@ -74,8 +83,6 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
         appBarTitle;
       });
     });
-
-
   }
 
   int _currentSelectedTab = 0;
@@ -88,9 +95,9 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<UserBloc,UserState>(
-      listener: (context,state){
-        if(state is UserLoggedOutState){
+    return BlocListener<UserBloc, UserState>(
+      listener: (context, state) {
+        if (state is UserLoggedOutState) {
           Navigator.pushReplacementNamed(context, Constants.authPage);
         }
       },
@@ -99,74 +106,67 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
         appBar: CustomAppBar(text: appBarTitle.length < 3 ? "" : appBarTitle[_currentSelectedTab]),
         body: body[_currentSelectedTab],
         bottomNavigationBar: BottomNavigationBar(
-          items: Root.user!=null?[
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                _currentSelectedTab == 0
-                    ? "assets/icons/home_selected_icon.svg"
-                    : "assets/icons/home_icon.svg",
-              ),
-              title: Text(
-                AppLocalizations.of(context).translate("home", defaultText: "Home"),
-              ),
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                _currentSelectedTab == 1
-                    ? "assets/icons/heart_selected_icon.svg"
-                    : "assets/icons/heart_nav_icon.svg",
-              ),
-              title: Text(
-                AppLocalizations.of(context)
-                    .translate("wishlist", defaultText: "Wish List"),
-              ),
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                _currentSelectedTab == 2
-                    ? "assets/icons/shopping_selected_icon.svg"
-                    : "assets/icons/shopping_icon.svg",
-              ),
-              title: Text(
-                AppLocalizations.of(context).translate("cart", defaultText: "Cart"),
-              ),
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                ( _currentSelectedTab == 3&&Root.user!=null)||( _currentSelectedTab == 1&&Root.user==null)
-                    ? "assets/icons/user_selected_icon.svg"
-                    : "assets/icons/user_icon.svg",
-              ),
-              title: Text(
-                AppLocalizations.of(context)
-                    .translate("settings", defaultText: "settings"),
-              ),
-            ),
-          ]:[
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                _currentSelectedTab == 0
-                    ? "assets/icons/home_selected_icon.svg"
-                    : "assets/icons/home_icon.svg",
-              ),
-              title: Text(
-                AppLocalizations.of(context).translate("home", defaultText: "Home"),
-              ),
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                ( _currentSelectedTab == 3&&Root.user!=null)||( _currentSelectedTab == 1&&Root.user==null)
-                    ? "assets/icons/user_selected_icon.svg"
-                    : "assets/icons/user_icon.svg",
-              ),
-              title: Text(
-                AppLocalizations.of(context)
-                    .translate("settings", defaultText: "settings"),
-              ),
-            ),
-
-
-          ],
+          items: Root.user != null
+              ? [
+                  BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                      _currentSelectedTab == 0 ? "assets/icons/home_selected_icon.svg" : "assets/icons/home_icon.svg",
+                    ),
+                    title: Text(
+                      AppLocalizations.of(context).translate("home", defaultText: "Home"),
+                    ),
+                  ),
+                  BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                      _currentSelectedTab == 1
+                          ? "assets/icons/heart_selected_icon.svg"
+                          : "assets/icons/heart_nav_icon.svg",
+                    ),
+                    title: Text(
+                      AppLocalizations.of(context).translate("wishlist", defaultText: "Wish List"),
+                    ),
+                  ),
+                  BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                      _currentSelectedTab == 2
+                          ? "assets/icons/shopping_selected_icon.svg"
+                          : "assets/icons/shopping_icon.svg",
+                    ),
+                    title: Text(
+                      AppLocalizations.of(context).translate("cart", defaultText: "Cart"),
+                    ),
+                  ),
+                  BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                      (_currentSelectedTab == 3 && Root.user != null) || (_currentSelectedTab == 1 && Root.user == null)
+                          ? "assets/icons/user_selected_icon.svg"
+                          : "assets/icons/user_icon.svg",
+                    ),
+                    title: Text(
+                      AppLocalizations.of(context).translate("settings", defaultText: "settings"),
+                    ),
+                  ),
+                ]
+              : [
+                  BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                      _currentSelectedTab == 0 ? "assets/icons/home_selected_icon.svg" : "assets/icons/home_icon.svg",
+                    ),
+                    title: Text(
+                      AppLocalizations.of(context).translate("home", defaultText: "Home"),
+                    ),
+                  ),
+                  BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                      (_currentSelectedTab == 3 && Root.user != null) || (_currentSelectedTab == 1 && Root.user == null)
+                          ? "assets/icons/user_selected_icon.svg"
+                          : "assets/icons/user_icon.svg",
+                    ),
+                    title: Text(
+                      AppLocalizations.of(context).translate("settings", defaultText: "settings"),
+                    ),
+                  ),
+                ],
           type: BottomNavigationBarType.fixed,
           currentIndex: _currentSelectedTab,
           selectedItemColor: Colors.amber[800],

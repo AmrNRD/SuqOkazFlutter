@@ -193,6 +193,6 @@ class AppDataBase extends _$AppDataBase {
   Future insertWishlistItem(WishlistItem wishListItem) => into(wishlistItems).insert(wishListItem);
 
   Future<void> deleteWishlistItem(int id, int varId) async {
-    return await customStatement("DELETE FROM wish_list_items WHERE id = ? and variation_id = ?;", [id, varId]);
+    return await customStatement("DELETE FROM wishlist_items WHERE product_id = ? and variation_id = ?;", [id, varId]);
   }
 }

@@ -301,7 +301,19 @@ class ProductVariation {
   List<Attribute> attributes = [];
   Map<String, dynamic> multiCurrencies;
 
-  ProductVariation();
+  ProductVariation(
+      {this.id,
+      this.sku,
+      this.price,
+      this.regularPrice,
+      this.salePrice,
+      this.image,
+      this.attributes,
+      this.onSale,
+      this.inStock,
+      this.stockQuantity,
+      this.imageFeature,
+      this.multiCurrencies});
 
   ProductVariation.fromJson(Map<String, dynamic> parsedJson) {
     id = parsedJson["id"];

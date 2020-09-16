@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:suqokaz/bloc/cart/cart_bloc.dart';
+import 'package:suqokaz/bloc/wishlist/wishlist_bloc.dart';
 import 'package:suqokaz/data/models/order_model.dart';
 import 'package:suqokaz/ui/style/app.colors.dart';
 import 'package:suqokaz/ui/style/app.dimens.dart';
@@ -11,11 +12,13 @@ import 'package:suqokaz/utils/core.util.dart';
 class CartItemFavRemoveComponent extends StatelessWidget {
   final ProductItem productItem;
   final int variationId;
+  final bool isInFav;
 
   const CartItemFavRemoveComponent({
     Key key,
     @required this.productItem,
     @required this.variationId,
+    this.isInFav = false,
   }) : super(key: key);
 
   @override
@@ -23,15 +26,34 @@ class CartItemFavRemoveComponent extends StatelessWidget {
     return Row(
       children: <Widget>[
         InkWell(
-          onTap: () {},
+          onTap: () {
+            // if (!inInFav) {
+            //   BlocProvider.of<WishlistBloc>(context).add(
+            //     AddProductToWishListEvent(
+            //       product,
+            //       variationId,
+            //     ),
+            //   );
+            // } else {
+            //   BlocProvider.of<WishlistBloc>(context).add(
+            //     RemoveWishListItemEvent(product),
+            //   );
+            // }
+          },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              SvgPicture.asset(
-                "assets/icons/heart_icon.svg",
-                height: screenAwareSize(16, context),
-                width: screenAwareWidth(16, context),
-              ),
+              isInFav
+                  ? SvgPicture.asset(
+                      "assets/icons/fav_selected_icon.svg",
+                      height: 20,
+                      width: 24,
+                    )
+                  : SvgPicture.asset(
+                      "assets/icons/fav_icon.svg",
+                      height: 20,
+                      width: 20,
+                    ),
               SizedBox(
                 width: AppDimens.marginDefault8,
               ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:suqokaz/data/models/category_model.dart';
 import 'package:suqokaz/utils/constants.dart';
 import 'package:suqokaz/utils/core.util.dart';
 
@@ -16,7 +15,7 @@ class CategoryBubbleComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: index != 6 - 1 ? 18 : 0),
+      margin: EdgeInsetsDirectional.only(end: index != 6 - 1 ? 18 : 0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,10 +66,7 @@ class CategoryBubbleComponent extends StatelessWidget {
           ),
           Text(
             category.name,
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1
-                .copyWith(fontWeight: FontWeight.w400, fontSize: 10),
+            style: Theme.of(context).textTheme.bodyText1.copyWith(fontWeight: FontWeight.w400, fontSize: 10),
           ),
         ],
       ),

@@ -8,11 +8,13 @@ import 'package:suqokaz/utils/core.util.dart';
 class ProductCartComponent extends StatelessWidget {
   final ProductItem productItem;
   final int variationId;
+  final bool isInFav;
 
   const ProductCartComponent({
     Key key,
     @required this.productItem,
     @required this.variationId,
+    this.isInFav = false,
   }) : super(key: key);
 
   @override
@@ -83,9 +85,6 @@ class ProductCartComponent extends StatelessWidget {
             height: 16,
           ),
           Row(
-            children: <Widget>[],
-          ),
-          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               CartItemCounter(
@@ -93,6 +92,7 @@ class ProductCartComponent extends StatelessWidget {
                 variationId: variationId,
               ),
               CartItemFavRemoveComponent(
+                isInFav: isInFav,
                 productItem: productItem,
                 variationId: variationId,
               ),

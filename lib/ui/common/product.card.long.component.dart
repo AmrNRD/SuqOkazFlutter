@@ -119,12 +119,18 @@ class ProductCardLongComponent extends StatelessWidget {
                 children: <Widget>[
                   InkWell(
                     onTap: () {
-                      BlocProvider.of<WishlistBloc>(context).add(
-                        AddProductToWishListEvent(
-                          productId: product.id,
-                          varId: variationId,
-                        ),
-                      );
+                      if (!isInFav) {
+                        BlocProvider.of<WishlistBloc>(context).add(
+                          AddProductToWishListEvent(
+                            product,
+                            variationId,
+                          ),
+                        );
+                      } else {
+                        BlocProvider.of<WishlistBloc>(context).add(
+                          RemoveWishListItemEvent(product),
+                        );
+                      }
                     },
                     child: isInFav
                         ? SvgPicture.asset(

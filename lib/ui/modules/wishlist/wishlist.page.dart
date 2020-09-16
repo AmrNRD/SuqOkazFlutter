@@ -4,8 +4,6 @@ import 'package:suqokaz/bloc/wishlist/wishlist_bloc.dart';
 import 'package:suqokaz/ui/common/genearic.state.component.dart';
 import 'package:suqokaz/ui/common/loading.component.dart';
 import 'package:suqokaz/ui/common/product.card.long.component.dart';
-import 'package:suqokaz/ui/common/product.listview.builder.dart';
-import 'package:suqokaz/ui/modules/cart/components/cart.product.component.dart';
 import 'package:suqokaz/utils/constants.dart';
 
 class WishlistPage extends StatelessWidget {
@@ -36,6 +34,13 @@ class WishlistPage extends StatelessWidget {
                       product: state.products[index],
                       isInFav: true,
                       showAttributes: true,
+                      onItemTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          Constants.productDetailsPage,
+                          arguments: state.products[index],
+                        );
+                      },
                     ),
                   );
                 },
