@@ -85,11 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.only(top: AppDimens.paddingEdgeCase40),
                   child: Hero(
                     tag: "Logo",
-                    child: SvgPicture.asset(
-                      "assets/images/colored_logo.svg",
-                      height: screenAwareSize(32, context),
-                      width: screenAwareWidth(108.12, context),
-                    ),
+                    child: SvgPicture.asset("assets/images/colored_logo.svg"),
                   ),
                 ),
 
@@ -136,17 +132,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                Align(
-                  alignment: AlignmentDirectional.centerEnd,
-                  child: FlatButton(
-                    onPressed: widget.goToForgotPassword,
-                    padding: EdgeInsets.zero,
-                    child: Text(
-                      AppLocalizations.of(context).translate("forget"),
-                      style: Theme.of(context).textTheme.subtitle1,
-                    ),
-                  ),
-                ),
+                // Align(
+                //   alignment: AlignmentDirectional.centerEnd,
+                //   child: FlatButton(
+                //     onPressed: widget.goToForgotPassword,
+                //     padding: EdgeInsets.zero,
+                //     child: Text(
+                //       AppLocalizations.of(context).translate("forget"),
+                //       style: Theme.of(context).textTheme.subtitle1,
+                //     ),
+                //   ),
+                // ),
 
                 SizedBox(height: AppDimens.marginEdgeCase32),
 
@@ -179,51 +175,51 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 SizedBox(height: AppDimens.marginEdgeCase32),
 
-                Center(child: Text("Or", style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 14))),
+                // Center(child: Text(AppLocalizations.of(context).translate("Or"), style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 14))),
 
-                SizedBox(height: AppDimens.marginEdgeCase24),
+                // SizedBox(height: AppDimens.marginEdgeCase24),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 10.0, right: 20.0),
-                      child: GestureDetector(
-                        onTap: initiateFacebookLogin,
-                        child: Container(
-                          padding: const EdgeInsets.all(15.0),
-                          decoration: new BoxDecoration(shape: BoxShape.circle, color: AppColors.customGreyLevels[300]),
-                          child: new Icon(FontAwesomeIcons.facebookF, color: Color(0xFF0084ff)),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 10.0),
-                      child: GestureDetector(
-                        onTap: initiateGoogleLogin,
-                        child: Container(
-                          padding: const EdgeInsets.all(15.0),
-                          decoration: new BoxDecoration(shape: BoxShape.circle, color: AppColors.customGreyLevels[300]),
-                          child: new Icon(FontAwesomeIcons.google, color: Color(0xFFdb3236)),
-                        ),
-                      ),
-                    ),
-                    Platform.isIOS
-                        ? Padding(
-                            padding: EdgeInsets.only(top: 10.0, left: 20),
-                            child: GestureDetector(
-                              onTap: initiateAppleLogin,
-                              child: Container(
-                                padding: const EdgeInsets.all(15.0),
-                                decoration:
-                                    new BoxDecoration(shape: BoxShape.circle, color: AppColors.customGreyLevels[300]),
-                                child: new Icon(FontAwesomeIcons.apple, color: Colors.black45),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: <Widget>[
+                //     Padding(
+                //       padding: EdgeInsets.only(top: 10.0, right: 20.0),
+                //       child: GestureDetector(
+                //         onTap: initiateFacebookLogin,
+                //         child: Container(
+                //           padding: const EdgeInsets.all(15.0),
+                //           decoration: new BoxDecoration(shape: BoxShape.circle, color: AppColors.customGreyLevels[300]),
+                //           child: new Icon(FontAwesomeIcons.facebookF, color: Color(0xFF0084ff)),
+                //         ),
+                //       ),
+                //     ),
+                //     Padding(
+                //       padding: EdgeInsets.only(top: 10.0),
+                //       child: GestureDetector(
+                //         onTap: initiateGoogleLogin,
+                //         child: Container(
+                //           padding: const EdgeInsets.all(15.0),
+                //           decoration: new BoxDecoration(shape: BoxShape.circle, color: AppColors.customGreyLevels[300]),
+                //           child: new Icon(FontAwesomeIcons.google, color: Color(0xFFdb3236)),
+                //         ),
+                //       ),
+                //     ),
+                //     Platform.isIOS
+                //         ? Padding(
+                //             padding: EdgeInsets.only(top: 10.0, left: 20),
+                //             child: GestureDetector(
+                //               onTap: initiateAppleLogin,
+                //               child: Container(
+                //                 padding: const EdgeInsets.all(15.0),
+                //                 decoration:
+                //                     new BoxDecoration(shape: BoxShape.circle, color: AppColors.customGreyLevels[300]),
+                //                 child: new Icon(FontAwesomeIcons.apple, color: Colors.black45),
+                //               ),
+                //             ),
+                //           )
+                //         : Container(),
+                //   ],
+                // ),
 
                 SizedBox(height: AppDimens.marginEdgeCase32),
 

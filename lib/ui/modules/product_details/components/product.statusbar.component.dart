@@ -27,7 +27,7 @@ class ProductStatusBarComponent extends StatelessWidget {
                       Text(
                         AppLocalizations.of(context).translate(
                           "in_stock",
-                          defaultText: "Avilable",
+                          defaultText: "Available",
                         ),
                       ),
                     ],

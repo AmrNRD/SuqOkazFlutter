@@ -51,10 +51,9 @@ class _ProductListViewBuilderState extends State<ProductListViewBuilder> {
                     fontSize: 16,
                     removeButton: true,
                     imagePath: Constants.imagePath["empty_box"],
-                    //TODO: Translate
-                    titleKey: AppLocalizations.of(context).translate("todo", defaultText: "No products founcs"),
+                    titleKey: AppLocalizations.of(context).translate("No products were found", defaultText: "No products were found"),
                     bodyKey: AppLocalizations.of(context).translate(
-                      "todo",
+                      "Sorry no product were found in this category.",
                       defaultText: "Sorry no product were found in this category.",
                     ),
                   ),

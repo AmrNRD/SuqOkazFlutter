@@ -150,12 +150,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 fontSize: 16,
                 removeButton: true,
                 imagePath: Constants.imagePath["error"],
-                //TODO: Translate
-                titleKey: AppLocalizations.of(context).translate("todo", defaultText: "Sad Error Title :("),
-                bodyKey: AppLocalizations.of(context).translate(
-                  "todo",
-                  defaultText: state.message,
-                ),
+                titleKey: AppLocalizations.of(context).translate("sad", defaultText: ":("),
+                bodyKey: state.message,
               ),
             );
           }

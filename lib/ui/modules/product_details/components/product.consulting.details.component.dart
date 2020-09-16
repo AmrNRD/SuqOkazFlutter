@@ -61,7 +61,7 @@ class _ProductConsultingDetailsComponentState extends State<ProductConsultingDet
         Row(
           children: <Widget>[
             ProductDetailsTab(
-              tabName: AppLocalizations.of(context).translate("todo", defaultText: "Description").toUpperCase(),
+              tabName: AppLocalizations.of(context).translate("description", defaultText: "Description").toUpperCase(),
               isSelected: _selectedIndex == 0,
               onTap: _selectedIndex == 0
                   ? null
@@ -73,7 +73,7 @@ class _ProductConsultingDetailsComponentState extends State<ProductConsultingDet
                     },
             ),
             ProductDetailsTab(
-              tabName: AppLocalizations.of(context).translate("todo", defaultText: "Specifications").toUpperCase(),
+              tabName: AppLocalizations.of(context).translate("specifications", defaultText: "Specifications").toUpperCase(),
               isSelected: _selectedIndex == 1,
               onTap: _selectedIndex == 1
                   ? null
@@ -85,7 +85,7 @@ class _ProductConsultingDetailsComponentState extends State<ProductConsultingDet
                     },
             ),
             ProductDetailsTab(
-              tabName: AppLocalizations.of(context).translate("todo", defaultText: "Reviews").toUpperCase(),
+              tabName: AppLocalizations.of(context).translate("reviews", defaultText: "Reviews").toUpperCase(),
               isSelected: _selectedIndex == 2,
               onTap: _selectedIndex == 2
                   ? null

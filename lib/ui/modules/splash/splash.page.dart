@@ -72,8 +72,6 @@ class _LandingSplashScreenState extends State<LandingSplashScreen> {
                   child: SvgPicture.asset(
                     "assets/images/colored_logo.svg",
                     color: Colors.white,
-                    height: screenAwareSize(32, context),
-                    width: screenAwareWidth(108.12, context),
                   ),
                 ),
               ),

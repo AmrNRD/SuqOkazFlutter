@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:suqokaz/bloc/user/user_bloc.dart';
+import 'package:suqokaz/bloc/user/user_event.dart';
+import 'package:suqokaz/data/models/user_model.dart';
 import 'package:suqokaz/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,7 +23,7 @@ class SettingsButtonComponent extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 22),
           child: Text(
             AppLocalizations.of(context).translate(
-              "todo",
+              "settings",
               defaultText: "Settings",
             ),
             style: Theme.of(context).textTheme.headline2,
@@ -35,13 +39,13 @@ class SettingsButtonComponent extends StatelessWidget {
                 "",
                 context,
                     () {
-                  Navigator.pushReplacementNamed(context, Constants.authPage);
+                  BlocProvider.of<UserBloc>(context).add(LogoutUser());
                 },
                 hideDivider: true,
               ):Container(),
               buildSettingsButtton(
                 "Change Language",
-                "Arabic",
+                "The Other Language",
                 context,
                 () {
                   if (AppLocalizations.of(context).currentLanguage ==
@@ -110,7 +114,7 @@ class SettingsButtonComponent extends StatelessWidget {
                             margin: EdgeInsetsDirectional.only(end: 8),
                             child: Text(
                               AppLocalizations.of(context).translate(
-                                "todo",
+                                hintKey,
                                 defaultText: hintKey,
                               ),
                               style: Theme.of(context)

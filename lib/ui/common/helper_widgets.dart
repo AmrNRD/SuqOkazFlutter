@@ -8,7 +8,7 @@ class HelperWidgets {
         padding: EdgeInsets.all(15),
         child: Center(
             child: Text(
-          AppLocalizations.of(context).translate("todo", defaultText: "No data entry"),
+          AppLocalizations.of(context).translate("No data entry", defaultText: "No data entry"),
           style: TextStyle(
             color: Color(0xff4B4B4B),
             fontSize: 17,
@@ -105,7 +105,7 @@ class HelperWidgets {
             color: Color(0xffE6A537),
             child: Text(
               AppLocalizations.of(context)
-                  .translate("todo", defaultText: "Retry"),
+                  .translate("Retry", defaultText: "Retry"),
               style: TextStyle(
                 color: Color(0xffffffff),
                 fontSize: 14,
