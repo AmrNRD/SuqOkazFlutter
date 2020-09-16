@@ -146,7 +146,14 @@ class AppDataBase extends _$AppDataBase {
       .get();
 
   Future insertCartItem(CartItem cartItemData) => into(cartItems).insert(cartItemData);
-  Future updateCartItem(CartItem cartItemData) => update(cartItems).replace(cartItemData);
+  Future updateCartItem(CartItem cartItemData) async {
+    return await customStatement("UPDATE cart_items SET quantity = ?  WHERE id = ? AND variation_id = ?;", [
+      cartItemData.quantity,
+      cartItemData.id,
+      cartItemData.variationId,
+    ]);
+  }
+
   Future<void> deleteCartItem(int id, {int varId}) async {
     return await customStatement("DELETE FROM cart_items WHERE id = ? and variation_id = ?;", [id, varId]);
   }

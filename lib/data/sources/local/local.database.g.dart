@@ -15,6 +15,7 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
   final int menuOrder;
   final int totalProduct;
   bool sorted = false;
+  List<dynamic> children = [];
   CategoryData(
       {@required this.id,
       @required this.name,
