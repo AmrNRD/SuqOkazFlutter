@@ -3,6 +3,8 @@ import 'package:suqokaz/ui/modules/profile/components/profile.horizontal.buttons
 import 'package:suqokaz/ui/modules/profile/components/profile.settings.button.component.dart';
 import 'package:suqokaz/ui/modules/profile/components/profile.tag.component.dart';
 
+import '../../../main.dart';
+
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -15,8 +17,8 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          ProfileTagComponent(),
-          HorizontalButtonsComponent(),
+          Root.user!=null?ProfileTagComponent(user: Root.user):Container(),
+          Root.user!=null?HorizontalButtonsComponent():Container(),
           SettingsButtonComponent(),
         ],
       ),

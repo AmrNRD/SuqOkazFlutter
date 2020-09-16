@@ -6,6 +6,8 @@ import 'package:suqokaz/bloc/user/user_state.dart';
 import 'package:suqokaz/data/models/user_model.dart';
 import 'package:suqokaz/data/repositories/user_repository.dart';
 
+import '../../main.dart';
+
 class UserBloc extends Bloc<UserEvent, UserState> {
   final UserRepository userRepository;
 
@@ -19,16 +21,18 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     UserEvent event,
   ) async* {
     try {
+      yield UserLoadingState();
       if (event is GetUser) {
-        yield UserLoadingState();
-
-        await userRepository.fetchUserData();
+        Root.user=await userRepository.fetchUserData();
         yield UserLoadedState();
       } else if (event is LoginUser) {
-        await userRepository.login({
+       Root.user=await userRepository.login({
           "username": event.email,
           "password": event.password,
         });
+        yield UserLoadedState();
+      }else if (event is SignUpUser) {
+        Root.user=await userRepository.signUp(event.email, event.password, event.passwordConfirmation);
         yield UserLoadedState();
       }
     } catch (error) {

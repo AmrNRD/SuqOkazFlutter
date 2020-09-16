@@ -23,7 +23,7 @@ class APICaller {
 
   getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('app_token');
+    return prefs.getString('access_token');
   }
 
   // Get OAuth URL

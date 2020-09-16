@@ -4,6 +4,7 @@ import 'package:suqokaz/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../app.dart';
+import '../../../../main.dart';
 import '../../../../utils/app.localization.dart';
 import '../../../style/app.colors.dart';
 
@@ -24,10 +25,20 @@ class SettingsButtonComponent extends StatelessWidget {
             style: Theme.of(context).textTheme.headline2,
           ),
         ),
+
         Container(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 22),
           child: Column(
             children: <Widget>[
+              Root.user==null?buildSettingsButtton(
+                "Log in",
+                "",
+                context,
+                    () {
+                  Navigator.pushReplacementNamed(context, Constants.authPage);
+                },
+                hideDivider: true,
+              ):Container(),
               buildSettingsButtton(
                 "Change Language",
                 "Arabic",
@@ -47,7 +58,8 @@ class SettingsButtonComponent extends StatelessWidget {
                 context,
                 launchToAboutURL,
               ),
-              buildSettingsButtton(
+
+              Root.user!=null?buildSettingsButtton(
                 "Log out",
                 "",
                 context,
@@ -55,7 +67,7 @@ class SettingsButtonComponent extends StatelessWidget {
                   Navigator.pushReplacementNamed(context, Constants.authPage);
                 },
                 hideDivider: true,
-              ),
+              ):Container(),
             ],
           ),
         ),

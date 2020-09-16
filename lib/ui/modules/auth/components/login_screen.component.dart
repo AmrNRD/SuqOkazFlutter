@@ -48,7 +48,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocListener<UserBloc, UserState>(
       listener: (BuildContext context, UserState state) {
         if (state is UserLoadedState) {
-          onSkip();
+          setState(() {
+            isLoading = false;
+          });
+          Navigator.pushReplacementNamed(context, Constants.homePage);
         } else if (state is UserErrorState) {
           setState(() {
             isLoading = false;
@@ -109,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 //email
                 FormInputField(
-                  title: "phone_number",
+                  title: "email",
                   focusNode: _emailFocusNode,
                   onSave: (value) => _authData['email'] = value,
                   isRequired: true,
