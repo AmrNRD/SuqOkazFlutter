@@ -73,14 +73,12 @@ class LoginUserWithProvider extends UserEvent {
 
 class SignUpUser extends UserEvent {
   final String email;
-  final String name;
   final String password;
   final String passwordConfirmation;
-  final String platform;
-  SignUpUser(this.email, this.name, this.password, this.passwordConfirmation, this.platform);
+  SignUpUser(this.email, this.password, this.passwordConfirmation);
 
   @override
-  List<Object> get props => [email, name, password, passwordConfirmation, platform];
+  List<Object> get props => [email,password, passwordConfirmation];
 }
 
 class ForgotPassword extends UserEvent {

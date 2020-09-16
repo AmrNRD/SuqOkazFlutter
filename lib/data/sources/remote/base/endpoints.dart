@@ -9,6 +9,7 @@ class _Keys {
 class _Login {
   final auth = Constants.baseUrl + "/wp-json/wc/v3";
   final loginEndpoint = Constants.baseUrl + "/wp-json/jwt-auth/v1/token";
+  final registerEndpoint = Constants.baseUrl + "?rest_route=/simple-jwt-login/v1/users";
 }
 
 class _MyList {

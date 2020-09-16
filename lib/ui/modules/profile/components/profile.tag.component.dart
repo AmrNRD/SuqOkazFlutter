@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:suqokaz/data/models/user_model.dart';
 
+import '../../../../main.dart';
 import '../../../../utils/core.util.dart';
 import '../../../style/app.colors.dart';
 import '../../../style/app.dimens.dart';
 
 class ProfileTagComponent extends StatelessWidget {
-  final Object userModel;
+  final UserModel user;
 
   const ProfileTagComponent({
     Key key,
-    @required this.userModel,
+    @required this.user,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class ProfileTagComponent extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 22),
       child: Row(
         children: <Widget>[
-          Stack(
+          user?.image!=null?Stack(
             alignment: Alignment.center,
             children: <Widget>[
               SizedBox(
@@ -26,7 +28,7 @@ class ProfileTagComponent extends StatelessWidget {
                 width: 60,
                 child: ImageProcessor().customImage(
                   context,
-                  "https://torky.dev/img/hero/me_mini.png",
+                  user?.image,
                 ),
               ),
               Container(
@@ -41,7 +43,7 @@ class ProfileTagComponent extends StatelessWidget {
                 ),
               ),
             ],
-          ),
+          ):Container(),
           SizedBox(
             width: AppDimens.marginDefault16,
           ),
@@ -49,11 +51,11 @@ class ProfileTagComponent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                userModel ?? "Mohamed ELTorky",
+                user?.name ?? "",
                 style: Theme.of(context).textTheme.headline1,
               ),
               Text(
-                userModel ?? "mohamedeltorky@joovlly.com",
+                user?.email ?? "",
                 style: Theme.of(context).textTheme.caption,
               ),
             ],

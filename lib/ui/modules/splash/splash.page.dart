@@ -89,19 +89,7 @@ class _LandingSplashScreenState extends State<LandingSplashScreen> {
     //if user registered
     if (prefs.containsKey('userData')) {
       //if email is verified
-      if (prefs.containsKey('verified')) {
-        //if user completed the initial setup
-        if (prefs.containsKey('logedIn')) {
-          //check for opening by notification
           _route = Constants.homePage;
-        } else {
-          //if user did not completed the initial setup
-//            _route = SignInDataPage.routeName;
-        }
-      } else {
-        //if email is not verified
-//          _route = VerifyPage.routeName;
-      }
     } else {
       //if user not registered
       _route = Constants.authPage;

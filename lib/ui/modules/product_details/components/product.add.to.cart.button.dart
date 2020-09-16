@@ -5,6 +5,9 @@ import 'package:suqokaz/data/models/product_model.dart';
 import 'package:suqokaz/ui/style/app.colors.dart';
 import 'package:suqokaz/ui/style/app.dimens.dart';
 import 'package:suqokaz/utils/app.localization.dart';
+import 'package:suqokaz/utils/constants.dart';
+
+import '../../../../main.dart';
 
 class AddToCartButton extends StatefulWidget {
   final int productQuantity;
@@ -158,7 +161,7 @@ class _AddToCartButtonState extends State<AddToCartButton> {
                 child: InkWell(
                   onTap: widget.activeButton
                       ? () {
-                          BlocProvider.of<CartBloc>(context).add(
+                    BlocProvider.of<CartBloc>(context).add(
                             AddProductToCartEvent(
                               widget.productModel,
                               productQuantity,
@@ -166,7 +169,7 @@ class _AddToCartButtonState extends State<AddToCartButton> {
                               widget.attributes,
                             ),
                           );
-                        }
+                  }
                       : null,
                 ),
               ),
