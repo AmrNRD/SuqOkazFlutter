@@ -29,9 +29,9 @@ class CartItems extends Table {
   IntColumn get quantity => integer()();
 }
 
-class Wishlist extends Table {
-  IntColumn get id => integer().autoIncrement()();
-  IntColumn get productId => integer().nullable()();
+class WishlistItems extends Table {
+  IntColumn get productId => integer().autoIncrement()();
+  IntColumn get variationId => integer().nullable()();
 }
 
 class Address extends Table {
@@ -49,6 +49,7 @@ class Address extends Table {
   Cart,
   CartItems,
   Address,
+  WishlistItems,
 ])
 class AppDataBase extends _$AppDataBase {
   // we tell the database where to store the data with this constructor
@@ -61,7 +62,7 @@ class AppDataBase extends _$AppDataBase {
   // you should bump this number whenever you change or add a table definition. Migrations
   // are covered later in this readme.
   @override
-  int get schemaVersion => 13;
+  int get schemaVersion => 15;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
@@ -174,4 +175,24 @@ class AppDataBase extends _$AppDataBase {
           (c) => c.id.equals(id),
         ))
       .go();
+
+  //WishList
+  Future<List<WishlistItem>> getAllWishListItems() => select(wishlistItems).get();
+
+  Future<WishlistItem> getWishListyId(int id, int varId) async {
+    return customSelect(
+      'SELECT * FROM wish_list_items WHERE id = ? and variation_id = ?;',
+      readsFrom: {cartItems},
+      variables: [
+        Variable(id),
+        Variable(varId),
+      ],
+    ).getSingle() as WishlistItem;
+  }
+
+  Future insertWishlistItem(WishlistItem wishListItem) => into(wishlistItems).insert(wishListItem);
+
+  Future<void> deleteWishlistItem(int id, int varId) async {
+    return await customStatement("DELETE FROM wish_list_items WHERE id = ? and variation_id = ?;", [id, varId]);
+  }
 }

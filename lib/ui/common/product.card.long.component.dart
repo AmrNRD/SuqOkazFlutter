@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:suqokaz/bloc/wishlist/wishlist_bloc.dart';
 import 'package:suqokaz/data/models/product_model.dart';
 import 'package:suqokaz/utils/app.localization.dart';
 import 'package:suqokaz/utils/core.util.dart';
@@ -13,6 +15,7 @@ class ProductCardLongComponent extends StatelessWidget {
   final bool allowMargin;
   final bool isInCart;
   final bool isInFav;
+  final bool showAttributes;
 
   const ProductCardLongComponent({
     Key key,
@@ -23,6 +26,7 @@ class ProductCardLongComponent extends StatelessWidget {
     this.isInFav = false,
     @required this.attribute,
     @required this.variationId,
+    this.showAttributes = false,
   }) : super(key: key);
 
   @override
@@ -66,12 +70,33 @@ class ProductCardLongComponent extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
-                    product.name,
-                    style: Theme.of(context).textTheme.bodyText2,
-                    maxLines: 3,
-                    softWrap: true,
-                    overflow: TextOverflow.ellipsis,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        product.name,
+                        style: Theme.of(context).textTheme.bodyText2,
+                        maxLines: 3,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      showAttributes
+                          ? Column(
+                              children: product.variations[0].attributes
+                                  .map(
+                                    (e) => Container(
+                                      margin: EdgeInsets.symmetric(vertical: 2),
+                                      child: Text(
+                                        e.name.toUpperCase() + " : " + e.option.toUpperCase(),
+                                        style:
+                                            Theme.of(context).textTheme.bodyText2.copyWith(fontWeight: FontWeight.w400),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            )
+                          : Container(),
+                    ],
                   ),
                   Text(
                     AppLocalizations.of(context).translate(
@@ -93,7 +118,14 @@ class ProductCardLongComponent extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      BlocProvider.of<WishlistBloc>(context).add(
+                        AddProductToWishListEvent(
+                          productId: product.id,
+                          varId: variationId,
+                        ),
+                      );
+                    },
                     child: isInFav
                         ? SvgPicture.asset(
                             "assets/icons/fav_selected_icon.svg",

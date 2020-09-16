@@ -12,6 +12,7 @@ import 'package:suqokaz/bloc/category/category_bloc.dart';
 import 'package:suqokaz/bloc/user/user_bloc.dart';
 import 'package:suqokaz/bloc/user/user_event.dart';
 import 'package:suqokaz/bloc/user/user_state.dart';
+import 'package:suqokaz/bloc/wishlist/wishlist_bloc.dart';
 import 'package:suqokaz/ui/modules/auth/auth.page.dart';
 import 'package:suqokaz/ui/style/app.colors.dart';
 import 'package:suqokaz/utils/constants.dart';
@@ -34,6 +35,7 @@ class _LandingSplashScreenState extends State<LandingSplashScreen> {
     BlocProvider.of<UserBloc>(context).add(GetUser());
     BlocProvider.of<CartBloc>(context).add(GetCartEvent());
     BlocProvider.of<CategoryBloc>(context).add(GetCategoriesEvent());
+    BlocProvider.of<WishlistBloc>(context).add(GetWishListEvent());
   }
 
   @override
@@ -87,7 +89,7 @@ class _LandingSplashScreenState extends State<LandingSplashScreen> {
     //if user registered
     if (prefs.containsKey('userData')) {
       //if email is verified
-          _route = Constants.homePage;
+      _route = Constants.homePage;
     } else {
       //if user not registered
       _route = Constants.authPage;

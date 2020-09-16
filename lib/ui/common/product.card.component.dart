@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:suqokaz/bloc/cart/cart_bloc.dart';
+import 'package:suqokaz/bloc/wishlist/wishlist_bloc.dart';
 import 'package:suqokaz/data/models/product_model.dart';
+import 'package:suqokaz/main.dart';
 import 'package:suqokaz/utils/app.localization.dart';
 import 'package:suqokaz/utils/core.util.dart';
 import '../style/app.colors.dart';
@@ -161,20 +162,29 @@ class ProductCardComponent extends StatelessWidget {
                           shape: BoxShape.circle,
                           color: Colors.white.withOpacity(0.4),
                         ),
-                        child: InkWell(
-                          onTap: () {},
-                          child: inInFav
-                              ? SvgPicture.asset(
-                                  "assets/icons/fav_selected_icon.svg",
-                                  height: 20,
-                                  width: 24,
-                                )
-                              : SvgPicture.asset(
-                                  "assets/icons/fav_icon.svg",
-                                  height: 20,
-                                  width: 20,
-                                ),
-                        ),
+                        child: Root.user != null
+                            ? InkWell(
+                                onTap: () {
+                                  BlocProvider.of<WishlistBloc>(context).add(
+                                    AddProductToWishListEvent(
+                                      productId: product.id,
+                                      varId: variationId,
+                                    ),
+                                  );
+                                },
+                                child: inInFav
+                                    ? SvgPicture.asset(
+                                        "assets/icons/fav_selected_icon.svg",
+                                        height: 20,
+                                        width: 24,
+                                      )
+                                    : SvgPicture.asset(
+                                        "assets/icons/fav_icon.svg",
+                                        height: 20,
+                                        width: 20,
+                                      ),
+                              )
+                            : Container(),
                       ),
                     ],
                   ),

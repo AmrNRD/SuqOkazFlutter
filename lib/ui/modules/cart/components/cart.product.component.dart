@@ -37,17 +37,15 @@ class ProductCartComponent extends StatelessWidget {
                       softWrap: true,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    ...productItem.attribute
-                        .map(
-                          (e) => Container(
-                            margin: EdgeInsets.symmetric(vertical: 2),
-                            child: Text(
-                              e.name.toUpperCase() + " : " + e.option.toUpperCase(),
-                              style: Theme.of(context).textTheme.bodyText2.copyWith(fontWeight: FontWeight.w400),
-                            ),
-                          ),
-                        )
-                        .toList(),
+                    ...productItem.attribute.map(
+                      (e) => Container(
+                        margin: EdgeInsets.symmetric(vertical: 2),
+                        child: Text(
+                          e.name.toUpperCase() + " : " + e.option.toUpperCase(),
+                          style: Theme.of(context).textTheme.bodyText2.copyWith(fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ),
                     Text(
                       AppLocalizations.of(context).translate(
                         "currency",

@@ -7,9 +7,11 @@ import 'package:suqokaz/bloc/cart/cart_bloc.dart';
 import 'package:suqokaz/bloc/category/category_bloc.dart';
 import 'package:suqokaz/bloc/user/user_bloc.dart';
 import 'package:suqokaz/bloc/user/user_state.dart';
+import 'package:suqokaz/bloc/wishlist/wishlist_bloc.dart';
 import 'package:suqokaz/data/repositories/cart.repository.dart';
 import 'package:suqokaz/data/repositories/categories.repository.dart';
 import 'package:suqokaz/data/repositories/products_repository.dart';
+import 'package:suqokaz/data/repositories/wishlist_repsitory.dart';
 import 'package:suqokaz/data/sources/local/local.database.dart';
 import 'package:suqokaz/utils/constants.dart';
 
@@ -92,6 +94,12 @@ class _RootState extends State<Root> {
         BlocProvider<CategoryBloc>(
           create: (BuildContext context) => CategoryBloc(
             CategoriesRepository(Root.appDataBase),
+          ),
+        ),
+        BlocProvider<WishlistBloc>(
+          create: (BuildContext context) => WishlistBloc(
+            WishlistDataRepository(Root.appDataBase),
+            ProductsRepository(),
           ),
         ),
       ],

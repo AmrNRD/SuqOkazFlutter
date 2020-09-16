@@ -1269,6 +1269,183 @@ class $AddressTable extends Address with TableInfo<$AddressTable, AddressModel> 
   }
 }
 
+class WishlistItem extends DataClass implements Insertable<WishlistItem> {
+  final int productId;
+  final int variationId;
+  WishlistItem({@required this.productId, this.variationId});
+  factory WishlistItem.fromData(Map<String, dynamic> data, GeneratedDatabase db, {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    return WishlistItem(
+      productId: intType.mapFromDatabaseResponse(data['${effectivePrefix}product_id']),
+      variationId: intType.mapFromDatabaseResponse(data['${effectivePrefix}variation_id']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || productId != null) {
+      map['product_id'] = Variable<int>(productId);
+    }
+    if (!nullToAbsent || variationId != null) {
+      map['variation_id'] = Variable<int>(variationId);
+    }
+    return map;
+  }
+
+  WishlistItemsCompanion toCompanion(bool nullToAbsent) {
+    return WishlistItemsCompanion(
+      productId: productId == null && nullToAbsent ? const Value.absent() : Value(productId),
+      variationId: variationId == null && nullToAbsent ? const Value.absent() : Value(variationId),
+    );
+  }
+
+  factory WishlistItem.fromJson(Map<String, dynamic> json, {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return WishlistItem(
+      productId: serializer.fromJson<int>(json['productId']),
+      variationId: serializer.fromJson<int>(json['variationId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'productId': serializer.toJson<int>(productId),
+      'variationId': serializer.toJson<int>(variationId),
+    };
+  }
+
+  WishlistItem copyWith({int productId, int variationId}) => WishlistItem(
+        productId: productId ?? this.productId,
+        variationId: variationId ?? this.variationId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('WishlistItem(')
+          ..write('productId: $productId, ')
+          ..write('variationId: $variationId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(productId.hashCode, variationId.hashCode));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is WishlistItem && other.productId == this.productId && other.variationId == this.variationId);
+}
+
+class WishlistItemsCompanion extends UpdateCompanion<WishlistItem> {
+  final Value<int> productId;
+  final Value<int> variationId;
+  const WishlistItemsCompanion({
+    this.productId = const Value.absent(),
+    this.variationId = const Value.absent(),
+  });
+  WishlistItemsCompanion.insert({
+    this.productId = const Value.absent(),
+    this.variationId = const Value.absent(),
+  });
+  static Insertable<WishlistItem> custom({
+    Expression<int> productId,
+    Expression<int> variationId,
+  }) {
+    return RawValuesInsertable({
+      if (productId != null) 'product_id': productId,
+      if (variationId != null) 'variation_id': variationId,
+    });
+  }
+
+  WishlistItemsCompanion copyWith({Value<int> productId, Value<int> variationId}) {
+    return WishlistItemsCompanion(
+      productId: productId ?? this.productId,
+      variationId: variationId ?? this.variationId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (productId.present) {
+      map['product_id'] = Variable<int>(productId.value);
+    }
+    if (variationId.present) {
+      map['variation_id'] = Variable<int>(variationId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('WishlistItemsCompanion(')
+          ..write('productId: $productId, ')
+          ..write('variationId: $variationId')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $WishlistItemsTable extends WishlistItems with TableInfo<$WishlistItemsTable, WishlistItem> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $WishlistItemsTable(this._db, [this._alias]);
+  final VerificationMeta _productIdMeta = const VerificationMeta('productId');
+  GeneratedIntColumn _productId;
+  @override
+  GeneratedIntColumn get productId => _productId ??= _constructProductId();
+  GeneratedIntColumn _constructProductId() {
+    return GeneratedIntColumn('product_id', $tableName, false, hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _variationIdMeta = const VerificationMeta('variationId');
+  GeneratedIntColumn _variationId;
+  @override
+  GeneratedIntColumn get variationId => _variationId ??= _constructVariationId();
+  GeneratedIntColumn _constructVariationId() {
+    return GeneratedIntColumn(
+      'variation_id',
+      $tableName,
+      true,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [productId, variationId];
+  @override
+  $WishlistItemsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'wishlist_items';
+  @override
+  final String actualTableName = 'wishlist_items';
+  @override
+  VerificationContext validateIntegrity(Insertable<WishlistItem> instance, {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('product_id')) {
+      context.handle(_productIdMeta, productId.isAcceptableOrUnknown(data['product_id'], _productIdMeta));
+    }
+    if (data.containsKey('variation_id')) {
+      context.handle(_variationIdMeta, variationId.isAcceptableOrUnknown(data['variation_id'], _variationIdMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {productId};
+  @override
+  WishlistItem map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return WishlistItem.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $WishlistItemsTable createAlias(String alias) {
+    return $WishlistItemsTable(_db, alias);
+  }
+}
+
 abstract class _$AppDataBase extends GeneratedDatabase {
   _$AppDataBase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $CategoryTable _category;
@@ -1279,8 +1456,10 @@ abstract class _$AppDataBase extends GeneratedDatabase {
   $CartItemsTable get cartItems => _cartItems ??= $CartItemsTable(this);
   $AddressTable _address;
   $AddressTable get address => _address ??= $AddressTable(this);
+  $WishlistItemsTable _wishlistItems;
+  $WishlistItemsTable get wishlistItems => _wishlistItems ??= $WishlistItemsTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [category, cart, cartItems, address];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [category, cart, cartItems, address, wishlistItems];
 }
