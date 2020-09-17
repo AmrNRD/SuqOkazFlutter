@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:incrementally_loading_listview/incrementally_loading_listview.dart';
 import 'package:intl/intl.dart';
+import 'package:suqokaz/bloc/orders/orders_bloc.dart';
 import 'package:suqokaz/data/models/order_model.dart';
 import 'package:suqokaz/ui/common/custom_appbar.dart';
 import 'package:suqokaz/ui/common/genearic.state.component.dart';
+import 'package:suqokaz/ui/common/helper_widgets.dart';
+import 'package:suqokaz/ui/common/loading.component.dart';
 import 'package:suqokaz/ui/style/app.colors.dart';
 import 'package:suqokaz/ui/style/app.dimens.dart';
 import 'package:suqokaz/utils/app.localization.dart';
 import 'package:suqokaz/utils/constants.dart';
 import 'package:suqokaz/utils/core.util.dart';
+
+import '../../../main.dart';
 
 class MyOrdersPage extends StatefulWidget {
   @override
@@ -15,6 +22,15 @@ class MyOrdersPage extends StatefulWidget {
 }
 
 class _MyOrdersPageState extends State<MyOrdersPage> {
+
+  List<OrderModel>ordersList=[];
+  OrdersBloc ordersBloc;
+@override
+  void initState() {
+    ordersBloc=BlocProvider.of<OrdersBloc>(context);
+    ordersBloc.add(GetOrdersEvent());
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,14 +38,80 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
           canPop: true,
           text: AppLocalizations.of(context)
               .translate("orders", defaultText: "Orders")),
-      body: Center(
-        child: GenericState(
-          imagePath: Constants.imagePath["empty_box"],
-          titleKey: "You don't have any orders yet",
-          bodyKey: "Feature will be added in next relese.",
-          removeButton: true,
-        ),
-      ),
+        body: BlocBuilder<OrdersBloc, OrdersState>(
+          cubit: ordersBloc,
+          builder: (BuildContext context, OrdersState state) {
+            if (state is OrdersInitial) {
+              /// Initial state
+              return HelperWidgets.getLoadingWidget(context, false);
+            } else if (state is OrdersLoadedState) {
+              /// Set orders list
+              if (!state.isLoadMoreMode)
+                ordersList = state.orders;
+              else
+                ordersList.addAll(state.orders);
+
+              if (ordersList.isEmpty || ordersList == null) {
+                return Center(
+                  child: GenericState(
+                    imagePath: Constants.imagePath["empty_box"],
+                    titleKey: "no_orders_title",
+                    bodyKey: "no_orders_body",
+                    onPress: () {
+                      BlocProvider.of<OrdersBloc>(context).resetBloc();
+                      BlocProvider.of<OrdersBloc>(context).add(
+                        GetOrdersEvent(
+                          isLoadMoreMode: false,
+                          userID: 3,
+                        ), //TODO change to real user id
+                      );
+                    },
+                    buttonKey: "refresh",
+                  ),
+                );
+              }
+
+              return listViewBodyBuilder(
+                  showLoadMoreMode: state.isLoadMoreMode,
+                  lastPageReached: state.lastPageReached);
+            } else if (state is OrdersErrorState) {
+              /// Error state
+              return Center(
+                child:
+                Text("Error occurred : ${state.message}"), //TODO translate
+              );
+            } else if (state is OrdersLoadingState) {
+              /// Loading state
+              if (!state.isLoadMoreMode) {
+                return LoadingWidget();
+              } else {
+                return listViewBodyBuilder(
+                    showLoadMoreMode: true, lastPageReached: false);
+              }
+            } else if (state is OrdersErrorState) {
+              return Center(
+                child: GenericState(
+                  imagePath: Constants.imagePath["error"],
+                  titleKey: "error_title",
+                  bodyKey: "error_body",
+                  buttonKey: "refresh",
+                  onPress: () {
+                    BlocProvider.of<OrdersBloc>(context).resetBloc();
+                    BlocProvider.of<OrdersBloc>(context).add(
+                      GetOrdersEvent(
+                        isLoadMoreMode: false,
+                        userID: Root.user.id,
+                      ),
+                    );
+                  },
+                ),
+              );
+            }
+            return Center(
+              child: Text("Error occurred in ${state.runtimeType}"), //TODO translate
+            );
+          },
+        )
     );
     //       body: SafeArea(
     //         child: Column(
@@ -85,6 +167,59 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
     //         ),
     //       ));
     // }
+  }
+
+  Widget listViewBodyBuilder({bool showLoadMoreMode, bool lastPageReached}) {
+    return ordersList.length > 0
+        ? IncrementallyLoadingListView(
+      loadMore: () async {
+        BlocProvider.of<OrdersBloc>(context).add(
+          GetOrdersEvent(
+              isLoadMoreMode: true,
+              userID: 1), //TODO change to real user id
+        );
+      },
+      padding: const EdgeInsetsDirectional.only(
+          start: AppDimens.marginDefault16,
+          end: AppDimens.marginDefault16,
+          top: AppDimens.marginDefault16,
+          bottom: AppDimens.marginDefault16),
+      hasMore: () => !lastPageReached,
+      itemCount: () =>
+      lastPageReached ? ordersList.length : ordersList.length + 1,
+      itemBuilder: (parentContext, index) {
+        if (index < ordersList.length) {
+          // Normal box product item
+          return Column(
+            children: <Widget>[
+              InkWell(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                onTap: () {
+                  // Navigator.pushNamed(
+                  //     context, Constants.orderDetailsScreen,
+                  //     arguments: ordersList[index]);
+                },
+                child: OrderCard(
+                  order: ordersList[index],
+                ),
+              ),
+              (index != (ordersList.length - 1)) ? Divider() : Container()
+            ],
+          );
+        } else {
+          // Loading view
+          return showLoadMoreMode
+              ? Center(
+            child: Container(
+              margin: EdgeInsets.all(4),
+              child: CircularProgressIndicator(),
+            ),
+          )
+              : Container();
+        }
+      },
+    )
+        : HelperWidgets.getNoEntriesWidget(context, false);
   }
 }
 

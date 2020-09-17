@@ -71,7 +71,7 @@
     "missing_data": " يجب ان لايكون فارغا ",
     "log_in_error_email": "يرجاء ادخال البريد الالكتروني بصيغة صحيحة",
     "error_title": "حدث خطاء ما!",
-    "error_body": "حدث خطاء ما، بلرجاء المحاولة لاحقا",
+    "error_body": "حدث خطاء ما، الرجاء المحاولة لاحقا",
     "no_reviews": "لاتوجد اراء لهذا المنتج حاليا",
     "reset_password_msg": "برجاء ادخال كلمة المرور الجديدة\nاجعلها افضل",
     "boarding_title_1": "طلباتك",
@@ -145,7 +145,7 @@
     "address_removed_successfully": "تم حذف العنوان بنجاح",
     "please_select_address": "من فضلك قم بإضافة عنوان",
     "location": "عنوان التوصيل",
-    "login_message": "بلرجاء ادخل بينات الدخول للمتابعة",
+    "login_message": "الرجاء ادخل بينات الدخول للمتابعة",
     "delivery_details": "طريقة الشحن",
     "payment_small": "طريقة الدفع",
     "please_select_shipping_method": "من فضلك قم بإختيار طريقة الشحن",
@@ -194,5 +194,9 @@
     "Log out": "تسجيل الخروج",
     "empty cart title": "العربه فارغه",
     "empty cart body": "العربه فارغة، قم باضافة منتجات اليها",
+    "do_order": "اطلب الآن",
+    "FEATURED": "متميز",
+    "LATEST": "حديثا",
+    "my_personal_information": "معلوماتي الشخصيه:",
     "The Other Language": "English"
 }

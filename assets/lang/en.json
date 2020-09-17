@@ -202,5 +202,9 @@
     "Log out": "Log out",
     "empty cart title": "cart is empty",
     "empty cart body": "cart is empty, add products to it",
+    "do_order": "Order",
+    "FEATURED": "FEATURED",
+    "LATEST": "LATEST",
+    "my_personal_information": "My Personal Information",
     "The Other Language": "العربيه"
 }

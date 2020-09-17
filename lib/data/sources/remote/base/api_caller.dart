@@ -110,7 +110,7 @@ class APICaller {
     headers["Content-Type"] = "application/json";
 
     if (needAuthorization) {
-      headers["Authorization"] = "Bearer " + await getToken();
+      headers["Authorization"] =await getToken();
     }
     try {
       final res = await http.get(Uri.encodeFull(_url), headers: headers).timeout(
@@ -134,7 +134,7 @@ class APICaller {
     headers["Content-Type"] = "application/json";
 
     if (needAuthorization) {
-      headers["Authorization"] = "Bearer " + await getToken();
+      headers["Authorization"] = await getToken();
     }
     if (body == null) {
       body = {};
@@ -185,8 +185,9 @@ class APICaller {
     headers["Content-Type"] = "application/json";
 
     if (needAuthorization) {
-      headers["Authorization"] = "Bearer " + await getToken();
+      headers["Authorization"] = await getToken();
     }
+    print(headers);
     if (body == null) {
       body = {};
     }
@@ -220,18 +221,18 @@ class APICaller {
         throw BadRequestException("Server error please try again later.");
       case 401:
         final responseBody = json.decode(response.body);
-        throw UnauthorisedException(parse(responseBody["message"]).documentElement.text);
+        throw UnauthorisedException(responseBody["message"]);
       case 403:
         final responseBody = json.decode(response.body);
-        throw UnauthorisedException(parse(responseBody["message"]).documentElement.text);
+        throw UnauthorisedException(responseBody["message"]);
       case 409:
         final responseBody = json.decode(response.body);
-        throw InvalidInputException(parse(responseBody["message"]).documentElement.text);
+        throw InvalidInputException(responseBody["message"]);
       case 404:
         throw BadRequestException("Internal server error, please try again later");
       case 422:
         final responseBody = json.decode(response.body);
-        throw UnprocessableEntity(parse(responseBody["message"]).documentElement.text);
+        throw UnprocessableEntity(responseBody["message"]);
       case 500:
         throw ServerErrorException(response.statusCode);
       case 503:

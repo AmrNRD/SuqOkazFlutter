@@ -1,4 +1,6 @@
 import 'package:suqokaz/data/models/product_model.dart';
+import 'package:suqokaz/data/models/shipping_method_model.dart';
+import 'package:suqokaz/data/sources/local/local.database.dart';
 
 import '../../utils/GuardParser.dart';
 import 'address_model.dart';
@@ -15,10 +17,13 @@ class OrderModel {
   String shippingMethodTitle;
   String customerNote;
   List<ProductItem> lineItems = [];
-  Address billing;
+  AddressModel billing;
+  bool isPaid;
+  AddressModel shipping;
+  ShippingMethod shippingMethod;
   String currency;
 
-  OrderModel({this.id, this.number, this.status, this.createdAt, this.total});
+  OrderModel({this.id, this.number, this.status, this.createdAt, this.total,this.lineItems,this.isPaid=false});
 
   OrderModel.fromJson(Map<String, dynamic> parsedJson) {
     id = GuardParser.safeCast<int>(parsedJson["id"]);
@@ -37,11 +42,35 @@ class OrderModel {
       lineItems.add(ProductItem.fromJson(item));
     });
 
-    billing = Address.fromJson(parsedJson["billing"]);
+    billing = AddressModel.fromJson(parsedJson["billing"]);
     shippingMethodTitle = parsedJson["shipping_lines"] != null && parsedJson["shipping_lines"].length > 0
         ? parsedJson["shipping_lines"][0]["method_title"]
         : null;
   }
+
+  Map<String, dynamic> toOrderJson() {
+      var items = lineItems.map((index) {
+        return index.toJson();
+      }).toList();
+
+      return {
+        "set_paid":isPaid,
+        "status": status,
+        "total": total.toString(),
+        "shipping_lines": [
+          {"method_title": shippingMethodTitle}
+        ],
+        "number": number,
+        "billing": billing.toJson(),
+        "shipping":shipping.toJson(),
+        "line_items": items,
+        "date_created": createdAt.toString(),
+        "payment_method_title": paymentMethodTitle
+      };
+    }
+
+
+
   @override
   String toString() => 'Order { id: $id  number: $number}';
 }
@@ -84,6 +113,8 @@ class ProductItem {
       "price": price,
     };
   }
+
+
 }
 
 class ProductItemAttribute {

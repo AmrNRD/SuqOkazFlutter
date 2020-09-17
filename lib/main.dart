@@ -16,7 +16,9 @@ import 'package:suqokaz/data/sources/local/local.database.dart';
 import 'package:suqokaz/utils/constants.dart';
 
 import 'app.dart';
+import 'bloc/orders/orders_bloc.dart';
 import 'data/models/user_model.dart';
+import 'data/repositories/orders_repository.dart';
 import 'data/repositories/user_repository.dart';
 import 'ui/style/app.colors.dart';
 import 'ui/style/app.fonts.dart';
@@ -90,6 +92,9 @@ class _RootState extends State<Root> {
             CartDataRepository(Root.appDataBase),
             ProductsRepository(),
           ),
+        ),
+        BlocProvider<OrdersBloc>(
+          create: (BuildContext context) => OrdersBloc(OrdersDataRepository()),
         ),
         BlocProvider<CategoryBloc>(
           create: (BuildContext context) => CategoryBloc(

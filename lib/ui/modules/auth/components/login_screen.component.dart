@@ -17,7 +17,6 @@ import 'package:suqokaz/ui/common/form.input.dart';
 
 import '../../../../utils/app.localization.dart';
 import '../../../../utils/constants.dart';
-import '../../../../utils/core.util.dart';
 import '../../../style/app.colors.dart';
 import '../../../style/app.dimens.dart';
 
@@ -47,7 +46,12 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return BlocListener<UserBloc, UserState>(
       listener: (BuildContext context, UserState state) {
-        if (state is UserLoadedState) {
+        if (state is UserLoadingState) {
+          setState(() {
+            isLoading = true;
+          });
+        }
+       else if (state is UserLoadedState) {
           setState(() {
             isLoading = false;
           });

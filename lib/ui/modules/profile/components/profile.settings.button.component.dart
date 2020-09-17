@@ -68,7 +68,7 @@ class SettingsButtonComponent extends StatelessWidget {
                 "",
                 context,
                 () {
-                  Navigator.pushReplacementNamed(context, Constants.authPage);
+                 BlocProvider.of<UserBloc>(context).add(LogoutUser());
                 },
                 hideDivider: true,
               ):Container(),

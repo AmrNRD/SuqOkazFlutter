@@ -55,6 +55,7 @@ class UserDataRepository implements UserRepository {
       throw HttpException('no user logged in');
     }
     user = UserModel.fromJson(json.decode(prefs.get('userData')));
+
     return user;
   }
 
@@ -80,6 +81,9 @@ class UserDataRepository implements UserRepository {
     UserModel user=UserModel.fromJson(rawMap['data']);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('userData', json.encode(user));
+    print(user.name);
+    print(user.id);
+    print(user.email);
     await prefs.setString('access_token', "Bearer " + rawMap['data']['token']);
     return user;
   }
@@ -149,8 +153,10 @@ class UserDataRepository implements UserRepository {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String theme = preferences.getString("theme");
     String lang=preferences.getString('languageCode');
-    preferences.clear();
-    preferences.setString('theme', theme);
-    preferences.setString('languageCode', lang);
+    await preferences.clear();
+    await preferences.setString('theme', theme);
+    print("Outtttttttttt");
+    print(preferences.getString('userData'));
+    await preferences.setString('languageCode', lang);
   }
 }
