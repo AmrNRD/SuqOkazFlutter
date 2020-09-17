@@ -168,13 +168,16 @@ class ProductCardComponent extends StatelessWidget {
                                   if (!inInFav) {
                                     BlocProvider.of<WishlistBloc>(context).add(
                                       AddProductToWishListEvent(
-                                        product,
-                                        variationId,
+                                        productModel: product,
+                                        varId: variationId,
                                       ),
                                     );
                                   } else {
                                     BlocProvider.of<WishlistBloc>(context).add(
-                                      RemoveWishListItemEvent(product),
+                                      RemoveWishListItemEvent(
+                                        productId: product.id,
+                                        varId: variationId,
+                                      ),
                                     );
                                   }
                                 },

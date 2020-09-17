@@ -30,7 +30,7 @@ class CartItems extends Table {
 }
 
 class WishlistItems extends Table {
-  IntColumn get productId => integer().autoIncrement()();
+  IntColumn get productId => integer()();
   IntColumn get variationId => integer().nullable()();
 }
 
@@ -62,7 +62,7 @@ class AppDataBase extends _$AppDataBase {
   // you should bump this number whenever you change or add a table definition. Migrations
   // are covered later in this readme.
   @override
-  int get schemaVersion => 15;
+  int get schemaVersion => 16;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {

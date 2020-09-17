@@ -14,12 +14,21 @@ class GetWishListEvent extends WishlistEvent {
 class AddProductToWishListEvent extends WishlistEvent {
   final ProductModel productModel;
   final int varId;
+  final int productId;
 
-  AddProductToWishListEvent(this.productModel, this.varId);
+  AddProductToWishListEvent({
+    this.productModel,
+    this.varId,
+    this.productId,
+  });
 }
 
 class RemoveWishListItemEvent extends WishlistEvent {
-  final ProductModel productModel;
+  final int varId;
+  final int productId;
 
-  RemoveWishListItemEvent(this.productModel);
+  RemoveWishListItemEvent({
+    this.productId,
+    this.varId,
+  });
 }

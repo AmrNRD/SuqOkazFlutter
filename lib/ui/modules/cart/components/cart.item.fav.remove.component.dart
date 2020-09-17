@@ -27,18 +27,21 @@ class CartItemFavRemoveComponent extends StatelessWidget {
       children: <Widget>[
         InkWell(
           onTap: () {
-            // if (!inInFav) {
-            //   BlocProvider.of<WishlistBloc>(context).add(
-            //     AddProductToWishListEvent(
-            //       product,
-            //       variationId,
-            //     ),
-            //   );
-            // } else {
-            //   BlocProvider.of<WishlistBloc>(context).add(
-            //     RemoveWishListItemEvent(product),
-            //   );
-            // }
+            if (!isInFav) {
+              BlocProvider.of<WishlistBloc>(context).add(
+                AddProductToWishListEvent(
+                  productId: productItem.productId,
+                  varId: variationId,
+                ),
+              );
+            } else {
+              BlocProvider.of<WishlistBloc>(context).add(
+                RemoveWishListItemEvent(
+                  productId: productItem.productId,
+                  varId: variationId,
+                ),
+              );
+            }
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -58,7 +61,7 @@ class CartItemFavRemoveComponent extends StatelessWidget {
                 width: AppDimens.marginDefault8,
               ),
               Text(
-                AppLocalizations.of(context).translate("move_wishlist", defaultText: "Move to wishlist"),
+                AppLocalizations.of(context).translate("move_to_wishlist", defaultText: "Move to wishlist"),
                 style: Theme.of(context).textTheme.headline3.copyWith(
                       color: Color(0xFFB1B1B1),
                     ),

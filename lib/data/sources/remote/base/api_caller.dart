@@ -110,12 +110,12 @@ class APICaller {
     headers["Content-Type"] = "application/json";
 
     if (needAuthorization) {
-      headers["Authorization"] =await getToken();
+      headers["Authorization"] = await getToken();
     }
     try {
       final res = await http.get(Uri.encodeFull(_url), headers: headers).timeout(
           const Duration(
-            seconds: 10,
+            seconds: 20,
           ), onTimeout: () {
         throw RequestTimeOutException("Poor internet or no internet connectivity");
       });
@@ -142,7 +142,7 @@ class APICaller {
     try {
       final res = await http.post(Uri.encodeFull(_url), headers: headers, body: json.encode(body)).timeout(
           const Duration(
-            seconds: 10,
+            seconds: 20,
           ), onTimeout: () {
         throw RequestTimeOutException("Poor internet or no internet connectivity");
       });
@@ -166,7 +166,7 @@ class APICaller {
     try {
       final res = await http.delete(Uri.encodeFull(_url), headers: headers).timeout(
           const Duration(
-            seconds: 10,
+            seconds: 20,
           ), onTimeout: () {
         throw RequestTimeOutException("Poor internet or no internet connectivity");
       });
@@ -194,7 +194,7 @@ class APICaller {
     try {
       final res = await http.put(Uri.encodeFull(_url), headers: headers, body: json.encode(body)).timeout(
           const Duration(
-            seconds: 10,
+            seconds: 20,
           ), onTimeout: () {
         throw RequestTimeOutException("Poor internet or no internet connectivity");
       });

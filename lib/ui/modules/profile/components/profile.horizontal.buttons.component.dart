@@ -11,7 +11,7 @@ class HorizontalButtonsComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: 34,
+        horizontal: 20,
         vertical: 24,
       ),
       child: Row(
@@ -21,13 +21,13 @@ class HorizontalButtonsComponent extends StatelessWidget {
             "assets/icons/history_icon.svg",
             "orders",
             context,
-            ()=>Navigator.pushNamed(context, Constants.myOrderPage),
+            () => Navigator.pushNamed(context, Constants.myOrderPage),
           ),
           buildButton(
             "assets/icons/location_icon.svg",
             "addresses",
             context,
-                ()=>Navigator.pushNamed(context, Constants.addressesPage),
+            () => Navigator.pushNamed(context, Constants.addressesPage),
           ),
           buildButton(
             "assets/icons/help_icon.svg",
@@ -39,7 +39,7 @@ class HorizontalButtonsComponent extends StatelessWidget {
             "assets/icons/info_icon.svg",
             "My info",
             context,
-                ()=>Navigator.pushNamed(context, Constants.editProfilePage),
+            () => Navigator.pushNamed(context, Constants.editProfilePage),
           ),
         ],
       ),
@@ -89,9 +89,9 @@ class HorizontalButtonsComponent extends StatelessWidget {
   launchToTermsURL() async {
     const url = 'https://suqokaz.com/en/terms-and-conditions/';
     if (await canLaunch(url)) {
-    await launch(url);
+      await launch(url);
     } else {
-    throw 'Could not launch $url';
+      throw 'Could not launch $url';
     }
   }
 }

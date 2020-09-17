@@ -35,7 +35,7 @@ class ProductCardLongComponent extends StatelessWidget {
     return GestureDetector(
       onTap: (onItemTap != null) ? onItemTap : null,
       child: Container(
-        height: screenAwareSize(110, context),
+        height: 110,
         padding: EdgeInsets.all(16),
         margin: EdgeInsetsDirectional.only(end: allowMargin ? 8 : 0, bottom: 8),
         decoration: BoxDecoration(
@@ -122,13 +122,16 @@ class ProductCardLongComponent extends StatelessWidget {
                       if (!isInFav) {
                         BlocProvider.of<WishlistBloc>(context).add(
                           AddProductToWishListEvent(
-                            product,
-                            variationId,
+                            productModel: product,
+                            varId: product.variations[0].id,
                           ),
                         );
                       } else {
                         BlocProvider.of<WishlistBloc>(context).add(
-                          RemoveWishListItemEvent(product),
+                          RemoveWishListItemEvent(
+                            productId: product.id,
+                            varId: product.variations[0].id,
+                          ),
                         );
                       }
                     },

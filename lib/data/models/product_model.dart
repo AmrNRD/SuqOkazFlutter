@@ -42,18 +42,28 @@ class ProductModel {
 
   ProductModel();
 
-  ProductModel.fromJson(Map<String, dynamic> parsedJson) {
+  ProductModel.fromJson(Map<String, dynamic> parsedJson, {bool skip = false}) {
     try {
       List<Attribute> defaultAttributesList = [];
-      parsedJson["default_attributes"].forEach((item) {
+      parsedJson["default_attributes"]?.forEach((item) {
         defaultAttributesList.add(Attribute.fromJson(item));
       });
       defaultAttributes = defaultAttributesList;
       id = parsedJson["id"];
-      defaultVariationId = parsedJson["variations"][0];
-      categoryName = parsedJson["categories"][0]["name"];
+
+      if (parsedJson["variations"] != null) {
+        defaultVariationId = parsedJson["variations"][0];
+      }
+      if (parsedJson["categories"] != null) {
+        categoryName = parsedJson["categories"][0]["name"];
+        categoryId = parsedJson["categories"] != null && parsedJson["categories"].length > 0
+            ? parsedJson["categories"][0]["id"]
+            : 0;
+      }
+
       name = parsedJson["name"];
       type = parsedJson["type"];
+
       description = isNotBlank(parsedJson["description"]) ? parsedJson["description"] : parsedJson["short_description"];
       permalink = parsedJson["permalink"];
       price = parsedJson["price"] != null ? double.parse(parsedJson["price"].toString()).toStringAsFixed(2) : "";
@@ -61,15 +71,11 @@ class ProductModel {
       regularPrice = parsedJson["regular_price"] != null ? parsedJson["regular_price"].toString() : null;
       salePrice = parsedJson["sale_price"] != null ? parsedJson["sale_price"].toString() : null;
       onSale = parsedJson["on_sale"] == null ? false : parsedJson["on_sale"];
-      ;
       inStock = parsedJson["in_stock"] ?? parsedJson["stock_status"] == "instock";
 
-      averageRating = double.parse(parsedJson["average_rating"]);
-      ratingCount = int.parse(parsedJson["rating_count"].toString());
+      averageRating = double.parse(parsedJson["average_rating"] ?? "0.0");
 
-      categoryId = parsedJson["categories"] != null && parsedJson["categories"].length > 0
-          ? parsedJson["categories"][0]["id"]
-          : 0;
+      ratingCount = int.parse(parsedJson["rating_count"]?.toString() ?? "0");
 
       manageStock = parsedJson['manage_stock'] ?? false;
 
@@ -80,90 +86,108 @@ class ProductModel {
 
       //minQuantity = parsedJson['meta_data']['']
 
+      print("SAAAAAAAAAAAAAAD");
+
       List<ProductAttribute> attributeList = [];
-      parsedJson["attributes"].forEach((item) {
-        if (item['visible'] && item['variation']) {
-          attributeList.add(ProductAttribute.fromJson(item));
-        }
-      });
-      attributes = attributeList;
-
-      parsedJson["attributes"].forEach((item) {
-        infors.add(ProductAttribute.fromJson(item));
-      });
-
-      List<String> list = [];
-
-      // get images links from meta data
-      var metaDataImages = parsedJson['meta_data'].firstWhere(
-        (item) => item['key'] == '_knawatfibu_wcgallary',
-        orElse: () => null,
-      );
-      if (metaDataImages != null) {
-        var metaDataImagesList = metaDataImages['value'] as List;
-        if (metaDataImagesList != null) {
-          metaDataImagesList.forEach((element) {
-            if (element['url'] is String) {
-              list.add(element['url'] as String);
+      if (parsedJson["attributes"] != null) {
+        parsedJson["attributes"]?.forEach((item) {
+          if (item is! ProductAttribute) {
+            if (item['visible'] && item['variation']) {
+              attributeList.add(ProductAttribute.fromJson(item));
             }
-          });
+          }
+        });
+      }
+      print("SAAAAAAAAAAAAAAD");
+
+      attributes = attributeList;
+      if (parsedJson.containsKey("attributes")) {
+        parsedJson["attributes"]?.forEach((item) {
+          if (item is ProductAttribute) {
+            print("qewqwe");
+            infors.add(item);
+          } else {
+            infors.add(ProductAttribute.fromJson(item));
+          }
+        });
+      }
+
+      print("SAAAAAAAAAAAAAAD");
+      List<String> list = [];
+      print(parsedJson.toString());
+      print(parsedJson.containsKey("meta_data"));
+      // get images links from meta data
+      if (parsedJson.containsKey("meta_data")) {
+        var metaDataImages = parsedJson['meta_data'].firstWhere(
+          (item) => item['key'] == '_knawatfibu_wcgallary',
+          orElse: () => null,
+        );
+        if (metaDataImages != null) {
+          var metaDataImagesList = metaDataImages['value'] as List;
+          if (metaDataImagesList != null) {
+            metaDataImagesList.forEach((element) {
+              if (element['url'] is String) {
+                list.add(element['url'] as String);
+              }
+            });
+          }
         }
       }
 
+      print("SAAAAAAAAAAAAAAD");
       for (var item in parsedJson["images"]) {
-        list.add(item["src"]);
+        if (item is Map) {
+          list.add(item["src"]);
+        } else {
+          list.add(item);
+        }
       }
-
       images = list;
       imageFeature = images[0];
-
-      // get video link
-      var video = parsedJson['meta_data'].firstWhere(
-        (item) => item['key'] == '_video_url' || item['key'] == '_woofv_video_embed',
-        orElse: () => null,
-      );
-      if (video != null) {
-        videoUrl = video['value'] is String ? video['value'] : video['value']['url'] ?? '';
-      }
-
-      affiliateUrl = parsedJson['external_url'];
-      multiCurrencies = parsedJson['multi-currency-prices'];
-
-      List<int> groupedProductList = [];
-      parsedJson['grouped_products'].forEach((item) {
-        groupedProductList.add(item);
-      });
-      groupedProducts = groupedProductList;
-      List<String> files = [];
-      parsedJson['downloads'].forEach((item) {
-        files.add(item['file']);
-      });
-      this.files = files;
-      for (var item in parsedJson['meta_data']) {
-        try {
-          if (item['key'] == '_minmax_product_max_quantity') {
-            int quantity = int.parse(item['value']);
-            quantity == 0 ? maxQuantity = null : maxQuantity = quantity;
-          }
-        } catch (e) {
-          print('maxQuantity $e');
+      if (!skip) {
+// get video link
+        var video = parsedJson['meta_data'].firstWhere(
+          (item) => item['key'] == '_video_url' || item['key'] == '_woofv_video_embed',
+          orElse: () => null,
+        );
+        if (video != null) {
+          videoUrl = video['value'] is String ? video['value'] : video['value']['url'] ?? '';
         }
 
-        try {
-          if (item['key'] == '_minmax_product_min_quantity') {
-            int quantity = int.parse(item['value']);
-            quantity == 0 ? minQuantity = null : minQuantity = quantity;
-          }
-        } catch (e) {
-          print('minQuantity $e');
+        affiliateUrl = parsedJson['external_url'];
+        multiCurrencies = parsedJson['multi-currency-prices'];
+
+        List<int> groupedProductList = [];
+        parsedJson['grouped_products']?.forEach((item) {
+          groupedProductList.add(item);
+        });
+        groupedProducts = groupedProductList;
+        List<String> files = [];
+        parsedJson['downloads']?.forEach((item) {
+          files.add(item['file']);
+        });
+        this.files = files;
+        for (var item in parsedJson['meta_data']) {
+          try {
+            if (item['key'] == '_minmax_product_max_quantity') {
+              int quantity = int.parse(item['value']);
+              quantity == 0 ? maxQuantity = null : maxQuantity = quantity;
+            }
+          } catch (e) {}
+
+          try {
+            if (item['key'] == '_minmax_product_min_quantity') {
+              int quantity = int.parse(item['value']);
+              quantity == 0 ? minQuantity = null : minQuantity = quantity;
+            }
+          } catch (e) {}
         }
       }
-    } catch (e) {
-      print(e);
-    }
+      print("SAD FINAL");
+    } catch (e) {}
   }
 
-  Map<String, dynamic> toJson() {
+  dynamic toJson() {
     return {
       "id": id,
       "sku": sku,
@@ -214,9 +238,7 @@ class ProductModel {
       categoryId = json['categoryId'];
       multiCurrencies = json['multiCurrencies'];
       stockQuantity = json['stock_quantity'];
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 
   @override
@@ -247,9 +269,7 @@ class ProductAttribute {
       id = json['id'];
       name = json['name'];
       options = json['options'];
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 }
 
@@ -270,7 +290,6 @@ class Attribute {
     var sad = int.tryParse(parsedJson["option"]);
     if (sad == null) {
       option = Uri.decodeFull(parsedJson["option"]).toString().toUpperCase();
-      print(option);
     } else {
       option = parsedJson["option"].toString().toUpperCase();
     }
@@ -370,9 +389,7 @@ class ProductVariation {
         attributeList.add(Attribute.fromLocalJson(item));
       }
       attributes = attributeList;
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 }
 

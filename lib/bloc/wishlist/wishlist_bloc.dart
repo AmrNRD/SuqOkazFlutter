@@ -36,49 +36,44 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
         yield WishlistLoadedState(list);
       } else if (event is RemoveWishListItemEvent) {
         yield WishlistLoadingState();
-        print(list);
-        print(event.productModel.variations.isEmpty);
-        if (event.productModel.variations.isEmpty) {
-          wishListMaper.remove(event.productModel.id.toString() + event.productModel.defaultVariationId.toString());
-          list.removeWhere(
-            (product) =>
-                product.id == event.productModel.id &&
-                product.variations[0].id == event.productModel.defaultVariationId,
-          );
-          await _wishlistDataRepository.removeWishlistItem(
-            event.productModel.id,
-            event.productModel.defaultVariationId,
-          );
-        } else {
-          wishListMaper.remove(event.productModel.id.toString() + event.productModel.variations[0].id.toString());
-          list.removeAt(
-            list.indexOf(
-              event.productModel,
-            ),
-          );
-          await _wishlistDataRepository.removeWishlistItem(
-            event.productModel.id,
-            event.productModel.variations[0].id,
-          );
-        }
-
+        wishListMaper.remove(event.productId.toString() + event.varId.toString());
+        list.removeWhere(
+          (product) => product.id == event.productId && product.variations[0].id == event.varId,
+        );
+        await _wishlistDataRepository.removeWishlistItem(
+          event.productId,
+          event.varId,
+        );
         yield WishlistLoadedState(list);
       } else if (event is AddProductToWishListEvent) {
         yield WishlistLoadingState();
-        wishListMaper[event.productModel.id.toString() + event.varId.toString()] = null;
-        await _wishlistDataRepository.addWishlistItem(
-          event.productModel.id,
-          event.varId,
-        );
-        if (event.productModel.variations.isEmpty) {
-          event.productModel.variations = [
-            ProductVariation(
-              id: event.productModel.defaultVariationId,
-              attributes: event.productModel.defaultAttributes,
-            )
-          ];
+
+        if (event.productModel == null) {
+          print(event.varId);
+          print(event.productId);
+          wishListMaper[event.productId.toString() + event.varId.toString()] = null;
+          await _wishlistDataRepository.addWishlistItem(
+            event.productId,
+            event.varId,
+          );
+          await parseProduct(event.productId, event.varId);
+        } else {
+          wishListMaper[event.productModel.id.toString() + event.varId.toString()] = null;
+          await _wishlistDataRepository.addWishlistItem(
+            event.productModel.id,
+            event.varId,
+          );
+          if (event.productModel.variations.isEmpty) {
+            event.productModel.variations = [
+              ProductVariation(
+                id: event.productModel.defaultVariationId,
+                attributes: event.productModel.defaultAttributes,
+              )
+            ];
+          }
+          list.add(event.productModel);
         }
-        list.add(event.productModel);
+
         yield WishlistLoadedState(list);
       }
     } catch (e) {

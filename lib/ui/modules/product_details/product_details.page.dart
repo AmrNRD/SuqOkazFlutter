@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:suqokaz/bloc/cart/cart_bloc.dart';
 import 'package:suqokaz/bloc/product/product_bloc.dart';
 import 'package:suqokaz/bloc/review/review_bloc.dart';
+import 'package:suqokaz/bloc/wishlist/wishlist_bloc.dart';
 import 'package:suqokaz/data/models/product_model.dart';
 import 'package:suqokaz/data/repositories/products_repository.dart';
 import 'package:suqokaz/ui/common/genearic.state.component.dart';
@@ -39,6 +40,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
   int variationId = 0;
 
+  bool isLoading = false;
+
   updateProductSettings(int quantity, int variationId, int selectedVariationIndex) {
     setState(() {
       productQuantity = quantity;
@@ -47,6 +50,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     });
   }
 
+  Map<String, Null> wishListMaper = {};
   ScrollController _scrollController;
   @override
   void initState() {
@@ -56,9 +60,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         widget.productModel.id.toString(),
       ),
     );
-
+    wishListMaper = BlocProvider.of<WishlistBloc>(context).wishListMaper;
     productDetailsBloc.add(GetProductVariationsEvent(widget.productModel));
-
     _scrollController = ScrollController();
   }
 
@@ -102,8 +105,32 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         margin: EdgeInsets.all(24),
                         child: Column(
                           children: <Widget>[
-                            ProductStatusBarComponent(
-                              inStock: widget.productModel.variations[selectedVariation].inStock,
+                            BlocListener<WishlistBloc, WishlistState>(
+                              listener: (context, state) {
+                                if (state is WishlistLoadedState) {
+                                  setState(() {
+                                    wishListMaper = BlocProvider.of<WishlistBloc>(context).wishListMaper;
+                                    isLoading = false;
+                                  });
+                                } else if (state is WishlistLoadingState) {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                } else {
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                }
+                              },
+                              child: ProductStatusBarComponent(
+                                productId: widget.productModel.id,
+                                variationId: variationId,
+                                isLoading: isLoading,
+                                inStock: widget.productModel.variations[selectedVariation].inStock,
+                                isInFav: wishListMaper.containsKey(widget.productModel.id.toString() +
+                                        widget.productModel.variations[selectedVariation].id.toString()) ??
+                                    false,
+                              ),
                             ),
                             CustomCarouselComponent(
                               images: widget.productModel.images,

@@ -4,6 +4,7 @@ import 'package:suqokaz/bloc/wishlist/wishlist_bloc.dart';
 import 'package:suqokaz/ui/common/genearic.state.component.dart';
 import 'package:suqokaz/ui/common/loading.component.dart';
 import 'package:suqokaz/ui/common/product.card.long.component.dart';
+import 'package:suqokaz/utils/app.localization.dart';
 import 'package:suqokaz/utils/constants.dart';
 
 class WishlistPage extends StatelessWidget {
@@ -50,6 +51,18 @@ class WishlistPage extends StatelessWidget {
           }
         } else if (state is WishlistLoadingState) {
           return LoadingWidget();
+        } else if (state is WishlistErrorState) {
+          return Center(
+            child: GenericState(
+              size: 40,
+              margin: 8,
+              fontSize: 16,
+              removeButton: true,
+              imagePath: Constants.imagePath["error"],
+              titleKey: AppLocalizations.of(context).translate("sad", defaultText: ":("),
+              bodyKey: state.message,
+            ),
+          );
         }
         return Container();
       },

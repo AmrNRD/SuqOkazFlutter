@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:suqokaz/bloc/cart/cart_bloc.dart';
 import 'package:suqokaz/bloc/wishlist/wishlist_bloc.dart';
 import 'package:suqokaz/data/models/product_model.dart';
-import 'package:suqokaz/data/sources/local/local.database.dart';
 import 'package:suqokaz/ui/common/genearic.state.component.dart';
 import 'package:suqokaz/ui/common/loading.component.dart';
 import 'package:suqokaz/ui/common/product.card.component.dart';

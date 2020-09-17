@@ -1345,9 +1345,9 @@ class WishlistItemsCompanion extends UpdateCompanion<WishlistItem> {
     this.variationId = const Value.absent(),
   });
   WishlistItemsCompanion.insert({
-    this.productId = const Value.absent(),
+    @required int productId,
     this.variationId = const Value.absent(),
-  });
+  }) : productId = Value(productId);
   static Insertable<WishlistItem> custom({
     Expression<int> productId,
     Expression<int> variationId,
@@ -1396,7 +1396,11 @@ class $WishlistItemsTable extends WishlistItems with TableInfo<$WishlistItemsTab
   @override
   GeneratedIntColumn get productId => _productId ??= _constructProductId();
   GeneratedIntColumn _constructProductId() {
-    return GeneratedIntColumn('product_id', $tableName, false, hasAutoIncrement: true, declaredAsPrimaryKey: true);
+    return GeneratedIntColumn(
+      'product_id',
+      $tableName,
+      false,
+    );
   }
 
   final VerificationMeta _variationIdMeta = const VerificationMeta('variationId');
@@ -1425,6 +1429,8 @@ class $WishlistItemsTable extends WishlistItems with TableInfo<$WishlistItemsTab
     final data = instance.toColumns(true);
     if (data.containsKey('product_id')) {
       context.handle(_productIdMeta, productId.isAcceptableOrUnknown(data['product_id'], _productIdMeta));
+    } else if (isInserting) {
+      context.missing(_productIdMeta);
     }
     if (data.containsKey('variation_id')) {
       context.handle(_variationIdMeta, variationId.isAcceptableOrUnknown(data['variation_id'], _variationIdMeta));
@@ -1433,7 +1439,7 @@ class $WishlistItemsTable extends WishlistItems with TableInfo<$WishlistItemsTab
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {productId};
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
   @override
   WishlistItem map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
