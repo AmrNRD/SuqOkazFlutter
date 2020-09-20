@@ -52,8 +52,6 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
         );
 
         if (event.productModel == null) {
-          print(event.varId);
-          print(event.productId);
           wishListMaper[event.productId.toString() + event.varId.toString()] = null;
           await _wishlistDataRepository.addWishlistItem(
             event.productId,
@@ -80,7 +78,6 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
         yield WishlistLoadedState(list);
       }
     } catch (e) {
-      print(e.toString());
       yield WishlistErrorState(e.toString());
     }
   }

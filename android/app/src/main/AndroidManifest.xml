@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="suqokaz"
+        android:label="Suq Okaz"
         android:icon="@mipmap/launcher_icon">
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"
