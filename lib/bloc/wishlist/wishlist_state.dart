@@ -7,7 +7,12 @@ abstract class WishlistState extends Equatable {
   List<Object> get props => [];
 }
 
-class WishlistLoadingState extends WishlistState {}
+class WishlistLoadingState extends WishlistState {
+  final int productId;
+  final int variationId;
+
+  WishlistLoadingState({this.productId, this.variationId});
+}
 
 class WishlistLoadedState extends WishlistState {
   final List<ProductModel> products;

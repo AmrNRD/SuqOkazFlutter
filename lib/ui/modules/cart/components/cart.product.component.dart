@@ -5,18 +5,25 @@ import 'package:suqokaz/ui/modules/cart/components/cart.item.fav.remove.componen
 import 'package:suqokaz/utils/app.localization.dart';
 import 'package:suqokaz/utils/core.util.dart';
 
-class ProductCartComponent extends StatelessWidget {
+class ProductCartComponent extends StatefulWidget {
   final ProductItem productItem;
   final int variationId;
   final bool isInFav;
+  final bool isLoading;
 
   const ProductCartComponent({
     Key key,
     @required this.productItem,
     @required this.variationId,
     this.isInFav = false,
+    this.isLoading = false,
   }) : super(key: key);
 
+  @override
+  _ProductCartComponentState createState() => _ProductCartComponentState();
+}
+
+class _ProductCartComponentState extends State<ProductCartComponent> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,13 +40,13 @@ class ProductCartComponent extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      productItem.name,
+                      widget.productItem.name,
                       style: Theme.of(context).textTheme.bodyText2,
                       maxLines: 2,
                       softWrap: true,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    ...productItem.attribute.map(
+                    ...widget.productItem.attribute.map(
                       (e) => Container(
                         margin: EdgeInsets.symmetric(vertical: 2),
                         child: Text(
@@ -51,7 +58,7 @@ class ProductCartComponent extends StatelessWidget {
                     Text(
                       AppLocalizations.of(context).translate(
                         "currency",
-                        replacement: productItem.price,
+                        replacement: widget.productItem.price,
                       ),
                       style: Theme.of(context).textTheme.bodyText2.copyWith(fontWeight: FontWeight.w700),
                     ),
@@ -75,7 +82,7 @@ class ProductCartComponent extends StatelessWidget {
                   ],
                 ),
                 child: ImageProcessor.image(
-                  url: productItem.featuredImage,
+                  url: widget.productItem.featuredImage,
                   fit: BoxFit.contain,
                 ),
               ),
@@ -88,13 +95,14 @@ class ProductCartComponent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               CartItemCounter(
-                productItem: productItem,
-                variationId: variationId,
+                productItem: widget.productItem,
+                variationId: widget.variationId,
               ),
               CartItemFavRemoveComponent(
-                isInFav: isInFav,
-                productItem: productItem,
-                variationId: variationId,
+                isLoading: widget.isLoading,
+                isInFav: widget.isInFav,
+                productItem: widget.productItem,
+                variationId: widget.variationId,
               ),
             ],
           ),

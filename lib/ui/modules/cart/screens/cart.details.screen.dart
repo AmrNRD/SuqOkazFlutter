@@ -24,6 +24,12 @@ class CartDetailsScreen extends StatefulWidget {
 class _CartDetailsScreenState extends State<CartDetailsScreen> {
   final TextEditingController discountController = TextEditingController();
   Map<String, Null> wishListMaper = {};
+
+  bool isLoading = false;
+
+  int productId = 0;
+  int variationId = 0;
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +43,17 @@ class _CartDetailsScreenState extends State<CartDetailsScreen> {
         if (state is WishlistLoadedState) {
           setState(() {
             wishListMaper = BlocProvider.of<WishlistBloc>(context).wishListMaper;
+            isLoading = false;
+          });
+        } else if (state is WishlistLoadingState) {
+          setState(() {
+            isLoading = true;
+            productId = state.productId;
+            variationId = state.variationId;
+          });
+        } else {
+          setState(() {
+            isLoading = false;
           });
         }
       },
@@ -55,6 +72,10 @@ class _CartDetailsScreenState extends State<CartDetailsScreen> {
                       itemCount: widget.productItems.length,
                       itemBuilder: (BuildContext context, int index) {
                         return ProductCartComponent(
+                          isLoading: (productId == widget.productItems[index].productId &&
+                                  variationId == widget.productItems[index].variationId)
+                              ? isLoading
+                              : false,
                           productItem: widget.productItems[index],
                           variationId: widget.productItems[index].variationId,
                           isInFav: wishListMaper.containsKey(widget.productItems[index].productId.toString() +

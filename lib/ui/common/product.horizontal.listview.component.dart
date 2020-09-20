@@ -54,20 +54,18 @@ class _ProductHorizontalListViewState extends State<ProductHorizontalListView> {
               primary: false,
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int index) {
-                return InkWell(
-                  onTap: () => Navigator.pushNamed(
+                return ProductCardComponent(
+                  product: widget.products[index],
+                  onItemTap: () => Navigator.pushNamed(
                     context,
                     Constants.productDetailsPage,
                     arguments: widget.products[index],
                   ),
-                  child: ProductCardComponent(
-                    product: widget.products[index],
-                    variationId: widget.products[index].defaultVariationId,
-                    attribute: widget.products[index].defaultAttributes,
-                    inInFav: wishListMaper.containsKey(widget.products[index].id.toString() +
-                            widget.products[index].defaultVariationId.toString()) ??
-                        false,
-                  ),
+                  variationId: widget.products[index].defaultVariationId,
+                  attribute: widget.products[index].defaultAttributes,
+                  inInFav: wishListMaper.containsKey(widget.products[index].id.toString() +
+                          widget.products[index].defaultVariationId.toString()) ??
+                      false,
                 );
               },
             ),

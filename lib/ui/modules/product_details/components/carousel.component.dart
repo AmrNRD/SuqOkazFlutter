@@ -1,4 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
+import 'package:suqokaz/ui/common/skeleton.dart';
+import 'package:suqokaz/ui/modules/product_details/components/image.inspector.component.dart';
 import 'package:suqokaz/ui/style/app.colors.dart';
 import 'package:suqokaz/utils/core.util.dart';
 
@@ -11,8 +16,7 @@ class CustomCarouselComponent extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CustomCarouselComponentState createState() =>
-      _CustomCarouselComponentState();
+  _CustomCarouselComponentState createState() => _CustomCarouselComponentState();
 }
 
 class _CustomCarouselComponentState extends State<CustomCarouselComponent> {
@@ -23,16 +27,19 @@ class _CustomCarouselComponentState extends State<CustomCarouselComponent> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(5.0),
-            child: ImageProcessor.image(
-              url: widget.images[_selectedImage],
-              fit: BoxFit.contain,
-              height: screenAwareSize(180, context),
+        InkWell(
+          onTap: _pushImageInspector,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(5.0),
+              child: ImageProcessor.image(
+                url: widget.images[_selectedImage],
+                fit: BoxFit.contain,
+                height: screenAwareSize(180, context),
+              ),
             ),
           ),
         ),
@@ -60,8 +67,7 @@ class _CustomCarouselComponentState extends State<CustomCarouselComponent> {
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color:
-                                AppColors.primaryColors[50].withOpacity(0.25),
+                            color: AppColors.primaryColors[50].withOpacity(0.25),
                             blurRadius: 10,
                             offset: Offset(0, 4),
                           ),
@@ -97,6 +103,19 @@ class _CustomCarouselComponentState extends State<CustomCarouselComponent> {
           ),
         ),
       ],
+    );
+  }
+
+  void _pushImageInspector() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        transitionDuration: Duration(seconds: 1),
+        pageBuilder: (_, __, ___) => ImageViewInspector(
+          images: widget.images,
+          intitalIndex: _selectedImage,
+        ),
+      ),
     );
   }
 }

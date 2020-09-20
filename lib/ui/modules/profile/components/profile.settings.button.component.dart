@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:suqokaz/bloc/user/user_bloc.dart';
 import 'package:suqokaz/bloc/user/user_event.dart';
-import 'package:suqokaz/data/models/user_model.dart';
-import 'package:suqokaz/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../app.dart';
@@ -29,27 +27,27 @@ class SettingsButtonComponent extends StatelessWidget {
             style: Theme.of(context).textTheme.headline2,
           ),
         ),
-
         Container(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 22),
           child: Column(
             children: <Widget>[
-              Root.user==null?buildSettingsButtton(
-                "Log in",
-                "",
-                context,
-                    () {
-                  BlocProvider.of<UserBloc>(context).add(LogoutUser());
-                },
-                hideDivider: true,
-              ):Container(),
+              Root.user == null
+                  ? buildSettingsButtton(
+                      "Log in",
+                      "",
+                      context,
+                      () {
+                        BlocProvider.of<UserBloc>(context).add(LogoutUser());
+                      },
+                      hideDivider: true,
+                    )
+                  : Container(),
               buildSettingsButtton(
                 "Change Language",
                 "The Other Language",
                 context,
                 () {
-                  if (AppLocalizations.of(context).currentLanguage ==
-                      Locale('ar').toString()) {
+                  if (AppLocalizations.of(context).currentLanguage == Locale('ar').toString()) {
                     application.updateLocale('en', context);
                   } else {
                     application.updateLocale('ar', context);
@@ -62,16 +60,17 @@ class SettingsButtonComponent extends StatelessWidget {
                 context,
                 launchToAboutURL,
               ),
-
-              Root.user!=null?buildSettingsButtton(
-                "Log out",
-                "",
-                context,
-                () {
-                 BlocProvider.of<UserBloc>(context).add(LogoutUser());
-                },
-                hideDivider: true,
-              ):Container(),
+              Root.user != null
+                  ? buildSettingsButtton(
+                      "Log out",
+                      "",
+                      context,
+                      () {
+                        BlocProvider.of<UserBloc>(context).add(LogoutUser());
+                      },
+                      hideDivider: true,
+                    )
+                  : Container(),
             ],
           ),
         ),
@@ -88,8 +87,7 @@ class SettingsButtonComponent extends StatelessWidget {
     }
   }
 
-  Widget buildSettingsButtton(
-      String lableKey, String hintKey, BuildContext context, Function onPress,
+  Widget buildSettingsButtton(String lableKey, String hintKey, BuildContext context, Function onPress,
       {bool hideDivider = false}) {
     return InkWell(
       onTap: onPress,
@@ -117,10 +115,7 @@ class SettingsButtonComponent extends StatelessWidget {
                                 hintKey,
                                 defaultText: hintKey,
                               ),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  .copyWith(
+                              style: Theme.of(context).textTheme.bodyText1.copyWith(
                                     color: Colors.black.withOpacity(0.3),
                                   ),
                             ),

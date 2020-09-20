@@ -290,8 +290,10 @@ class Attribute {
     var sad = int.tryParse(parsedJson["option"]);
     if (sad == null) {
       option = Uri.decodeFull(parsedJson["option"]).toString().toUpperCase();
+      option = option.replaceAll("-", " ");
     } else {
       option = parsedJson["option"].toString().toUpperCase();
+      option = option.replaceAll("-", " ");
     }
   }
 

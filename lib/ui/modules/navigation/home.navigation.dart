@@ -11,7 +11,6 @@ import 'package:suqokaz/ui/common/custom_appbar.dart';
 import 'package:suqokaz/ui/modules/cart/cart.page.dart';
 import 'package:suqokaz/ui/modules/home/home.tab.dart';
 import 'package:suqokaz/ui/modules/profile/profile.page.dart';
-import 'package:suqokaz/ui/modules/search/search.page.dart';
 import 'package:suqokaz/ui/modules/wishlist/wishlist.page.dart';
 import 'package:suqokaz/utils/constants.dart';
 

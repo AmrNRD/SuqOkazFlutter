@@ -53,17 +53,21 @@ class VariationHelper {
         }
       }
     }
-    //print(commonVariationLocator.toString());
+    print(commonVariationLocator.toString());
   }
 
   commonVariationFinder(String filterName, String filterValue) {
     isVariationMatchedBefore.updateAll((key, value) => false);
     List<ProductVariation> temp = [];
-    commonVariationLocator[filterName][filterValue][0].attributes.forEach((attribute) {
-      if (commonVariationLocator[attribute.name][attribute.option].isNotEmpty) {
-        temp.addAll(commonVariationLocator[attribute.name][attribute.option]);
-      }
-    });
+
+    if (commonVariationLocator.containsKey(filterName)) {
+      commonVariationLocator[filterName][filterValue][0].attributes.forEach((attribute) {
+        if (commonVariationLocator[attribute.name][attribute.option].isNotEmpty) {
+          temp.addAll(commonVariationLocator[attribute.name][attribute.option]);
+        }
+      });
+    }
+
     commonVariations = temp;
   }
 

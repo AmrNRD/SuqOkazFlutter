@@ -11,21 +11,18 @@ const double baseHeight = 812.0;
 const double baseWidth = 375.0;
 
 double screenAwareSize(double size, BuildContext context) {
-  double drawingHeight =
-      MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+  double drawingHeight = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
   return size * drawingHeight / baseHeight;
 }
 
 double screenAwareWidth(double size, BuildContext context) {
-  double drawingWidth =
-      MediaQuery.of(context).size.width - AppDimens.marginDefault16;
+  double drawingWidth = MediaQuery.of(context).size.width - AppDimens.marginDefault16;
   return size * drawingWidth / baseWidth;
 }
 
 class CustomScrollBehavior extends ScrollBehavior {
   @override
-  Widget buildViewportChrome(
-      BuildContext context, Widget child, AxisDirection axisDirection) {
+  Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection) {
     return child;
   }
 }
@@ -67,10 +64,7 @@ class ImageProcessor {
     }
 
     if (url == null || url == '') {
-      return Container(
-          width: width,
-          height: height ?? width * 1.2,
-          color: AppColors.kEmptyColor);
+      return Container(width: width, height: height ?? width * 1.2, color: AppColors.kEmptyColor);
     }
 
     if (isVideo) {
@@ -87,11 +81,7 @@ class ImageProcessor {
               fit: fit,
               cache: true,
               enableLoadState: false,
-              alignment: Alignment(
-                  (offset >= -1 && offset <= 1)
-                      ? offset
-                      : (offset > 0) ? 1.0 : -1.0,
-                  0.0),
+              alignment: Alignment((offset >= -1 && offset <= 1) ? offset : (offset > 0) ? 1.0 : -1.0, 0.0),
             ),
           ),
           Positioned.fill(
@@ -116,10 +106,8 @@ class ImageProcessor {
         width: width ?? 100,
         height: height ?? 140,
       ),
-      errorWidget: (context, url, error) => Container(
-          width: width,
-          height: height ?? width * 1.2,
-          color: AppColors.kEmptyColor),
+      errorWidget: (context, url, error) =>
+          Container(width: width, height: height ?? width * 1.2, color: AppColors.kEmptyColor),
     );
 
 //    return ImageCustom(url: imageUrl, mainUrl: url, width: width, fit: fit, height: height, offset: offset,);
@@ -144,21 +132,18 @@ class ImageProcessor {
                 child: new CircularProgressIndicator(
                   strokeWidth: 1.5,
                 )),
-            errorWidget: (context, url, error) =>
-                CachedNetworkImage(imageUrl: Constants.dummyProfilePic),
+            errorWidget: (context, url, error) => CachedNetworkImage(imageUrl: Constants.dummyProfilePic),
           )),
     );
   }
 
   double screenAwareSize(double size, BuildContext context) {
-    double drawingHeight =
-        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+    double drawingHeight = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
     return size * drawingHeight / baseHeight;
   }
 
   double screenAwareWidth(double size, BuildContext context) {
-    double drawingWidth =
-        MediaQuery.of(context).size.width - AppDimens.marginDefault16;
+    double drawingWidth = MediaQuery.of(context).size.width - AppDimens.marginDefault16;
     return size * drawingWidth / baseWidth;
   }
 }

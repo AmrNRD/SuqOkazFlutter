@@ -46,7 +46,10 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
         );
         yield WishlistLoadedState(list);
       } else if (event is AddProductToWishListEvent) {
-        yield WishlistLoadingState();
+        yield WishlistLoadingState(
+          productId: event.productId,
+          variationId: event.varId,
+        );
 
         if (event.productModel == null) {
           print(event.varId);
