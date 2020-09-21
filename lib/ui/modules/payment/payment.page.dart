@@ -71,8 +71,8 @@ class _PaymentPageState extends State<PaymentPage> {
             setState(() {
               isLoading=false;
             });
-
-            Navigator.pushReplacement(
+            BlocProvider.of<CartBloc>(context).add(CheckoutCartEvent());
+            Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
                 builder: (_) => Scaffold(
@@ -87,11 +87,13 @@ class _PaymentPageState extends State<PaymentPage> {
                   ),
                 ),
               ),
+                ModalRoute.withName(Constants.homePage)
             );
           }else if(state is OrderUrlLoadedState){
             print('--------------------------------------');
             print(state.url);
-            Navigator.pushReplacement(
+            BlocProvider.of<CartBloc>(context).add(CheckoutCartEvent());
+            Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
                   builder: (context) =>
@@ -115,8 +117,10 @@ class _PaymentPageState extends State<PaymentPage> {
                                   ),
                                 ),
                               ),
+
                             );
                           })),
+                ModalRoute.withName(Constants.homePage)
             );
           }else if(state is OrdersErrorState){
             setState(() {

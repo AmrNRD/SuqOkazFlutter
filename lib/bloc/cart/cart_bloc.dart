@@ -141,7 +141,21 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       totalPrice = 0;
       await loadCart();
       yield CartLoadedState(productIdToProductItem.values.toList(), totalCartQuantity, productIdToCartItem);
-    } else if (event is CheckoutCartEvent) {}
+    } else if (event is CheckoutCartEvent) {
+      yield CartLoadingState();
+      await _cartDataRepository.deleteCart(cartData.id);
+      await _cartDataRepository.createCart(
+        // ignore: missing_required_param
+        CartData(),
+      );
+      cartData = await _cartDataRepository.getCart();
+      totalCartQuantity = 0;
+      productIdToQuantity = {};
+      productIdToCartItem = {};
+      productIdToProductItem = {};
+      totalPrice = 0;
+      yield CartLoadedState(productIdToProductItem.values.toList(), totalCartQuantity, productIdToCartItem);
+    }
   }
 
   loadCart() async {

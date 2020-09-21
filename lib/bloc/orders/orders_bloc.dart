@@ -74,7 +74,7 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
       }
       else if(event is CreateOrder) {
         OrderModel order=await ordersRepository.createOrder(event.order);
-        if(order.status=="pending"&&order.paymentMethodTitle!="cod")
+        if(order.status=="pending"&&order.paymentMethodId!="cod")
         {
          String url= await ordersRepository.getCheckoutUrl(order.toJson());
 
