@@ -20,13 +20,15 @@ class ProductGridViewComponent extends StatefulWidget {
   final String order;
   final int categoryId;
   final Function onProductsChange;
+  final Map filterData;
+
 
   const ProductGridViewComponent({
     Key key,
     this.scrollController,
     this.categoryId,
     this.orderBy,
-    this.order, this.onProductsChange,
+    this.order, this.onProductsChange, this.filterData,
   }) : super(key: key);
 
   @override
@@ -66,6 +68,9 @@ class _ProductGridViewComponentState extends State<ProductGridViewComponent>
           isLoadMoreMode: false,
           order: widget.order,
           orderBy: widget.orderBy,
+
+          maxPrice:widget.filterData['maxPrice'].toString(),
+          minPrice: widget.filterData['minPrice'].toString(),
         ),
       );
 
@@ -78,8 +83,10 @@ class _ProductGridViewComponentState extends State<ProductGridViewComponent>
                   categoryID: widget.categoryId,
                   isLoadMoreMode: true,
                   orderBy: (widget.orderBy != null) ? widget.orderBy : null,
-                  order: (widget.order != null) ? widget.order : null),
-            );
+                  order: (widget.order != null) ? widget.order : null,
+                  maxPrice:widget.filterData['maxPrice'].toString(),
+                  minPrice: widget.filterData['minPrice'].toString(),
+              ));
             setState(() {
               showLoading = true;
             });
@@ -95,6 +102,17 @@ class _ProductGridViewComponentState extends State<ProductGridViewComponent>
       );
     }
   }
+
+  @override
+  void didChangeDependencies(){
+    if(widget.filterData['minPrice']!=null)
+    {
+      productBloc.add(GetProductsEvent(maxPrice:widget.filterData['maxPrice'].toString(),minPrice: widget.filterData['minPrice'].toString(),categoryID: widget.filterData['selectedCategoryID'] ));
+    }
+
+    super.didChangeDependencies();
+  }
+
 
   bool lastPageReached = false;
   bool showLoading = false;

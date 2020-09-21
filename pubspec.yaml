@@ -25,6 +25,7 @@ dependencies:
   flutter_webview_plugin: 0.3.10+1
 
   flutter_range_slider: ^1.5.0
+  smart_select: 3.0.3
 
   # Bloc
   flutter_bloc: ^6.0.0

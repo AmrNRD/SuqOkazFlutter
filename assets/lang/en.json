@@ -211,5 +211,7 @@
     "filter": "Filter",
     "apply": "Apply",
     "category": "Category",
-    "subcategory": "Sub Category"
+    "subcategory": "Sub Category",
+    "price": "Price",
+    "Choose your categories": "Choose your categories"
 }

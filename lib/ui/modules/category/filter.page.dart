@@ -2,12 +2,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_select/smart_select.dart';
 import 'package:suqokaz/bloc/category/category_bloc.dart';
 import 'package:suqokaz/data/models/product_model.dart';
 import 'package:suqokaz/ui/common/custom_appbar.dart';
 import 'package:suqokaz/ui/common/loading.component.dart';
 import 'package:suqokaz/ui/style/app.colors.dart';
+import 'package:suqokaz/ui/style/theme.dart';
 import 'package:suqokaz/utils/app.localization.dart';
+import 'package:flutter_range_slider/flutter_range_slider.dart' as frs;
 
 class FilterPage extends StatefulWidget {
   final Map filterData;
@@ -23,18 +26,23 @@ class _FilterPageState extends State<FilterPage> {
   CategoryBloc categoryBloc;
   List<dynamic>categories=[];
   List<dynamic>subCategories=[];
+  double _lowerValue=0;
+  double _upperValue=50000;
+  List<SmartSelectOption<dynamic>> list = [];
+  List<SmartSelectOption<dynamic>> subList = [];
+  bool loadingCategory=false;
 
-  double _lowerValue = 20.0;
-  double _upperValue = 80.0;
-  double _lowerValueFormatter = 20.0;
-  double _upperValueFormatter = 20.0;
 
   @override
   void initState() {
     filterData=widget.filterData;
     categoryBloc=BlocProvider.of<CategoryBloc>(context);
     categoryBloc.add(GetCategoriesEvent());
-    super.initState();
+    if(widget.filterData['minPrice']!=null) {
+      _lowerValue=widget.filterData['minPrice'];
+      _upperValue=widget.filterData['maxPrice'];
+      }
+      super.initState();
   }
 
   @override
@@ -52,49 +60,171 @@ class _FilterPageState extends State<FilterPage> {
         margin: EdgeInsets.symmetric(horizontal: 25),
         child: BlocProvider<CategoryBloc>(
           create: (context) => categoryBloc,
-          child: BlocBuilder<CategoryBloc, CategoryState>(
-            builder: (context, state) {
-              if(state is CategoryLoadingState){
-                return  Center(child: LoadingWidget());
-              }
-              if (state is CategoryLoadedState) {
-                categories=state.nestedCategories;
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(child: Text("Price", style: Theme.of(context).textTheme.headline2),margin: EdgeInsets.symmetric(vertical: 20)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(child: Text(AppLocalizations.of(context).translate("price"), style: Theme.of(context).textTheme.headline2),margin: EdgeInsets.symmetric(vertical: 20)),
+              frs.RangeSlider(
+                min: 0.0,
+                max:50000,
+                lowerValue: _lowerValue,
+                upperValue: _upperValue,
+                divisions: 100,
+                showValueIndicator: true,
+                valueIndicatorMaxDecimals: 1,
+                onChanged: (double newLowerValue, double newUpperValue) {
+                  setState(() {
+                    _lowerValue = newLowerValue;
+                    _upperValue = newUpperValue;
+                    filterData['minPrice']=newLowerValue;
+                    filterData['maxPrice']=newUpperValue;
+                  });
+                },
+              ),
+              SizedBox(height: 20,),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(child: Text(AppLocalizations.of(context).translate("category"), style: Theme.of(context).textTheme.headline2),margin: EdgeInsets.symmetric(vertical: 20)),
+                      BlocListener<CategoryBloc, CategoryState>(
+                        listener: (context, state) {
+                          if (state is CategoryLoadingState) {
+                            setState(() {
+                              loadingCategory = true;
+                            });
+                          } else if (state is CategoryLoadedState) {
+                            setState(() {
+                              loadingCategory = false;
+                              categories=state.nestedCategories;
+                              list = categories.map((type) => SmartSelectOption<dynamic>(value: type, group: null, title: type.name)).toList();
+                            });
+                          } else if (state is CategoryLoadedState) {
+                            setState(() {
+                              loadingCategory = false;
+                            });
+                          }
+                        },
+                        child: Container(
+                          child: SmartSelect<dynamic>.single(
+                            title: AppLocalizations.of(context).translate("category"),
+                            value: filterData['selectCategory'],
+                            options: list,
+                            dense: true,
+                            isLoading: loadingCategory,
+                            choiceConfig: SmartSelectChoiceConfig(
+                              useDivider: true,
+                              isGrouped: false,
+                              glowingOverscrollIndicatorColor: AppColors.primaryColor1,
+                              style: SmartSelectChoiceStyle(
+                                titleStyle: Theme.of(context).textTheme.headline3,
+                                activeTitleStyle: Theme.of(context).textTheme.headline3,
+                                subtitleStyle: Theme.of(context).textTheme.headline3,
+                                activeSubtitleStyle: Theme.of(context).textTheme.headline3,
+                                inactiveColor: Theme.of(context).textTheme.headline3.color,
+                                activeColor: AppColors.primaryColor1,
+                              ),
+                            ),
+                            modalConfig: SmartSelectModalConfig(headerStyle: SmartSelectModalHeaderStyle(textStyle:  Theme.of(context).textTheme.headline2, backgroundColor: Theme.of(context).cardColor, iconTheme:IconThemeData(color: Theme.of(context).textTheme.headline3.color)),),
 
-                    Container(child: Text(AppLocalizations.of(context).translate("category"), style: Theme.of(context).textTheme.headline2),margin: EdgeInsets.symmetric(vertical: 20)),
-                    Container(
-                      decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.zero), border: Border.all(color:  AppColors.customGreyLevels[200].withOpacity(0.6)), color: Colors.white),
-                      child: DropdownButton(
-                          isExpanded: true,
-                          underline: Container(),
-                          value:filterData['selectCategory'],
-                          items: categories.map((value) => DropdownMenuItem(child: Container(child: Text(value.name),margin: EdgeInsets.symmetric(horizontal: 20),), value: value)).toList(),
-                          onChanged: onSelectedCategoryChange
+                            builder: (BuildContext context, SmartSelectState<dynamic> state, SmartSelectShowModal showChoices){
+                              return GestureDetector(
+                                onTap: ()=>showChoices(context),
+                                child: Row(
+                                  children: <Widget>[
+                                    Container(
+                                      padding: EdgeInsets.only(left: 8),
+                                      child: Text(state.valueTitle??AppLocalizations.of(context).translate("Choose your categories"), style: state.valueTitle==null?Theme.of(context).textTheme.headline3.copyWith(color: AppColors.customGreyLevels[100]):Theme.of(context).textTheme.headline3.copyWith(color: AppColors.customGreyLevels[100]),
+                                      ),
+                                      alignment: Alignment.centerLeft,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            onChange: onSelectedCategoryChange,
+                            choiceType: SmartSelectChoiceType.radios,
+                          ),
+                        ),
                       ),
-                    ),
-                  subCategories.length>1? Column(
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 8),
+                    child:Icon(Icons.arrow_forward_ios,color: Theme.of(context).dividerColor,),
+                  )
+                ],
+              ),
+              SizedBox(height: 20),
+              Divider(color:  AppColors.customGreyLevels[100]),
+              subCategories.length>1? Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(child: Text(AppLocalizations.of(context).translate("subcategory"), style: Theme.of(context).textTheme.headline2),margin: EdgeInsets.symmetric(vertical: 20)),
                       Container(
-                        decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.zero), border: Border.all(color:  AppColors.customGreyLevels[200].withOpacity(0.6)), color: Colors.white),
-                        child: DropdownButton(
-                            isExpanded: true,
-                            underline: Container(),
-                            value: filterData['subcategory'],
-                            items: subCategories.map((value) => DropdownMenuItem(child: Container(child: Text(value.name),margin: EdgeInsets.symmetric(horizontal: 20),), value: value.id)).toList(),
-                            onChanged: (value) {setState(() {filterData['subcategory'] = value;});}),
+                        child: SmartSelect<dynamic>.single(
+                          title: AppLocalizations.of(context).translate("subcategory"),
+                          value: filterData['subcategory'],
+                          options: subList,
+                          dense: true,
+                          isLoading: loadingCategory,
+                          choiceConfig: SmartSelectChoiceConfig(
+                            useDivider: true,
+                            isGrouped: false,
+                            glowingOverscrollIndicatorColor: AppColors.primaryColor1,
+                            style: SmartSelectChoiceStyle(
+                              titleStyle: Theme.of(context).textTheme.headline3,
+                              activeTitleStyle: Theme.of(context).textTheme.headline3,
+                              subtitleStyle: Theme.of(context).textTheme.headline3,
+                              activeSubtitleStyle: Theme.of(context).textTheme.headline3,
+                              inactiveColor: Theme.of(context).textTheme.headline3.color,
+                              activeColor: AppColors.primaryColor1,
+                            ),
+                          ),
+                          modalConfig: SmartSelectModalConfig(headerStyle: SmartSelectModalHeaderStyle(textStyle:  Theme.of(context).textTheme.headline2, backgroundColor: Theme.of(context).cardColor, iconTheme:IconThemeData(color: Theme.of(context).textTheme.headline3.color)),),
+
+                          builder: (BuildContext context, SmartSelectState<dynamic> state, SmartSelectShowModal showChoices){
+                            return GestureDetector(
+                              onTap: ()=>showChoices(context),
+                              child: Container(
+                                child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                  children: <Widget>[
+                                    Container(
+                                      padding: EdgeInsets.only(left: 8),
+                                      child: Text(state.valueTitle??AppLocalizations.of(context).translate("Choose your categories"), style: state.valueTitle==null?Theme.of(context).textTheme.headline3.copyWith(color: AppColors.customGreyLevels[100]):Theme.of(context).textTheme.headline3.copyWith(color: AppColors.customGreyLevels[100]),
+                                      ),
+                                      alignment: Alignment.centerLeft,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                          onChange: (value) {setState(() {filterData['subcategory'] = value;});},
+                          choiceType: SmartSelectChoiceType.radios,
+                        ),
                       ),
+
+
                     ],
-                  ):Container()
-                  ],
-                );
-              }
-              return Container();
-            },
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 8),
+                    child:Icon(Icons.arrow_forward_ios,color: Theme.of(context).dividerColor,),
+                  )
+                ],
+              ):Container()
+            ],
           ),
         ),
       ),
@@ -103,14 +233,139 @@ class _FilterPageState extends State<FilterPage> {
 
   onSelectedCategoryChange(value) {
   setState(() {
+    filterData['subcategory']=null;
     filterData['category']=value.id;
     subCategories=value.children;
+    subList = subCategories.map((type) => SmartSelectOption<dynamic>(value: type.id, group: null, title: type.name)).toList();
     filterData['selectCategory']=value;
+    filterData['selectedCategoryID']=value.id;
+    if(subCategories.length>0){
+      filterData['subcategory']=subCategories[0].id;
+      filterData['selectedCategoryID']=subCategories[0].id;
+    }
   });
   }
 
   void applyFilter() {
+    Navigator.pop
     Navigator.pop(context,filterData);
   }
 }
 
+
+
+// ---------------------------------------------------
+// Helper class aimed at simplifying the way to
+// automate the creation of a series of RangeSliders,
+// based on various parameters
+//
+// This class is to be used to demonstrate the appearance
+// customization of the RangeSliders
+// ---------------------------------------------------
+class RangeSliderData {
+  double min;
+  double max;
+  double lowerValue;
+  double upperValue;
+  int divisions;
+  bool showValueIndicator;
+  int valueIndicatorMaxDecimals;
+  bool forceValueIndicator;
+  Color overlayColor;
+  Color activeTrackColor;
+  Color inactiveTrackColor;
+  Color thumbColor;
+  Color valueIndicatorColor;
+  Color activeTickMarkColor;
+
+  static const Color defaultActiveTrackColor = const Color(0xFF0175c2);
+  static const Color defaultInactiveTrackColor = const Color(0x3d0175c2);
+  static const Color defaultActiveTickMarkColor = const Color(0x8a0175c2);
+  static const Color defaultThumbColor = const Color(0xFF0175c2);
+  static const Color defaultValueIndicatorColor = const Color(0xFF0175c2);
+  static const Color defaultOverlayColor = const Color(0x290175c2);
+
+  RangeSliderData({
+    this.min,
+    this.max,
+    this.lowerValue,
+    this.upperValue,
+    this.divisions,
+    this.showValueIndicator: true,
+    this.valueIndicatorMaxDecimals: 1,
+    this.forceValueIndicator: false,
+    this.overlayColor: defaultOverlayColor,
+    this.activeTrackColor: defaultActiveTrackColor,
+    this.inactiveTrackColor: defaultInactiveTrackColor,
+    this.thumbColor: defaultThumbColor,
+    this.valueIndicatorColor: defaultValueIndicatorColor,
+    this.activeTickMarkColor: defaultActiveTickMarkColor,
+  });
+
+  // Returns the values in text format, with the number
+  // of decimals, limited to the valueIndicatedMaxDecimals
+  //
+  String get lowerValueText =>
+      lowerValue.toStringAsFixed(valueIndicatorMaxDecimals);
+  String get upperValueText =>
+      upperValue.toStringAsFixed(valueIndicatorMaxDecimals);
+
+  // Builds a RangeSlider and customizes the theme
+  // based on parameters
+  //
+  Widget build(BuildContext context, frs.RangeSliderCallback callback) {
+    return Container(
+      width: double.infinity,
+      child: Row(
+        children: <Widget>[
+          Container(
+            constraints: BoxConstraints(
+              minWidth: 40.0,
+              maxWidth: 40.0,
+            ),
+            child: Text(lowerValueText),
+          ),
+          Expanded(
+            child: SliderTheme(
+              // Customization of the SliderTheme
+              // based on individual definitions
+              // (see rangeSliders in _RangeSliderSampleState)
+              data: SliderTheme.of(context).copyWith(
+                overlayColor: overlayColor,
+                activeTickMarkColor: activeTickMarkColor,
+                activeTrackColor: activeTrackColor,
+                inactiveTrackColor: inactiveTrackColor,
+                //trackHeight: 8.0,
+                thumbColor: thumbColor,
+                valueIndicatorColor: valueIndicatorColor,
+                showValueIndicator: showValueIndicator
+                    ? ShowValueIndicator.always
+                    : ShowValueIndicator.onlyForDiscrete,
+              ),
+              child: frs.RangeSlider(
+                min: min,
+                max: max,
+                lowerValue: lowerValue,
+                upperValue: upperValue,
+                divisions: divisions,
+                showValueIndicator: showValueIndicator,
+                valueIndicatorMaxDecimals: valueIndicatorMaxDecimals,
+                onChanged: (double lower, double upper) {
+                  // call
+                  callback(lower, upper);
+                },
+              ),
+            ),
+          ),
+          Container(
+            constraints: BoxConstraints(
+              minWidth: 40.0,
+              maxWidth: 40.0,
+            ),
+            child: Text(upperValueText),
+          ),
+        ],
+      ),
+    );
+  }
+}

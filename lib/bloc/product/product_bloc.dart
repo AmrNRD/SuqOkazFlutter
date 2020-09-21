@@ -42,7 +42,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
           // Set loading state
           yield ProductsLoadingState(isLoadMoreMode: event.isLoadMoreMode);
-
+          print("----------------------------------------------");
+          print(event.minPrice);
+          print(event.maxPrice);
+          print(event.lang);
           // Load data
           var productsList = await productsRepository.getCustomizableProducts(
             lang: event.lang,

@@ -20,6 +20,7 @@ class ProductListViewComponent extends StatefulWidget {
   final String order;
   final int categoryId;
   final Function onProductsChange;
+  final Map filterData;
 
   const ProductListViewComponent({
     Key key,
@@ -28,6 +29,7 @@ class ProductListViewComponent extends StatefulWidget {
     this.orderBy,
     this.order,
     this.onProductsChange,
+    this.filterData,
   }) : super(key: key);
 
   @override
@@ -96,6 +98,20 @@ class _ProductListViewComponentState extends State<ProductListViewComponent>
       );
     }
   }
+
+  @override
+  void didChangeDependencies(){
+    if(widget.filterData['minPrice']!=null)
+      {
+        productBloc.add(GetProductsEvent(maxPrice:widget.filterData['maxPrice'].toString(),minPrice: widget.filterData['minPrice'].toString(),categoryID: widget.filterData['selectedCategoryID'] ));
+      }
+
+    super.didChangeDependencies();
+  }
+
+
+
+
 
   bool lastPageReached = false;
   bool showLoading = false;
