@@ -141,14 +141,10 @@ class ProductDetailsReviewComponent extends StatelessWidget {
         ),
       ),
       builder: (builder) {
-        return Container(
-          margin:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: AddReviewSheet(
-            productId: productId,
-            parentContext: context,
-            scaffoldKey: scaffoldKey,
-          ),
+        return AddReviewSheet(
+          productId: productId,
+          parentContext: context,
+          scaffoldKey: scaffoldKey,
         );
       },
     );

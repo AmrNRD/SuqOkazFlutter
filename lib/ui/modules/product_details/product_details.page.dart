@@ -69,6 +69,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      //resizeToAvoidBottomInset: false,
+      //resizeToAvoidBottomPadding: false,
       appBar: CustomAppBar(
         //TODO: translate
         text: AppLocalizations.of(context).translate(

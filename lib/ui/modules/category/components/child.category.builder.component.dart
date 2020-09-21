@@ -111,7 +111,7 @@ class ChildCategoryBuilderComponent extends StatelessWidget {
                         Text(
                           childrenCategories[parentIndex].children[index].name,
                           softWrap: true,
-                          maxLines: 3,
+                          maxLines: 2,
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headline3,
                         ),

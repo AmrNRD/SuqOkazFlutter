@@ -55,10 +55,13 @@ class ProductCardLongComponent extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Container(
-                child: ImageProcessor.image(
-                  url: product.imageFeature,
-                  fit: BoxFit.contain,
-                ),
+                child:ClipRRect(
+                  borderRadius: BorderRadius.circular(5.0),
+                  child: ImageProcessor.image(
+                    url: product.imageFeature,
+                    fit: BoxFit.cover,
+                  ),
+                ) ,
               ),
             ),
             SizedBox(

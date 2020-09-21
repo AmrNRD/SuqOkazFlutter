@@ -81,10 +81,12 @@ class _ProductCartComponentState extends State<ProductCartComponent> {
                     ),
                   ],
                 ),
-                child: ImageProcessor.image(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5.0),
+                  child: ImageProcessor.image(
                   url: widget.productItem.featuredImage,
-                  fit: BoxFit.contain,
-                ),
+                  fit: BoxFit.cover,
+                )),
               ),
             ],
           ),

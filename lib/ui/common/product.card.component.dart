@@ -57,7 +57,7 @@ class ProductCardComponent extends StatelessWidget {
               height: screenAwareSize(130, context),
               child: ImageProcessor.image(
                 url: product.imageFeature,
-                fit: BoxFit.contain,
+                fit: BoxFit.cover,
               ),
             ),
             Positioned(
@@ -156,7 +156,7 @@ class ProductCardComponent extends StatelessWidget {
                           )
                         : Container(),
                     Container(
-                      padding: EdgeInsets.all(4),
+                      padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.white.withOpacity(0.4),
@@ -184,7 +184,7 @@ class ProductCardComponent extends StatelessWidget {
                                   ? SvgPicture.asset(
                                       "assets/icons/fav_selected_icon.svg",
                                       height: 20,
-                                      width: 24,
+                                      width: 20,
                                     )
                                   : SvgPicture.asset(
                                       "assets/icons/fav_icon.svg",
