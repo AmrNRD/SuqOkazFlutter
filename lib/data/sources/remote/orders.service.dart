@@ -28,6 +28,7 @@ class OrdersService {
   Future<dynamic> createOrder(OrderModel order) async {
     String url = "/orders";
     final String oAuthUrl = apiCaller.getOAuthURL("POST", url, true);
+    print(order.toOrderJson());
     apiCaller.setUrl(oAuthUrl);
     return await apiCaller.postData(headers: {},body: order.toOrderJson(),needAuthorization:true);
   }

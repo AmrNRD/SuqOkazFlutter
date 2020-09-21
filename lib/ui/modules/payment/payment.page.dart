@@ -39,11 +39,13 @@ class PaymentPage extends StatefulWidget {
 class _PaymentPageState extends State<PaymentPage> {
   PaymentMethod selectedPaymentMethod;
   String selectedPaymentMethodId;
+  bool isLoading=false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   PaymentMethodBloc _paymentBloc;
   @override
   void initState() {
+
     selectedPaymentMethodId = "cod";
     super.initState();
     _paymentBloc = new PaymentMethodBloc(new PaymentMethodDataRepository());
@@ -59,8 +61,17 @@ class _PaymentPageState extends State<PaymentPage> {
         text: AppLocalizations.of(context).translate("payment"),
       ),
       body: BlocListener<OrdersBloc,OrdersState>(
-        listener: (context,state){
+        listener: (context,state) async {
+          if(state is OrdersLoadingState){
+            setState(() {
+              isLoading=true;
+            });
+          }
           if(state is OrderLoadedState){
+            setState(() {
+              isLoading=false;
+            });
+
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -77,9 +88,43 @@ class _PaymentPageState extends State<PaymentPage> {
                 ),
               ),
             );
+          }else if(state is OrderUrlLoadedState){
+            print('--------------------------------------');
+            print(state.url);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      PaymentWebview(
+                        url: state.url,
+                          onFinish: (number) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => Scaffold(
+                                  body: Center(
+                                    child: GenericState(
+                                      imagePath: Constants.imagePath["delivery_success"],
+                                      titleKey: AppLocalizations.of(context).translate("congrat"),
+                                      bodyKey: AppLocalizations.of(context).translate("congrat_body"),
+                                      buttonKey: AppLocalizations.of(context).translate("my_orders"),
+                                     onPress: (){
+                                        Navigator.pushNamedAndRemoveUntil(context, Constants.homePage, (route) => false);
+                                     },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          })),
+            );
           }else if(state is OrdersErrorState){
+            setState(() {
+              isLoading=false;
+            });
             showScaffoldSnackBar(context: context, scaffoldKey: _scaffoldKey, message:state.message);
-          }        },
+          }
+          },
         child: Stack(
           children: <Widget>[
             Positioned.fill(
@@ -231,7 +276,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       height: 16,
                     ),
                     CustomRaisedButton(
-                      isLoading:false,
+                      isLoading:isLoading,
                       label:
                           AppLocalizations.of(context).translate("do_order"),
                       onPress:
@@ -243,9 +288,9 @@ class _PaymentPageState extends State<PaymentPage> {
                               OrderModel order=OrderModel(createdAt: DateTime.now(),total: BlocProvider.of<CartBloc>(context).totalPrice);
                               order.paymentMethodTitle=selectedPaymentMethod.title;
                               order.shippingMethodTitle=widget.shippingMethod.id;
+                              order.paymentMethod=selectedPaymentMethod;
                               order.shipping=widget.addressModel;
                               order.billing=widget.addressModel;
-                              order.isPaid=true;
                               order.shippingMethod=widget.shippingMethod;
                               order.lineItems=BlocProvider.of<CartBloc>(context).productIdToProductItem.values.toList();
                               BlocProvider.of<OrdersBloc>(context).add(CreateOrder(order));
@@ -257,6 +302,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         order.paymentMethodTitle=selectedPaymentMethod.title;
                         order.shippingMethodTitle=widget.shippingMethod.id;
                         order.shipping=widget.addressModel;
+                        order.paymentMethod=selectedPaymentMethod;
                         order.billing=widget.addressModel;
                         order.shippingMethod=widget.shippingMethod;
                         order.lineItems=BlocProvider.of<CartBloc>(context).productIdToProductItem.values.toList();
@@ -331,61 +377,74 @@ class PaymentMethodComponent extends StatelessWidget {
       children: <Widget>[
         BlocProvider<PaymentMethodBloc>(
             create: (context) => _paymentBloc,
-            child: BlocBuilder<PaymentMethodBloc, PaymentMethodState>(
-                builder: (context, state) {
-              if (state is PaymentMethodLoadingState) {
-                return Container(
-                  margin: EdgeInsets.only(top: 28),
-                  child: LoadingWidget(),
-                );
-              } else if (state is PaymentMethodListLoadedState) {
-                return Column(
-                  children: state.paymentMethods.map((paymentMethod) {
-                    return Container(
-                      color: AppColors.customGreyLevels[200].withOpacity(0.2),
-                      padding: EdgeInsets.all(22),
-                      margin: EdgeInsets.only(bottom: 18),
-                      child: Column(
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                paymentMethod.title,
-                                style: Theme.of(context).textTheme.headline1.copyWith(fontWeight: FontWeight.w400),
-                              ),
-                              CustomRadioButton(
-                                value: selectedPaymentMethodId == paymentMethod.id,
-                                onPressed: (value) {
-                                  onPaymentMethodChange(paymentMethod);
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                );
-              } else if (state is PaymentMethodErrorState) {
+            child: BlocListener<PaymentMethodBloc, PaymentMethodState>(
+              listener: (context,state){
+                if (state is PaymentMethodListLoadedState) {
+                  if(selectedPaymentMethod==null){
+                   for(PaymentMethod payment in state.paymentMethods) {
+                     if(payment.id==selectedPaymentMethodId){
+                       onPaymentMethodChange(payment);
+                     }
+                   }
+                  }
+                }
+              },
+              child: BlocBuilder<PaymentMethodBloc, PaymentMethodState>(
+                  builder: (context, state) {
+                if (state is PaymentMethodLoadingState) {
+                  return Container(
+                    margin: EdgeInsets.only(top: 28),
+                    child: LoadingWidget(),
+                  );
+                } else if (state is PaymentMethodListLoadedState) {
+                  return Column(
+                    children: state.paymentMethods.map((paymentMethod) {
+                      return Container(
+                        color: AppColors.customGreyLevels[200].withOpacity(0.2),
+                        padding: EdgeInsets.all(22),
+                        margin: EdgeInsets.only(bottom: 18),
+                        child: Column(
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(
+                                  paymentMethod.title,
+                                  style: Theme.of(context).textTheme.headline1.copyWith(fontWeight: FontWeight.w400),
+                                ),
+                                CustomRadioButton(
+                                  value: selectedPaymentMethodId == paymentMethod.id,
+                                  onPressed: (value) {
+                                    onPaymentMethodChange(paymentMethod);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  );
+                } else if (state is PaymentMethodErrorState) {
+                  return Center(
+                    child: GenericState(
+                      imagePath: Constants.imagePath["error"],
+                      titleKey: "error_title",
+                      bodyKey: state.message,
+                      removeButton: true,
+                    ),
+                  );
+                }
                 return Center(
                   child: GenericState(
                     imagePath: Constants.imagePath["error"],
                     titleKey: "error_title",
-                    bodyKey: state.message,
+                    bodyKey: "error_body",
                     removeButton: true,
                   ),
                 );
-              }
-              return Center(
-                child: GenericState(
-                  imagePath: Constants.imagePath["error"],
-                  titleKey: "error_title",
-                  bodyKey: "error_body",
-                  removeButton: true,
-                ),
-              );
-            })),
+              }),
+            )),
         Container(
           height: 1,
           color: AppColors.customGreyLevels[200].withOpacity(0.5),

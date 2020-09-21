@@ -25,6 +25,14 @@ class OrderLoadedState extends OrdersState {
   OrderLoadedState({this.order});
 }
 
+
+class OrderUrlLoadedState extends OrdersState {
+  final String url;
+  final OrderModel order;
+
+  OrderUrlLoadedState({this.order,this.url});
+}
+
 class OrdersErrorState extends OrdersState {
   final String message;
 

@@ -25,12 +25,11 @@ class PaymentWebviewState extends State<PaymentWebview> {
         if (items.length > 1) {
           final number = items[1].split("/")[0];
           widget.onFinish(number);
-          Navigator.of(context).pop();
+
         }
       }
       if (url.contains("checkout/success")) {
         widget.onFinish("0");
-        Navigator.of(context).pop();
       }
     });
   }

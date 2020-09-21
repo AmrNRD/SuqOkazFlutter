@@ -73,10 +73,17 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
         }
       }
       else if(event is CreateOrder) {
-        await ordersRepository.createOrder(event.order);
+        OrderModel order=await ordersRepository.createOrder(event.order);
+        if(order.status=="pending"&&order.paymentMethodTitle!="cod")
+        {
+         String url= await ordersRepository.getCheckoutUrl(order.toJson());
+
+         yield OrderUrlLoadedState(order: order,url: url);
+        }else {
+          yield OrderLoadedState(order: order);
+        }
       }
     } catch (exception) {
-      print("here");
       print(exception);
       // Yield error with message, exception can't be casted to string in some cases
       try{

@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:suqokaz/ui/common/custom_raised_button.dart';
 import 'package:suqokaz/ui/style/app.colors.dart';
 import 'package:suqokaz/utils/app.localization.dart';
+import 'package:suqokaz/utils/constants.dart';
 import 'package:suqokaz/utils/core.util.dart';
 
 class GenericState extends StatelessWidget {
@@ -92,7 +93,7 @@ class GenericState extends StatelessWidget {
             removeButton
                 ? Container()
                 : CustomRaisedButton(
-                    onPress: toOrderScreen ? () {} : onPress,
+                    onPress: toOrderScreen ? () {Navigator.of(context).pushReplacementNamed(Constants.myOrderPage);} : onPress,
                     buttonColor: AppColors.primaryColors[50],
                     label: AppLocalizations.of(context).translate(
                       buttonKey ?? "",
