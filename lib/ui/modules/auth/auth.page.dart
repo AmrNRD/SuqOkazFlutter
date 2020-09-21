@@ -13,8 +13,7 @@ class _AuthPageState extends State<AuthPage> with SingleTickerProviderStateMixin
   TabController tabController;
   @override
   void initState() {
-    tabController=new TabController(length: 3, vsync: this);
-    tabController.index=1;
+    tabController=new TabController(length: 2, vsync: this);
     super.initState();
   }
   @override
@@ -25,9 +24,9 @@ class _AuthPageState extends State<AuthPage> with SingleTickerProviderStateMixin
           physics: NeverScrollableScrollPhysics(),
           controller: tabController,
           children: [
-            RestPasswordScreen(goToSignIn: ()=>goToPage(1)),
-            LoginScreen(goToSignUp:()=>goToPage(2),goToForgotPassword:()=>goToPage(0)),
-            RegisterScreen(goToSignIn: ()=>goToPage(1)),
+            // RestPasswordScreen(goToSignIn: ()=>goToPage(1)),
+            LoginScreen(goToSignUp:()=>goToPage(1),goToForgotPassword:()=>goToPage(0)),
+            RegisterScreen(goToSignIn: ()=>goToPage(0)),
           ],
         ),
       ),

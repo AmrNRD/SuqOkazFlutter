@@ -26,10 +26,16 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         Root.user=await userRepository.fetchUserData();
         yield UserLoadedState();
       } else if (event is LoginUser) {
-       Root.user=await userRepository.login({
-          "username": event.email,
-          "password": event.password,
-        });
+        print("enter event LoginUser");
+       Root.user=await userRepository.login(event.email, event.password);
+       print("out of userRepository.login in the LoginUser in UserBloc");
+       print("user");
+       print(Root.user.toJson());
+        yield UserLoadedState();
+        print("yield UserLoadedState");
+        print("out event LoginUser");
+      }else if (event is LoginUserWithFacebook) {
+        Root.user=await userRepository.loginWithFacebook(event.userID,event.email,event.name,event.token,event.profileUrl,event.profileUrl);
         yield UserLoadedState();
       }else if (event is SignUpUser) {
         Root.user=await userRepository.signUp(event.email, event.password, event.passwordConfirmation);

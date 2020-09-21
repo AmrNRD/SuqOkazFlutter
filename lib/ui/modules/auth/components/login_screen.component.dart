@@ -180,51 +180,51 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 SizedBox(height: AppDimens.marginEdgeCase32),
 
-                // Center(child: Text(AppLocalizations.of(context).translate("Or"), style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 14))),
+                Center(child: Text(AppLocalizations.of(context).translate("Or"), style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 14))),
 
-                // SizedBox(height: AppDimens.marginEdgeCase24),
+                SizedBox(height: AppDimens.marginEdgeCase24),
 
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: <Widget>[
-                //     Padding(
-                //       padding: EdgeInsets.only(top: 10.0, right: 20.0),
-                //       child: GestureDetector(
-                //         onTap: initiateFacebookLogin,
-                //         child: Container(
-                //           padding: const EdgeInsets.all(15.0),
-                //           decoration: new BoxDecoration(shape: BoxShape.circle, color: AppColors.customGreyLevels[300]),
-                //           child: new Icon(FontAwesomeIcons.facebookF, color: Color(0xFF0084ff)),
-                //         ),
-                //       ),
-                //     ),
-                //     Padding(
-                //       padding: EdgeInsets.only(top: 10.0),
-                //       child: GestureDetector(
-                //         onTap: initiateGoogleLogin,
-                //         child: Container(
-                //           padding: const EdgeInsets.all(15.0),
-                //           decoration: new BoxDecoration(shape: BoxShape.circle, color: AppColors.customGreyLevels[300]),
-                //           child: new Icon(FontAwesomeIcons.google, color: Color(0xFFdb3236)),
-                //         ),
-                //       ),
-                //     ),
-                //     Platform.isIOS
-                //         ? Padding(
-                //             padding: EdgeInsets.only(top: 10.0, left: 20),
-                //             child: GestureDetector(
-                //               onTap: initiateAppleLogin,
-                //               child: Container(
-                //                 padding: const EdgeInsets.all(15.0),
-                //                 decoration:
-                //                     new BoxDecoration(shape: BoxShape.circle, color: AppColors.customGreyLevels[300]),
-                //                 child: new Icon(FontAwesomeIcons.apple, color: Colors.black45),
-                //               ),
-                //             ),
-                //           )
-                //         : Container(),
-                //   ],
-                // ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.0, right: 20.0),
+                      child: GestureDetector(
+                        onTap: initiateFacebookLogin,
+                        child: Container(
+                          padding: const EdgeInsets.all(15.0),
+                          decoration: new BoxDecoration(shape: BoxShape.circle, color: AppColors.customGreyLevels[300]),
+                          child: new Icon(FontAwesomeIcons.facebookF, color: Color(0xFF0084ff)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.0),
+                      child: GestureDetector(
+                        onTap: initiateGoogleLogin,
+                        child: Container(
+                          padding: const EdgeInsets.all(15.0),
+                          decoration: new BoxDecoration(shape: BoxShape.circle, color: AppColors.customGreyLevels[300]),
+                          child: new Icon(FontAwesomeIcons.google, color: Color(0xFFdb3236)),
+                        ),
+                      ),
+                    ),
+                    Platform.isIOS
+                        ? Padding(
+                            padding: EdgeInsets.only(top: 10.0, left: 20),
+                            child: GestureDetector(
+                              onTap: initiateAppleLogin,
+                              child: Container(
+                                padding: const EdgeInsets.all(15.0),
+                                decoration:
+                                    new BoxDecoration(shape: BoxShape.circle, color: AppColors.customGreyLevels[300]),
+                                child: new Icon(FontAwesomeIcons.apple, color: Colors.black45),
+                              ),
+                            ),
+                          )
+                        : Container(),
+                  ],
+                ),
 
                 SizedBox(height: AppDimens.marginEdgeCase32),
 
@@ -302,7 +302,7 @@ class _LoginScreenState extends State<LoginScreen> {
               content: Text(name, style: Theme.of(context).textTheme.headline2.copyWith(color: Colors.white)),
               backgroundColor: AppColors.accentColor1,
             ));
-//    BlocProvider.of<UserBloc>(context)..add(LoginUserWithProvider(providerType, userID, email, name, token, firebaseToken, profileUrl, platform));
+             BlocProvider.of<UserBloc>(context)..add(LoginUserWithApple(userID, email, name, token, profileUrl, Platform.isIOS?"IOS":"Android"));
             break;
           case AuthorizationStatus.error:
             Scaffold.of(context).showSnackBar(SnackBar(
@@ -339,7 +339,7 @@ class _LoginScreenState extends State<LoginScreen> {
           content: Text(profileUrl, style: Theme.of(context).textTheme.headline2.copyWith(color: Colors.white)),
           backgroundColor: AppColors.accentColor1,
         ));
-//        BlocProvider.of<UserBloc>(context)..add(LoginUserWithProvider(providerType, userID, email, name, token, firebaseToken, profileUrl, platform));
+        BlocProvider.of<UserBloc>(context)..add(LoginUserWithGoogle(userID, email, name, token, profileUrl, Platform.isIOS?"IOS":"Android"));
       });
       await _googleSignIn.signIn();
     } catch (error) {}
@@ -370,7 +370,7 @@ class _LoginScreenState extends State<LoginScreen> {
           final String email = profile['email'] ?? '';
           final String profileUrl = profile['picture']['data']['url'];
 
-//          BlocProvider.of<UserBloc>(context)..add(LoginUserWithProvider(providerType, userID, email, name, token, firebaseToken, profileUrl, platform));
+          BlocProvider.of<UserBloc>(context)..add(LoginUserWithFacebook(userID, email, name, token, profileUrl, Platform.isIOS?"IOS":"Android"));
           break;
       }
     } catch (error) {

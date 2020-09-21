@@ -55,8 +55,7 @@ class LoginUser extends UserEvent {
       ];
 }
 
-class LoginUserWithProvider extends UserEvent {
-  final String providerType;
+class LoginUserWithGoogle extends UserEvent {
   final String userID;
   final String email;
   final String token;
@@ -64,11 +63,39 @@ class LoginUserWithProvider extends UserEvent {
   final String profileUrl;
   final String platform;
 
-  LoginUserWithProvider(
-      this.providerType, this.userID, this.email, this.name, this.token, this.profileUrl, this.platform);
+  LoginUserWithGoogle(this.userID, this.email, this.name, this.token, this.profileUrl, this.platform);
 
   @override
-  List<Object> get props => [providerType, userID, email, token, name, profileUrl, platform];
+  List<Object> get props => [userID, email, token, name, profileUrl, platform];
+}
+
+class LoginUserWithFacebook extends UserEvent {
+  final String userID;
+  final String email;
+  final String token;
+  final String name;
+  final String profileUrl;
+  final String platform;
+
+  LoginUserWithFacebook(this.userID, this.email, this.name, this.token, this.profileUrl, this.platform);
+
+  @override
+  List<Object> get props => [userID, email, token, name, profileUrl, platform];
+}
+
+
+class LoginUserWithApple extends UserEvent {
+  final String userID;
+  final String email;
+  final String token;
+  final String name;
+  final String profileUrl;
+  final String platform;
+
+  LoginUserWithApple(this.userID, this.email, this.name, this.token, this.profileUrl, this.platform);
+
+  @override
+  List<Object> get props => [userID, email, token, name, profileUrl, platform];
 }
 
 class SignUpUser extends UserEvent {

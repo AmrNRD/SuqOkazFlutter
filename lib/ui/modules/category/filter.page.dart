@@ -31,6 +31,7 @@ class _FilterPageState extends State<FilterPage> {
   List<SmartSelectOption<dynamic>> list = [];
   List<SmartSelectOption<dynamic>> subList = [];
   bool loadingCategory=false;
+  Function onCategory;
 
 
   @override
@@ -38,7 +39,7 @@ class _FilterPageState extends State<FilterPage> {
     filterData=widget.filterData;
     categoryBloc=BlocProvider.of<CategoryBloc>(context);
     categoryBloc.add(GetCategoriesEvent());
-    if(widget.filterData.containsKey("minPrice")) {
+    if(widget.filterData!=null && widget.filterData.containsKey("minPrice")) {
       _lowerValue=widget.filterData['minPrice'];
       _upperValue=widget.filterData['maxPrice'];
       }
@@ -109,7 +110,8 @@ class _FilterPageState extends State<FilterPage> {
                             });
                           }
                         },
-                        child: Container(
+                        child: InkWell(
+                          onTap: onCategory,
                           child: SmartSelect<dynamic>.single(
                             title: AppLocalizations.of(context).translate("category"),
                             value: filterData['selectCategory'],
@@ -132,6 +134,8 @@ class _FilterPageState extends State<FilterPage> {
                             modalConfig: SmartSelectModalConfig(headerStyle: SmartSelectModalHeaderStyle(textStyle:  Theme.of(context).textTheme.headline2, backgroundColor: Theme.of(context).cardColor, iconTheme:IconThemeData(color: Theme.of(context).textTheme.headline3.color)),),
 
                             builder: (BuildContext context, SmartSelectState<dynamic> state, SmartSelectShowModal showChoices){
+                              onCategory=()=>showChoices(context);
+
                               return GestureDetector(
                                 onTap: ()=>showChoices(context),
                                 child: Row(

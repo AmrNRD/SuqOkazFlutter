@@ -30,4 +30,30 @@ class UserModel {
         'image': image,
       };
 
+
+
+  // from WooCommerce Json
+  UserModel.fromJsonFB(Map<String, dynamic> json) {
+    try {
+      var user;
+      if(json.containsKey("user"))
+        user = json['user'];
+      else
+        user = json;
+
+
+      id = json['wp_user_id'];
+      name = user['name']??user['nicename'];
+      name = user['user_login'];
+      email = user["email"];
+      image = user["picture"] != null &&
+          user["picture"]["data"] != null &&
+          user["picture"]['data']['url'] != null
+          ? user["picture"]['data']['url']
+          : '';
+
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }
