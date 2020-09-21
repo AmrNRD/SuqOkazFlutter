@@ -199,5 +199,9 @@
     "FEATURED": "متميز",
     "LATEST": "حديثا",
     "my_personal_information": "معلوماتي الشخصيه:",
-    "The Other Language": "English"
+    "The Other Language": "English",
+    "filter": "تصفيه",
+    "apply": "تطبيق",
+    "category": "تصنيفات",
+    "subcategory": "تصنيفات الفرعية"
 }

@@ -13,6 +13,7 @@ import 'package:suqokaz/ui/modules/address/address.page.dart';
 import 'package:suqokaz/ui/modules/address/edit_address.page.dart';
 import 'package:suqokaz/ui/modules/auth/auth.page.dart';
 import 'package:suqokaz/ui/modules/category/category.page.dart';
+import 'package:suqokaz/ui/modules/category/filter.page.dart';
 import 'package:suqokaz/ui/modules/checkout/checkout.page.dart';
 import 'package:suqokaz/ui/modules/edit_profile/edit_profile.dart';
 import 'package:suqokaz/ui/modules/navigation/home.navigation.dart';
@@ -101,6 +102,11 @@ class RouteGenerator {
         return MaterialPageRoute(
           settings: RouteSettings(name: Constants.myOrderPage),
           builder: (_) => MyOrdersPage(),
+        );
+      case Constants.filterPage:
+        return MaterialPageRoute(
+          settings: RouteSettings(name: Constants.filterPage),
+          builder: (_) => FilterPage(filterData: args,),
         );
       case Constants.addAddressScreen:
         return MaterialPageRoute(

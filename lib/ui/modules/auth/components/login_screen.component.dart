@@ -115,6 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   title: "email",
                   focusNode: _emailFocusNode,
                   onSave: (value) => _authData['email'] = value,
+                  textInputType: TextInputType.emailAddress,
                   isRequired: true,
                 ),
 

@@ -19,6 +19,7 @@ class ProductListViewComponent extends StatefulWidget {
   final String orderBy;
   final String order;
   final int categoryId;
+  final Function onProductsChange;
 
   const ProductListViewComponent({
     Key key,
@@ -26,6 +27,7 @@ class ProductListViewComponent extends StatefulWidget {
     this.categoryId,
     this.orderBy,
     this.order,
+    this.onProductsChange,
   }) : super(key: key);
 
   @override
@@ -112,6 +114,8 @@ class _ProductListViewComponentState extends State<ProductListViewComponent>
             if (current is ProductsLoadingState && prev is ProductsLoadedState) {
               return false;
             } else if (current is ProductsLoadedState) {
+              if(widget.onProductsChange!=null)
+                widget.onProductsChange(current.products);
               if (current.isLoadMoreMode) {
                 if (current.lastPageReached) {
                   setState(() {

@@ -207,5 +207,9 @@
     "FEATURED": "FEATURED",
     "LATEST": "LATEST",
     "my_personal_information": "My Personal Information",
-    "The Other Language": "العربيه"
+    "The Other Language": "العربيه",
+    "filter": "Filter",
+    "apply": "Apply",
+    "category": "Category",
+    "subcategory": "Sub Category"
 }

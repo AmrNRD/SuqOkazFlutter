@@ -4,7 +4,7 @@ class Constants {
 
   // Base
   static const appName = "SuqOkaz";
-  static const baseUrl = "https://add1.joovlly.net";
+  static const baseUrl = "https://suqokaz.com";
   static bool isRTL = false;
   static const dummyProfilePic = "";
 
@@ -24,6 +24,8 @@ class Constants {
   static const editAddressScreen = "/editLocation";
   static const searchScreen = "/searchScreen";
   static const productCategoriesPage = "/ProductCategoriesPage";
+  static const filterPage = "/filterPage";
+
 
   // Keys
   static const consumerKey = "ck_cafce6ef4f584a33bb060243680ab920bac3e63d"; // suqokaz

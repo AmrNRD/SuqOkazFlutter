@@ -10,6 +10,7 @@ class CategoryModel {
   int menuOrder;
   int totalProduct;
   bool sorted;
+  String banner;
   List<CategoryModel> children = [];
 
   CategoryModel({
@@ -20,6 +21,7 @@ class CategoryModel {
     this.parent,
     this.totalProduct,
     this.sorted = false,
+    this.banner
   });
 
   CategoryModel.fromJson(Map<String, dynamic> parsedJson) {
