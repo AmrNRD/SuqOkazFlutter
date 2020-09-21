@@ -8,8 +8,8 @@ abstract class ProductsDataRepository {
       int perPage = 10,
       int categoryID,
       String tagID,
-      String minPrice,
-      String maxPrice,
+      double minPrice,
+      double maxPrice,
       bool featured,
       bool onSale,
       String attribute,
@@ -50,8 +50,8 @@ class ProductsRepository extends ProductsDataRepository {
       int perPage = 10,
       int categoryID,
       String tagID,
-      String minPrice,
-      String maxPrice,
+      double minPrice,
+      double maxPrice,
       bool featured,
       bool onSale,
       String attribute,
@@ -60,6 +60,7 @@ class ProductsRepository extends ProductsDataRepository {
       String orderBy,
       String search,
       String lang}) async {
+    print("dfghjkhgfdsdfghjkjhgfdsfghjkhgfd");
     return await productsService.getProducts(
       lang: lang,
       pageIndex: pageIndex,

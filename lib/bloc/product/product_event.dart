@@ -10,8 +10,8 @@ class GetProductsEvent extends ProductEvent {
 
   final int categoryID;
   final String tagID;
-  final String minPrice;
-  final String maxPrice;
+  final double minPrice;
+  final double maxPrice;
   final bool featured;
   final bool onSale;
   final String attribute;

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:suqokaz/bloc/product/product_bloc.dart';
 import 'package:suqokaz/data/models/product_model.dart';
 import 'package:suqokaz/ui/common/custom_appbar.dart';
 import 'package:suqokaz/ui/common/filter.sheet.component.dart';
@@ -44,6 +42,14 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
   String orderBy;
   Map filterData={};
   String order;
+
+
+
+  int parentId;
+  List<dynamic> subCategories;
+  int selectedSubCategoryId;
+
+
 
   onChangeViewClick() {
     tabBarView.clear();
@@ -104,6 +110,9 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
   @override
   void initState() {
     super.initState();
+    parentId=widget.parentId;
+    subCategories=widget.subCategories;
+    selectedSubCategoryId=widget.selectedSubCategoryId;
     SchedulerBinding.instance.addPostFrameCallback((_) {
       isFirstTime = false;
       createSubCategoryTabs();
@@ -112,7 +121,7 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
       setState(() {
         _tabController = TabController(
           vsync: this,
-          length: widget.subCategories.length + 1,
+          length: subCategories.length + 1,
           initialIndex: selectedSubCategory,
         );
       });
@@ -193,7 +202,7 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
         ),
       ),
     );
-    for (int i = 0; i < widget.subCategories.length; i++) {
+    for (int i = 0; i < subCategories.length; i++) {
       tabs.add(
         Tab(
           child: Container(
@@ -205,7 +214,7 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
                   Border.all(color: AppColors.primaryColors[50], width: 0.2),
             ),
             child: Text(
-              widget.subCategories[i].name,
+              subCategories[i].name,
               textAlign: TextAlign.center,
             ),
           ),
@@ -218,7 +227,7 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
     tabBarView.add(
       isList
           ? ProductListViewComponent(
-              categoryId: widget.parentId,
+              categoryId: parentId,
               order: order,
               orderBy: orderBy,
               filterData: filterData,
@@ -229,7 +238,7 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
               },
             )
           : ProductGridViewComponent(
-              categoryId: widget.parentId,
+              categoryId: parentId,
               order: order,
               orderBy: orderBy,
               filterData: filterData,
@@ -241,20 +250,20 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
             ),
     );
 
-    for (int i = 0; i < widget.subCategories.length; i++) {
-      if (widget.selectedSubCategoryId == widget.subCategories[i].id) {
+    for (int i = 0; i < subCategories.length; i++) {
+      if (selectedSubCategoryId == subCategories[i].id) {
         selectedSubCategory = i + 1;
       }
       tabBarView.add(
         isList
             ? ProductListViewComponent(
-                categoryId: widget.parentId,
+                categoryId: parentId,
                 order: order,
                 orderBy: orderBy,
                 filterData: filterData,
               )
             : ProductGridViewComponent(
-                categoryId: widget.subCategories[i].id,
+                categoryId: subCategories[i].id,
                 order: order,
                 orderBy: orderBy,
                 filterData: filterData,
@@ -266,13 +275,24 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
   onFilterClick() async {
    var res= await Navigator.of(context).pushNamed(Constants.filterPage,arguments: filterData);
    Map results = res as Map;
-   if(results is Map){
-     setState(() {
-       filterData=res;
+    setState(() {
+       filterData=results;
+       parentId=filterData['category'];
+       subCategories=filterData['subCategories'];
+       selectedSubCategoryId=filterData['subcategory'];
+       selectedSubCategory= filterData['subcategory'];
+       tabs=[];
+       tabBarView=[];
      });
-     tabBarView=[];
-     createTabBarView(true);
 
-   }
+    createSubCategoryTabs();
+   createTabBarView(isList);
+   setState(() {
+     _tabController = TabController(
+       vsync: this,
+       length: subCategories.length + 1,
+       initialIndex: selectedSubCategory,
+     );
+   });
   }
 }

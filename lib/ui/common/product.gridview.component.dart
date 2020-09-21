@@ -47,6 +47,7 @@ class _ProductGridViewComponentState extends State<ProductGridViewComponent>
 
   ProductBloc productBloc;
 
+
   @override
   void dispose() {
     super.dispose();
@@ -69,8 +70,8 @@ class _ProductGridViewComponentState extends State<ProductGridViewComponent>
           order: widget.order,
           orderBy: widget.orderBy,
 
-          maxPrice:widget.filterData['maxPrice'].toString(),
-          minPrice: widget.filterData['minPrice'].toString(),
+          maxPrice:widget.filterData['maxPrice'],
+          minPrice: widget.filterData['minPrice'],
         ),
       );
 
@@ -84,8 +85,8 @@ class _ProductGridViewComponentState extends State<ProductGridViewComponent>
                   isLoadMoreMode: true,
                   orderBy: (widget.orderBy != null) ? widget.orderBy : null,
                   order: (widget.order != null) ? widget.order : null,
-                  maxPrice:widget.filterData['maxPrice'].toString(),
-                  minPrice: widget.filterData['minPrice'].toString(),
+                  maxPrice:widget.filterData['maxPrice'],
+                  minPrice: widget.filterData['minPrice'],
               ));
             setState(() {
               showLoading = true;
@@ -105,9 +106,9 @@ class _ProductGridViewComponentState extends State<ProductGridViewComponent>
 
   @override
   void didChangeDependencies(){
-    if(widget.filterData['minPrice']!=null)
+    if(widget.filterData.containsKey('minPrice'))
     {
-      productBloc.add(GetProductsEvent(maxPrice:widget.filterData['maxPrice'].toString(),minPrice: widget.filterData['minPrice'].toString(),categoryID: widget.filterData['selectedCategoryID'] ));
+      productBloc.add(GetProductsEvent(maxPrice:widget.filterData['maxPrice'],minPrice: widget.filterData['minPrice'],categoryID: widget.filterData['selectedCategoryID'] ));
     }
 
     super.didChangeDependencies();

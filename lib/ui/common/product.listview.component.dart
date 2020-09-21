@@ -101,9 +101,9 @@ class _ProductListViewComponentState extends State<ProductListViewComponent>
 
   @override
   void didChangeDependencies(){
-    if(widget.filterData['minPrice']!=null)
+    if(widget.filterData.containsKey('minPrice'))
       {
-        productBloc.add(GetProductsEvent(maxPrice:widget.filterData['maxPrice'].toString(),minPrice: widget.filterData['minPrice'].toString(),categoryID: widget.filterData['selectedCategoryID'] ));
+        productBloc.add(GetProductsEvent(maxPrice:widget.filterData['maxPrice'],minPrice: widget.filterData['minPrice'],categoryID: widget.filterData['selectedCategoryID'] ));
       }
 
     super.didChangeDependencies();

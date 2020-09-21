@@ -38,7 +38,7 @@ class _FilterPageState extends State<FilterPage> {
     filterData=widget.filterData;
     categoryBloc=BlocProvider.of<CategoryBloc>(context);
     categoryBloc.add(GetCategoriesEvent());
-    if(widget.filterData['minPrice']!=null) {
+    if(widget.filterData.containsKey("minPrice")) {
       _lowerValue=widget.filterData['minPrice'];
       _upperValue=widget.filterData['maxPrice'];
       }
@@ -69,7 +69,7 @@ class _FilterPageState extends State<FilterPage> {
                 max:50000,
                 lowerValue: _lowerValue,
                 upperValue: _upperValue,
-                divisions: 100,
+                divisions: 500,
                 showValueIndicator: true,
                 valueIndicatorMaxDecimals: 1,
                 onChanged: (double newLowerValue, double newUpperValue) {
@@ -235,6 +235,7 @@ class _FilterPageState extends State<FilterPage> {
   setState(() {
     filterData['subcategory']=null;
     filterData['category']=value.id;
+    filterData['subCategories']=value.children;
     subCategories=value.children;
     subList = subCategories.map((type) => SmartSelectOption<dynamic>(value: type.id, group: null, title: type.name)).toList();
     filterData['selectCategory']=value;
@@ -247,7 +248,6 @@ class _FilterPageState extends State<FilterPage> {
   }
 
   void applyFilter() {
-    Navigator.pop
     Navigator.pop(context,filterData);
   }
 }
