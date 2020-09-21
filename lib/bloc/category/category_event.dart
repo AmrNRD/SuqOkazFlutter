@@ -10,6 +10,12 @@ class GetCategoriesEvent extends CategoryEvent {
   List<Object> get props => [];
 }
 
+class ResetCategoryEvent extends CategoryEvent {
+  ResetCategoryEvent();
+  @override
+  List<Object> get props => [];
+}
+
 class ChangeParentCategoryEvent extends CategoryEvent {
   final bool compact;
   final int index;
