@@ -287,21 +287,6 @@ class _PaymentPageState extends State<PaymentPage> {
                         selectedPaymentMethod == null
                             ? (){showScaffoldSnackBar(context: context,scaffoldKey: _scaffoldKey, message:AppLocalizations.of(context).translate("please_select_payment_method"));}
                             : () {
-                          if(selectedPaymentMethodId != "cod")
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentWebview(url: "https://api.moyasar.com/v1/payments.html", onFinish: (number) {
-                              OrderModel order=OrderModel(createdAt: DateTime.now(),total: BlocProvider.of<CartBloc>(context).totalPrice);
-                              order.paymentMethodTitle=selectedPaymentMethod.title;
-                              order.shippingMethodTitle=widget.shippingMethod.id;
-                              order.paymentMethod=selectedPaymentMethod;
-                              order.shipping=widget.addressModel;
-                              order.billing=widget.addressModel;
-                              order.shippingMethod=widget.shippingMethod;
-                              order.lineItems=BlocProvider.of<CartBloc>(context).productIdToProductItem.values.toList();
-                              BlocProvider.of<OrdersBloc>(context).add(CreateOrder(order));
-
-                            })));
-                          else
-                      {
                         OrderModel order=OrderModel(createdAt: DateTime.now(),total: BlocProvider.of<CartBloc>(context).totalPrice);
                         order.paymentMethodTitle=selectedPaymentMethod.title;
                         order.shippingMethodTitle=widget.shippingMethod.id;
@@ -311,7 +296,6 @@ class _PaymentPageState extends State<PaymentPage> {
                         order.shippingMethod=widget.shippingMethod;
                         order.lineItems=BlocProvider.of<CartBloc>(context).productIdToProductItem.values.toList();
                         BlocProvider.of<OrdersBloc>(context).add(CreateOrder(order));
-                      }
                         },
                     ),
                   ],
