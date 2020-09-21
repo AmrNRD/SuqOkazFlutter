@@ -74,7 +74,11 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
           }
           list.add(event.productModel);
         }
-
+        // list.forEach((element) {
+        //   element.attributes.forEach((element) {
+        //     print(element.toJson());
+        //   });
+        //});
         yield WishlistLoadedState(list);
       }
     } catch (e) {
