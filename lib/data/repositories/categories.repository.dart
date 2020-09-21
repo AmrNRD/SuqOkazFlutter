@@ -8,6 +8,7 @@ abstract class CategoriesDataRepository {
   Future<List<CategoryData>> loadLocalCategories();
   Future saveLocalCategories(List<CategoryModel> categories);
   Future<List<CategoryData>> getAllCategories();
+  Future resetAllCategories();
 }
 
 class CategoriesRepository extends CategoriesDataRepository {
@@ -38,5 +39,11 @@ class CategoriesRepository extends CategoriesDataRepository {
   @override
   Future saveLocalCategories(List<CategoryModel> categories) {
     return _categoriesLocalService.insertCategory(categories);
+  }
+
+  @override
+  Future resetAllCategories() {
+    // TODO: implement resetAllCategories
+    throw UnimplementedError();
   }
 }

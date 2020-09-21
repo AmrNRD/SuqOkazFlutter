@@ -74,6 +74,14 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
           selectedCategoryIndex: selectedParentCategoryIndex,
           currentRootSubCategoryId: currentRootSubCategoryId,
         );
+      } else if (event is ResetCategoryEvent) {
+        yield CategoryLoadedState(
+          nestedCategories: nestedCategories,
+          currentParentCatId: currentParentCategoryId,
+          subSelectedCategoryIndex: selectSubCategoryIndex,
+          selectedCategoryIndex: selectedParentCategoryIndex,
+          currentRootSubCategoryId: currentRootSubCategoryId,
+        );
       }
     } catch (e) {
       yield CategoryErrorState(e.toString());

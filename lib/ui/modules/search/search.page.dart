@@ -129,7 +129,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     setState(() {
       isList = !isList;
       if (isList) {
-        scaledTile = ScaledTile.count(2, 0.8);
+        scaledTile = ScaledTile.count(2, 0.6);
       } else {
         scaledTile = ScaledTile.count(1, 1.44);
       }
