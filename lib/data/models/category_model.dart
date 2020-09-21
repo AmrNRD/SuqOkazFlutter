@@ -6,12 +6,11 @@ class CategoryModel {
   int id;
   String name;
   String image;
-  String bannerImage;
   int parent;
   int menuOrder;
   int totalProduct;
   bool sorted;
-  String banner;
+  String imageBanner;
   List<CategoryModel> children = [];
 
   CategoryModel({
@@ -21,9 +20,8 @@ class CategoryModel {
     this.menuOrder,
     this.parent,
     this.totalProduct,
-    this.bannerImage,
     this.sorted = false,
-    this.banner,
+    this.imageBanner,
   });
 
   CategoryModel.fromJson(Map<String, dynamic> parsedJson) {
@@ -34,7 +32,7 @@ class CategoryModel {
     menuOrder = GuardParser.safeCast<int>(parsedJson["menu_order"]);
 
     if (parsedJson["meta"].containsKey("_et_page_heading")) {
-      banner = parsedJson["meta"]["_et_page_heading"][0];
+      imageBanner = parsedJson["meta"]["_et_page_heading"][0];
     }
 
     if (parsedJson["image"] != null) {

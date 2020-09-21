@@ -52,11 +52,11 @@ class ChildCategoryBuilderComponent extends StatelessWidget {
                     SizedBox(
                       height: 16,
                     ),
-                    childrenCategories[parentIndex].banner == null
+                    childrenCategories[parentIndex].imageBanner == null
                         ? Container()
                         : ImageProcessor.image(
                             fit: BoxFit.contain,
-                            url: childrenCategories[parentIndex].banner,
+                            url: childrenCategories[parentIndex].imageBanner,
                           ),
                   ],
                 ),

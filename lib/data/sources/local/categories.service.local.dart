@@ -25,7 +25,7 @@ class CategoriesServiceLocal {
       CategoryData categoryData;
       categoryData = CategoryData(
         id: element.id,
-        imageBanner: element.bannerImage,
+        imageBanner: element.imageBanner,
         name: element.name,
         image: element.image ?? "",
         parent: element.parent,
