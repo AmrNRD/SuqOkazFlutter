@@ -18,7 +18,6 @@ import 'package:suqokaz/ui/style/app.colors.dart';
 import 'package:suqokaz/utils/constants.dart';
 
 import '../../../utils/constants.dart';
-import '../../../utils/core.util.dart';
 import '../../style/app.colors.dart';
 
 class LandingSplashScreen extends StatefulWidget {

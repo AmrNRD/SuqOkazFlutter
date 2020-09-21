@@ -22,22 +22,20 @@ class MyOrdersPage extends StatefulWidget {
 }
 
 class _MyOrdersPageState extends State<MyOrdersPage> {
-
-  List<OrderModel>ordersList=[];
+  List<OrderModel> ordersList = [];
   OrdersBloc ordersBloc;
-@override
+  @override
   void initState() {
-    ordersBloc=BlocProvider.of<OrdersBloc>(context);
+    ordersBloc = BlocProvider.of<OrdersBloc>(context);
     ordersBloc.add(GetOrdersEvent());
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-          canPop: true,
-          text: AppLocalizations.of(context)
-              .translate("orders", defaultText: "Orders")),
+        appBar:
+            CustomAppBar(canPop: true, text: AppLocalizations.of(context).translate("orders", defaultText: "Orders")),
         body: BlocBuilder<OrdersBloc, OrdersState>(
           cubit: ordersBloc,
           builder: (BuildContext context, OrdersState state) {
@@ -52,41 +50,43 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                 ordersList.addAll(state.orders);
 
               if (ordersList.isEmpty || ordersList == null) {
-                return Center(
-                  child: GenericState(
-                    imagePath: Constants.imagePath["empty_box"],
-                    titleKey: "no_orders_title",
-                    bodyKey: "no_orders_body",
-                    onPress: () {
-                      BlocProvider.of<OrdersBloc>(context).resetBloc();
-                      BlocProvider.of<OrdersBloc>(context).add(
-                        GetOrdersEvent(
-                          isLoadMoreMode: false,
-                          userID: 3,
-                        ), //TODO change to real user id
-                      );
-                    },
-                    buttonKey: "refresh",
+                return Container(
+                  margin: EdgeInsets.all(24),
+                  child: Center(
+                    child: GenericState(
+                      imagePath: Constants.imagePath["empty_box"],
+                      titleKey: "no_orders_title",
+                      bodyKey: "no_orders_body",
+                      onPress: () {
+                        BlocProvider.of<OrdersBloc>(context).resetBloc();
+                        BlocProvider.of<OrdersBloc>(context).add(
+                          GetOrdersEvent(
+                            isLoadMoreMode: false,
+                            userID: Root.user.id,
+                          ),
+                        );
+                      },
+                      buttonKey: "refresh",
+                    ),
                   ),
                 );
               }
 
               return listViewBodyBuilder(
-                  showLoadMoreMode: state.isLoadMoreMode,
-                  lastPageReached: state.lastPageReached);
+                showLoadMoreMode: state.isLoadMoreMode,
+                lastPageReached: state.lastPageReached,
+              );
             } else if (state is OrdersErrorState) {
               /// Error state
               return Center(
-                child:
-                Text("Error occurred : ${state.message}"), //TODO translate
+                child: Text("Error occurred : ${state.message}"), //TODO translate
               );
             } else if (state is OrdersLoadingState) {
               /// Loading state
               if (!state.isLoadMoreMode) {
                 return LoadingWidget();
               } else {
-                return listViewBodyBuilder(
-                    showLoadMoreMode: true, lastPageReached: false);
+                return listViewBodyBuilder(showLoadMoreMode: true, lastPageReached: false);
               }
             } else if (state is OrdersErrorState) {
               return Center(
@@ -111,8 +111,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
               child: Text("Error occurred in ${state.runtimeType}"), //TODO translate
             );
           },
-        )
-    );
+        ));
     //       body: SafeArea(
     //         child: Column(
     //           children: <Widget>[
@@ -172,53 +171,50 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
   Widget listViewBodyBuilder({bool showLoadMoreMode, bool lastPageReached}) {
     return ordersList.length > 0
         ? IncrementallyLoadingListView(
-      loadMore: () async {
-        BlocProvider.of<OrdersBloc>(context).add(
-          GetOrdersEvent(
-              isLoadMoreMode: true,
-              userID: 1), //TODO change to real user id
-        );
-      },
-      padding: const EdgeInsetsDirectional.only(
-          start: AppDimens.marginDefault16,
-          end: AppDimens.marginDefault16,
-          top: AppDimens.marginDefault16,
-          bottom: AppDimens.marginDefault16),
-      hasMore: () => !lastPageReached,
-      itemCount: () =>
-      lastPageReached ? ordersList.length : ordersList.length + 1,
-      itemBuilder: (parentContext, index) {
-        if (index < ordersList.length) {
-          // Normal box product item
-          return Column(
-            children: <Widget>[
-              InkWell(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-                onTap: () {
-                  // Navigator.pushNamed(
-                  //     context, Constants.orderDetailsScreen,
-                  //     arguments: ordersList[index]);
-                },
-                child: OrderCard(
-                  order: ordersList[index],
-                ),
-              ),
-              (index != (ordersList.length - 1)) ? Divider() : Container()
-            ],
-          );
-        } else {
-          // Loading view
-          return showLoadMoreMode
-              ? Center(
-            child: Container(
-              margin: EdgeInsets.all(4),
-              child: CircularProgressIndicator(),
-            ),
+            loadMore: () async {
+              BlocProvider.of<OrdersBloc>(context).add(
+                GetOrdersEvent(isLoadMoreMode: true, userID: 1), //TODO change to real user id
+              );
+            },
+            padding: const EdgeInsetsDirectional.only(
+                start: AppDimens.marginDefault16,
+                end: AppDimens.marginDefault16,
+                top: AppDimens.marginDefault16,
+                bottom: AppDimens.marginDefault16),
+            hasMore: () => !lastPageReached,
+            itemCount: () => lastPageReached ? ordersList.length : ordersList.length + 1,
+            itemBuilder: (parentContext, index) {
+              if (index < ordersList.length) {
+                // Normal box product item
+                return Column(
+                  children: <Widget>[
+                    InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      onTap: () {
+                        // Navigator.pushNamed(
+                        //     context, Constants.orderDetailsScreen,
+                        //     arguments: ordersList[index]);
+                      },
+                      child: OrderCard(
+                        order: ordersList[index],
+                      ),
+                    ),
+                    (index != (ordersList.length - 1)) ? Divider() : Container()
+                  ],
+                );
+              } else {
+                // Loading view
+                return showLoadMoreMode
+                    ? Center(
+                        child: Container(
+                          margin: EdgeInsets.all(4),
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    : Container();
+              }
+            },
           )
-              : Container();
-        }
-      },
-    )
         : HelperWidgets.getNoEntriesWidget(context, false);
   }
 }
@@ -227,8 +223,7 @@ class OrderCard extends StatelessWidget {
   final OrderModel order;
   final Function onTap;
 
-  const OrderCard({Key key, @required this.order, @required this.onTap})
-      : super(key: key);
+  const OrderCard({Key key, @required this.order, @required this.onTap}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -238,35 +233,27 @@ class OrderCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("#" + order.number,
-                      style: Theme.of(context).textTheme.subtitle1),
-                  SizedBox(height: 2),
-                  Text(
-                      AppLocalizations.of(context)
-                          .translate("currency", replacement: "${order.total}"),
-                      style: Theme.of(context).textTheme.headline2),
-                  SizedBox(height: AppDimens.marginDefault6),
-                  Text(
-                      AppLocalizations.of(context).translate("total_items",
-                              replacement: "${order.lineItems.length}") +
-                          "  " +
-                          AppLocalizations.of(context).translate("date",
-                              replacement: "${DateFormat(
-                                "d/M/y  kk:mm a",
-                                AppLocalizations.of(context).currentLanguage,
-                              ).format(order.createdAt)}"),
-                      style: Theme.of(context).textTheme.subtitle2),
-                  SizedBox(height: AppDimens.marginDefault4),
-                  Text(
-                      AppLocalizations.of(context)
-                          .translate("seller", replacement: "Example"),
-                      style: Theme.of(context).textTheme.subtitle2),
-                  SizedBox(height: AppDimens.marginDefault16),
-                  OrderStatusCard(status: order.status),
-                ]),
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+              Text("#" + order.number, style: Theme.of(context).textTheme.subtitle1),
+              SizedBox(height: 2),
+              Text(AppLocalizations.of(context).translate("currency", replacement: "${order.total}"),
+                  style: Theme.of(context).textTheme.headline2),
+              SizedBox(height: AppDimens.marginDefault6),
+              Text(
+                  AppLocalizations.of(context).translate("total_items", replacement: "${order.lineItems.length}") +
+                      "  " +
+                      AppLocalizations.of(context).translate("date",
+                          replacement: "${DateFormat(
+                            "d/M/y  kk:mm a",
+                            AppLocalizations.of(context).currentLanguage,
+                          ).format(order.createdAt)}"),
+                  style: Theme.of(context).textTheme.subtitle2),
+              SizedBox(height: AppDimens.marginDefault4),
+              Text(AppLocalizations.of(context).translate("seller", replacement: "Example"),
+                  style: Theme.of(context).textTheme.subtitle2),
+              SizedBox(height: AppDimens.marginDefault16),
+              OrderStatusCard(status: order.status),
+            ]),
             Column(
               children: <Widget>[
                 Container(
@@ -280,8 +267,7 @@ class OrderCard extends StatelessWidget {
                         offset: Offset(0, 1),
                       ),
                     ],
-                    border: Border.all(
-                        color: AppColors.customGreyLevels[200], width: 2),
+                    border: Border.all(color: AppColors.customGreyLevels[200], width: 2),
                   ),
                   child: Image.asset(
                     "assets/images/dummy_phone.png",
@@ -295,10 +281,7 @@ class OrderCard extends StatelessWidget {
                   onTap: () {},
                   child: Text(
                     AppLocalizations.of(context).translate("rate_this_product"),
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle2
-                        .copyWith(color: Colors.grey),
+                    style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.grey),
                   ),
                 ),
               ],
@@ -365,11 +348,7 @@ class OrderStatusCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(50),
             ),
           ),
-          Text(status,
-              style: Theme.of(context)
-                  .textTheme
-                  .subtitle1
-                  .copyWith(color: statusColor)),
+          Text(status, style: Theme.of(context).textTheme.subtitle1.copyWith(color: statusColor)),
         ],
       ),
     );

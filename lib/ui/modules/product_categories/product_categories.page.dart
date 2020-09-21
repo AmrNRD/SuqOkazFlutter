@@ -30,8 +30,7 @@ class ProductCategoriesPage extends StatefulWidget {
   _ProductCategoriesPageState createState() => _ProductCategoriesPageState();
 }
 
-class _ProductCategoriesPageState extends State<ProductCategoriesPage>
-    with TickerProviderStateMixin {
+class _ProductCategoriesPageState extends State<ProductCategoriesPage> with TickerProviderStateMixin {
   TabController _tabController;
   List<Tab> tabs = [];
   List<Widget> tabBarView = [];
@@ -153,8 +152,7 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
                     ? Container()
                     : TabBar(
                         tabs: tabs,
-                        labelPadding:
-                            EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+                        labelPadding: EdgeInsets.symmetric(horizontal: 4, vertical: 0),
                         indicatorPadding: EdgeInsets.symmetric(horizontal: 4),
                         controller: _tabController,
                         isScrollable: true,
@@ -189,8 +187,7 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
     tabs.add(
       Tab(
         child: Container(
-          padding:
-              EdgeInsetsDirectional.only(start: 12, end: 12, top: 2, bottom: 2),
+          padding: EdgeInsetsDirectional.only(start: 12, end: 12, top: 2, bottom: 2),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
             border: Border.all(color: AppColors.primaryColors[50], width: 0.2),
@@ -206,12 +203,10 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
       tabs.add(
         Tab(
           child: Container(
-            padding: EdgeInsetsDirectional.only(
-                start: 12, end: 12, top: 2, bottom: 2),
+            padding: EdgeInsetsDirectional.only(start: 12, end: 12, top: 2, bottom: 2),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(18),
-              border:
-                  Border.all(color: AppColors.primaryColors[50], width: 0.2),
+              border: Border.all(color: AppColors.primaryColors[50], width: 0.2),
             ),
             child: Text(
               subCategories[i].name,

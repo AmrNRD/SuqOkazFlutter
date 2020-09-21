@@ -68,7 +68,7 @@ class RouteGenerator {
                 appBarTitle: args[0],
                 subCategories: args[1],
                 parentId: args[2],
-                selectedSubCategoryId: args.length > 4 ? args[3] : 0,
+                selectedSubCategoryId: args.length >= 4 ? args[3] : 0,
               ),
             ),
           );

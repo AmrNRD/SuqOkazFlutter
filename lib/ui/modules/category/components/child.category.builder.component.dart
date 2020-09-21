@@ -30,16 +30,33 @@ class ChildCategoryBuilderComponent extends StatelessWidget {
                       height: 16,
                     )
                   : Container(),
-              Text(
-                childrenCategories[parentIndex].name,
-                style: Theme.of(context).textTheme.headline2,
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              Container(
-                height: screenAwareSize(80, context),
-                child: CategoryBannerBox(),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    Constants.productCategoriesPage,
+                    arguments: [
+                      childrenCategories[parentIndex].name,
+                      childrenCategories[parentIndex].children,
+                      childrenCategories[parentIndex].id,
+                    ],
+                  );
+                },
+                child: Column(
+                  children: [
+                    Text(
+                      childrenCategories[parentIndex].name,
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Container(
+                      height: screenAwareSize(80, context),
+                      child: CategoryBannerBox(),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(
                 height: 16,
@@ -66,10 +83,10 @@ class ChildCategoryBuilderComponent extends StatelessWidget {
                         context,
                         Constants.productCategoriesPage,
                         arguments: [
-                          parentName,
-                          childrenCategories,
-                          childrenCategories[0].parent,
-                          childrenCategories[parentIndex].id
+                          childrenCategories[parentIndex].name,
+                          childrenCategories[parentIndex].children,
+                          childrenCategories[parentIndex].children[index].id,
+                          childrenCategories[parentIndex].children[index].id
                         ],
                       );
                     },
@@ -79,9 +96,7 @@ class ChildCategoryBuilderComponent extends StatelessWidget {
                           color: AppColors.customGreyLevels[400],
                           child: Center(
                             child: ImageProcessor.image(
-                              url: childrenCategories[parentIndex]
-                                  .children[index]
-                                  .image,
+                              url: childrenCategories[parentIndex].children[index].image,
                               fit: BoxFit.contain,
                               height: screenAwareSize(70, context),
                             ),

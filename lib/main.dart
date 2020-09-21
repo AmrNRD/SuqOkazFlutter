@@ -108,16 +108,15 @@ class _RootState extends State<Root> {
           ),
         ),
       ],
-      child: BlocListener<UserBloc,UserState>(
-        listener: (context,state){
-          if(state is UserLoadedState)
-           {
-             setState(() {
-               Root.user=Root.user;
-             });
-           }else if(state is UserLoggedOutState){
+      child: BlocListener<UserBloc, UserState>(
+        listener: (context, state) {
+          if (state is UserLoadedState) {
             setState(() {
-              Root.user=null;
+              Root.user = Root.user;
+            });
+          } else if (state is UserLoggedOutState) {
+            setState(() {
+              Root.user = null;
             });
           }
         },

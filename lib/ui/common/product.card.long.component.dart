@@ -65,7 +65,7 @@ class ProductCardLongComponent extends StatelessWidget {
               width: 8,
             ),
             Expanded(
-              flex: 2,
+              flex: 4,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -75,8 +75,8 @@ class ProductCardLongComponent extends StatelessWidget {
                     children: [
                       Text(
                         product.name,
-                        style: Theme.of(context).textTheme.bodyText2,
-                        maxLines: 3,
+                        style: Theme.of(context).textTheme.bodyText2.copyWith(fontWeight: FontWeight.w600),
+                        maxLines: 1,
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -138,13 +138,13 @@ class ProductCardLongComponent extends StatelessWidget {
                     child: isInFav
                         ? SvgPicture.asset(
                             "assets/icons/fav_selected_icon.svg",
-                            height: 24,
-                            width: 24,
+                            height: 20,
+                            width: 20,
                           )
                         : SvgPicture.asset(
                             "assets/icons/fav_icon.svg",
-                            height: 24,
-                            width: 24,
+                            height: 20,
+                            width: 20,
                           ),
                   ),
                   // InkWell(
