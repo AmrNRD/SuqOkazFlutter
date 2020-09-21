@@ -8,6 +8,7 @@ class Category extends Table {
   IntColumn get id => integer()();
   TextColumn get name => text()();
   TextColumn get image => text()();
+  TextColumn get imageBanner => text().nullable()();
   IntColumn get parent => integer()();
   IntColumn get menuOrder => integer()();
   IntColumn get totalProduct => integer()();
@@ -62,7 +63,7 @@ class AppDataBase extends _$AppDataBase {
   // you should bump this number whenever you change or add a table definition. Migrations
   // are covered later in this readme.
   @override
-  int get schemaVersion => 16;
+  int get schemaVersion => 18;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {

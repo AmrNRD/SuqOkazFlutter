@@ -11,6 +11,7 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
   final int id;
   final String name;
   final String image;
+  final String imageBanner;
   final int parent;
   final int menuOrder;
   final int totalProduct;
@@ -20,6 +21,7 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
       {@required this.id,
       @required this.name,
       @required this.image,
+      this.imageBanner,
       @required this.parent,
       @required this.menuOrder,
       @required this.totalProduct});
@@ -31,6 +33,7 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
       image: stringType.mapFromDatabaseResponse(data['${effectivePrefix}image']),
+      imageBanner: stringType.mapFromDatabaseResponse(data['${effectivePrefix}image_banner']),
       parent: intType.mapFromDatabaseResponse(data['${effectivePrefix}parent']),
       menuOrder: intType.mapFromDatabaseResponse(data['${effectivePrefix}menu_order']),
       totalProduct: intType.mapFromDatabaseResponse(data['${effectivePrefix}total_product']),
@@ -47,6 +50,9 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
     }
     if (!nullToAbsent || image != null) {
       map['image'] = Variable<String>(image);
+    }
+    if (!nullToAbsent || imageBanner != null) {
+      map['image_banner'] = Variable<String>(imageBanner);
     }
     if (!nullToAbsent || parent != null) {
       map['parent'] = Variable<int>(parent);
@@ -65,6 +71,7 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       name: name == null && nullToAbsent ? const Value.absent() : Value(name),
       image: image == null && nullToAbsent ? const Value.absent() : Value(image),
+      imageBanner: imageBanner == null && nullToAbsent ? const Value.absent() : Value(imageBanner),
       parent: parent == null && nullToAbsent ? const Value.absent() : Value(parent),
       menuOrder: menuOrder == null && nullToAbsent ? const Value.absent() : Value(menuOrder),
       totalProduct: totalProduct == null && nullToAbsent ? const Value.absent() : Value(totalProduct),
@@ -77,6 +84,7 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       image: serializer.fromJson<String>(json['image']),
+      imageBanner: serializer.fromJson<String>(json['imageBanner']),
       parent: serializer.fromJson<int>(json['parent']),
       menuOrder: serializer.fromJson<int>(json['menuOrder']),
       totalProduct: serializer.fromJson<int>(json['totalProduct']),
@@ -89,17 +97,20 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
       'image': serializer.toJson<String>(image),
+      'imageBanner': serializer.toJson<String>(imageBanner),
       'parent': serializer.toJson<int>(parent),
       'menuOrder': serializer.toJson<int>(menuOrder),
       'totalProduct': serializer.toJson<int>(totalProduct),
     };
   }
 
-  CategoryData copyWith({int id, String name, String image, int parent, int menuOrder, int totalProduct}) =>
+  CategoryData copyWith(
+          {int id, String name, String image, String imageBanner, int parent, int menuOrder, int totalProduct}) =>
       CategoryData(
         id: id ?? this.id,
         name: name ?? this.name,
         image: image ?? this.image,
+        imageBanner: imageBanner ?? this.imageBanner,
         parent: parent ?? this.parent,
         menuOrder: menuOrder ?? this.menuOrder,
         totalProduct: totalProduct ?? this.totalProduct,
@@ -110,6 +121,7 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('image: $image, ')
+          ..write('imageBanner: $imageBanner, ')
           ..write('parent: $parent, ')
           ..write('menuOrder: $menuOrder, ')
           ..write('totalProduct: $totalProduct')
@@ -120,8 +132,10 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
   @override
   int get hashCode => $mrjf($mrjc(
       id.hashCode,
-      $mrjc(name.hashCode,
-          $mrjc(image.hashCode, $mrjc(parent.hashCode, $mrjc(menuOrder.hashCode, totalProduct.hashCode))))));
+      $mrjc(
+          name.hashCode,
+          $mrjc(image.hashCode,
+              $mrjc(imageBanner.hashCode, $mrjc(parent.hashCode, $mrjc(menuOrder.hashCode, totalProduct.hashCode)))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -129,6 +143,7 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
           other.id == this.id &&
           other.name == this.name &&
           other.image == this.image &&
+          other.imageBanner == this.imageBanner &&
           other.parent == this.parent &&
           other.menuOrder == this.menuOrder &&
           other.totalProduct == this.totalProduct);
@@ -138,6 +153,7 @@ class CategoryCompanion extends UpdateCompanion<CategoryData> {
   final Value<int> id;
   final Value<String> name;
   final Value<String> image;
+  final Value<String> imageBanner;
   final Value<int> parent;
   final Value<int> menuOrder;
   final Value<int> totalProduct;
@@ -145,6 +161,7 @@ class CategoryCompanion extends UpdateCompanion<CategoryData> {
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.image = const Value.absent(),
+    this.imageBanner = const Value.absent(),
     this.parent = const Value.absent(),
     this.menuOrder = const Value.absent(),
     this.totalProduct = const Value.absent(),
@@ -153,6 +170,7 @@ class CategoryCompanion extends UpdateCompanion<CategoryData> {
     this.id = const Value.absent(),
     @required String name,
     @required String image,
+    this.imageBanner = const Value.absent(),
     @required int parent,
     @required int menuOrder,
     @required int totalProduct,
@@ -165,6 +183,7 @@ class CategoryCompanion extends UpdateCompanion<CategoryData> {
     Expression<int> id,
     Expression<String> name,
     Expression<String> image,
+    Expression<String> imageBanner,
     Expression<int> parent,
     Expression<int> menuOrder,
     Expression<int> totalProduct,
@@ -173,6 +192,7 @@ class CategoryCompanion extends UpdateCompanion<CategoryData> {
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (image != null) 'image': image,
+      if (imageBanner != null) 'image_banner': imageBanner,
       if (parent != null) 'parent': parent,
       if (menuOrder != null) 'menu_order': menuOrder,
       if (totalProduct != null) 'total_product': totalProduct,
@@ -183,6 +203,7 @@ class CategoryCompanion extends UpdateCompanion<CategoryData> {
       {Value<int> id,
       Value<String> name,
       Value<String> image,
+      Value<String> imageBanner,
       Value<int> parent,
       Value<int> menuOrder,
       Value<int> totalProduct}) {
@@ -190,6 +211,7 @@ class CategoryCompanion extends UpdateCompanion<CategoryData> {
       id: id ?? this.id,
       name: name ?? this.name,
       image: image ?? this.image,
+      imageBanner: imageBanner ?? this.imageBanner,
       parent: parent ?? this.parent,
       menuOrder: menuOrder ?? this.menuOrder,
       totalProduct: totalProduct ?? this.totalProduct,
@@ -207,6 +229,9 @@ class CategoryCompanion extends UpdateCompanion<CategoryData> {
     }
     if (image.present) {
       map['image'] = Variable<String>(image.value);
+    }
+    if (imageBanner.present) {
+      map['image_banner'] = Variable<String>(imageBanner.value);
     }
     if (parent.present) {
       map['parent'] = Variable<int>(parent.value);
@@ -226,6 +251,7 @@ class CategoryCompanion extends UpdateCompanion<CategoryData> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('image: $image, ')
+          ..write('imageBanner: $imageBanner, ')
           ..write('parent: $parent, ')
           ..write('menuOrder: $menuOrder, ')
           ..write('totalProduct: $totalProduct')
@@ -274,6 +300,18 @@ class $CategoryTable extends Category with TableInfo<$CategoryTable, CategoryDat
     );
   }
 
+  final VerificationMeta _imageBannerMeta = const VerificationMeta('imageBanner');
+  GeneratedTextColumn _imageBanner;
+  @override
+  GeneratedTextColumn get imageBanner => _imageBanner ??= _constructImageBanner();
+  GeneratedTextColumn _constructImageBanner() {
+    return GeneratedTextColumn(
+      'image_banner',
+      $tableName,
+      true,
+    );
+  }
+
   final VerificationMeta _parentMeta = const VerificationMeta('parent');
   GeneratedIntColumn _parent;
   @override
@@ -311,7 +349,7 @@ class $CategoryTable extends Category with TableInfo<$CategoryTable, CategoryDat
   }
 
   @override
-  List<GeneratedColumn> get $columns => [id, name, image, parent, menuOrder, totalProduct];
+  List<GeneratedColumn> get $columns => [id, name, image, imageBanner, parent, menuOrder, totalProduct];
   @override
   $CategoryTable get asDslTable => this;
   @override
@@ -334,6 +372,9 @@ class $CategoryTable extends Category with TableInfo<$CategoryTable, CategoryDat
       context.handle(_imageMeta, image.isAcceptableOrUnknown(data['image'], _imageMeta));
     } else if (isInserting) {
       context.missing(_imageMeta);
+    }
+    if (data.containsKey('image_banner')) {
+      context.handle(_imageBannerMeta, imageBanner.isAcceptableOrUnknown(data['image_banner'], _imageBannerMeta));
     }
     if (data.containsKey('parent')) {
       context.handle(_parentMeta, parent.isAcceptableOrUnknown(data['parent'], _parentMeta));

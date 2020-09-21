@@ -39,7 +39,7 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage> with Tick
   bool isList = false;
   int selectedSubCategory = 0;
   String orderBy;
-  Map filterData={};
+  Map filterData = {};
   String order;
 
 
@@ -228,7 +228,7 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage> with Tick
               filterData: filterData,
               onProductsChange: (products){
                 setState(() {
-                  this.products=products;
+                  this.products = products;
                 });
               },
             )
@@ -239,7 +239,7 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage> with Tick
               filterData: filterData,
               onProductsChange:  (products){
                 setState(() {
-                  this.products=products;
+                  this.products = products;
                 });
               },
             ),
@@ -252,7 +252,7 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage> with Tick
       tabBarView.add(
         isList
             ? ProductListViewComponent(
-                categoryId: parentId,
+                categoryId: widget.subCategories[i].id,
                 order: order,
                 orderBy: orderBy,
                 filterData: filterData,

@@ -13,8 +13,7 @@ part 'category_event.dart';
 part 'category_state.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
-  CategoryBloc(this._categoriesDataRepository)
-      : super(CategoryProductInitial());
+  CategoryBloc(this._categoriesDataRepository) : super(CategoryProductInitial());
 
   final CategoriesRepository _categoriesDataRepository;
 
@@ -39,8 +38,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       if (event is GetCategoriesEvent) {
         yield CategoryLoadingState();
         if (nestedCategories.isEmpty) {
-          List<CategoryData> localCategories =
-              await _categoriesDataRepository.getAllCategories();
+          List<CategoryData> localCategories = await _categoriesDataRepository.getAllCategories();
           nestedCategories = CategoriesUtil.nestCategories(localCategories);
           if (nestedCategories.isEmpty) {
             categories = [];
@@ -87,8 +85,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       return [];
     }
     // Make request
-    var response =
-        await _categoriesDataRepository.loadCategories(dataCurrentPage, false);
+    var response = await _categoriesDataRepository.loadCategories(dataCurrentPage, false);
 
     // If the call to the server was successful
     if (response != null && (response is Map || response is List)) {

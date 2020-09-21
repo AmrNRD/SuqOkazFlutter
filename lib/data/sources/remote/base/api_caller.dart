@@ -2,7 +2,6 @@ import 'dart:collection';
 import 'dart:io';
 import "dart:async";
 import 'dart:math';
-import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import "dart:convert";
 

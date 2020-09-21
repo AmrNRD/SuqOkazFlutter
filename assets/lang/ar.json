@@ -203,6 +203,8 @@
     "filter": "تصفيه",
     "apply": "تطبيق",
     "category": "تصنيفات",
+    "no_categories": "تصنيف غير محدد",
+    "subcategory": "تصنيفات الفرعية",
     "subcategory": "تصنيفات الفرعية",
     "price": "السعر",
     "Choose your categories": "اختر تصنيف"

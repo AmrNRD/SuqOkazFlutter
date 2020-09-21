@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:suqokaz/bloc/address/address_bloc.dart';
+import 'package:suqokaz/bloc/banner/banner_bloc.dart';
 import 'package:suqokaz/bloc/category/category_bloc.dart';
 import 'package:suqokaz/bloc/product/product_bloc.dart';
 import 'package:suqokaz/bloc/review/review_bloc.dart';
@@ -94,6 +95,9 @@ class RouteGenerator {
                   ProductsRepository(),
                 ),
               ),
+              BlocProvider<BannerBloc>(
+                create: (BuildContext context) => BannerBloc(),
+              ),
             ],
             child: HomeNavigationPage(),
           ),
@@ -106,7 +110,9 @@ class RouteGenerator {
       case Constants.filterPage:
         return MaterialPageRoute(
           settings: RouteSettings(name: Constants.filterPage),
-          builder: (_) => FilterPage(filterData: args,),
+          builder: (_) => FilterPage(
+            filterData: args,
+          ),
         );
       case Constants.addAddressScreen:
         return MaterialPageRoute(

@@ -43,6 +43,7 @@ class ChildCategoryBuilderComponent extends StatelessWidget {
                   );
                 },
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
                       childrenCategories[parentIndex].name,
@@ -51,10 +52,12 @@ class ChildCategoryBuilderComponent extends StatelessWidget {
                     SizedBox(
                       height: 16,
                     ),
-                    Container(
-                      height: screenAwareSize(80, context),
-                      child: CategoryBannerBox(),
-                    ),
+                    childrenCategories[parentIndex].banner == null
+                        ? Container()
+                        : ImageProcessor.image(
+                            fit: BoxFit.contain,
+                            url: childrenCategories[parentIndex].banner,
+                          ),
                   ],
                 ),
               ),

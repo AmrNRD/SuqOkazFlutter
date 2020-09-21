@@ -6,6 +6,7 @@ class CategoryModel {
   int id;
   String name;
   String image;
+  String bannerImage;
   int parent;
   int menuOrder;
   int totalProduct;
@@ -20,17 +21,21 @@ class CategoryModel {
     this.menuOrder,
     this.parent,
     this.totalProduct,
+    this.bannerImage,
     this.sorted = false,
-    this.banner
+    this.banner,
   });
 
   CategoryModel.fromJson(Map<String, dynamic> parsedJson) {
     id = GuardParser.safeCast<int>(parsedJson["id"]);
-    name = HtmlUnescape()
-        .convert(GuardParser.safeCast<String>(parsedJson["name"]));
+    name = HtmlUnescape().convert(GuardParser.safeCast<String>(parsedJson["name"]));
     parent = GuardParser.safeCast<int>(parsedJson["parent"]);
     totalProduct = GuardParser.safeCast<int>(parsedJson["count"]);
     menuOrder = GuardParser.safeCast<int>(parsedJson["menu_order"]);
+
+    if (parsedJson["meta"].containsKey("_et_page_heading")) {
+      banner = parsedJson["meta"]["_et_page_heading"][0];
+    }
 
     if (parsedJson["image"] != null) {
       final image = GuardParser.safeCast<Map>(parsedJson["image"]);
@@ -43,6 +48,5 @@ class CategoryModel {
   }
 
   @override
-  String toString() =>
-      'Category { id: $id  name: $name, parent: $parent, childrens : ${children.length} }';
+  String toString() => 'Category { id: $id  name: $name, parent: $parent, childrens : ${children.length} }';
 }

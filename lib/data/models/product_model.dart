@@ -86,8 +86,6 @@ class ProductModel {
 
       //minQuantity = parsedJson['meta_data']['']
 
-      print("SAAAAAAAAAAAAAAD");
-
       List<ProductAttribute> attributeList = [];
       if (parsedJson["attributes"] != null) {
         parsedJson["attributes"]?.forEach((item) {
@@ -98,13 +96,11 @@ class ProductModel {
           }
         });
       }
-      print("SAAAAAAAAAAAAAAD");
 
       attributes = attributeList;
       if (parsedJson.containsKey("attributes")) {
         parsedJson["attributes"]?.forEach((item) {
           if (item is ProductAttribute) {
-            print("qewqwe");
             infors.add(item);
           } else {
             infors.add(ProductAttribute.fromJson(item));
@@ -112,10 +108,8 @@ class ProductModel {
         });
       }
 
-      print("SAAAAAAAAAAAAAAD");
       List<String> list = [];
-      print(parsedJson.toString());
-      print(parsedJson.containsKey("meta_data"));
+
       // get images links from meta data
       if (parsedJson.containsKey("meta_data")) {
         var metaDataImages = parsedJson['meta_data'].firstWhere(
@@ -134,7 +128,6 @@ class ProductModel {
         }
       }
 
-      print("SAAAAAAAAAAAAAAD");
       for (var item in parsedJson["images"]) {
         if (item is Map) {
           list.add(item["src"]);
@@ -183,7 +176,6 @@ class ProductModel {
           } catch (e) {}
         }
       }
-      print("SAD FINAL");
     } catch (e) {}
   }
 

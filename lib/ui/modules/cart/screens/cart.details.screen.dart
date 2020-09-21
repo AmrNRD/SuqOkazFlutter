@@ -87,25 +87,25 @@ class _CartDetailsScreenState extends State<CartDetailsScreen> {
                     SizedBox(
                       height: AppDimens.marginDefault20,
                     ),
-                    Text(
-                      AppLocalizations.of(context).translate("discount_title"),
-                      style: Theme.of(context).textTheme.headline2,
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(
-                      height: AppDimens.marginDefault12,
-                    ),
-                    CustomInputTextField(
-                      controller: discountController,
-                      validator: (value) {
-                        return true;
-                      },
-                      maxLines: 1,
-                      minLines: 1,
-                      textInputType: TextInputType.multiline,
-                      isCollapes: true,
-                      onFieldSubmit: (_) {},
-                    ),
+                    // Text(
+                    //   AppLocalizations.of(context).translate("discount_title"),
+                    //   style: Theme.of(context).textTheme.headline2,
+                    //   textAlign: TextAlign.center,
+                    // ),
+                    // SizedBox(
+                    //   height: AppDimens.marginDefault12,
+                    // ),
+                    // CustomInputTextField(
+                    //   controller: discountController,
+                    //   validator: (value) {
+                    //     return true;
+                    //   },
+                    //   maxLines: 1,
+                    //   minLines: 1,
+                    //   textInputType: TextInputType.multiline,
+                    //   isCollapes: true,
+                    //   onFieldSubmit: (_) {},
+                    // ),
                     SizedBox(
                       height: screenAwareSize(180, context),
                     ),
