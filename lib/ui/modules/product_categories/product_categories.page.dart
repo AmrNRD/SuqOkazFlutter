@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:suqokaz/data/models/product_model.dart';
 import 'package:suqokaz/ui/common/custom_appbar.dart';
 import 'package:suqokaz/ui/common/filter.sheet.component.dart';
 import 'package:suqokaz/ui/common/loading.component.dart';
@@ -8,6 +9,7 @@ import 'package:suqokaz/ui/common/product.listview.component.dart';
 import 'package:suqokaz/ui/common/product.view.modification.component.dart';
 import 'package:suqokaz/ui/style/app.colors.dart';
 import 'package:suqokaz/utils/app.localization.dart';
+import 'package:suqokaz/utils/constants.dart';
 import 'package:suqokaz/utils/core.util.dart';
 
 class ProductCategoriesPage extends StatefulWidget {
@@ -33,10 +35,12 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
   TabController _tabController;
   List<Tab> tabs = [];
   List<Widget> tabBarView = [];
+  List<ProductModel> products = [];
   bool isFirstTime = true;
   bool isList = false;
   int selectedSubCategory = 0;
   String orderBy;
+  Map filterData={};
   String order;
 
   onChangeViewClick() {
@@ -127,6 +131,7 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
             isListView: isList,
             onViewChangeClick: onChangeViewClick,
             onSortClick: _showModalSheet,
+            onFilterViewClick: onFilterClick,
           ),
           Container(
             margin: EdgeInsets.only(right: 16, left: 16, top: 16),
@@ -214,11 +219,21 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
               categoryId: widget.parentId,
               order: order,
               orderBy: orderBy,
+              onProductsChange: (products){
+                setState(() {
+                  this.products=products;
+                });
+              },
             )
           : ProductGridViewComponent(
               categoryId: widget.parentId,
               order: order,
               orderBy: orderBy,
+              onProductsChange:  (products){
+                setState(() {
+                  this.products=products;
+                });
+              },
             ),
     );
 
@@ -240,5 +255,9 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage>
               ),
       );
     }
+  }
+
+  onFilterClick() async {
+    await Navigator.of(context).pushNamed(Constants.filterPage,arguments: filterData);
   }
 }

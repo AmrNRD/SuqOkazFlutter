@@ -89,7 +89,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     title: "email",
                     focusNode: _emailFocusNode,
                     onSave: (value) => _authData['email'] = value,
-                    isRequired: true),
+                    textInputType: TextInputType.emailAddress,
+                    isRequired: true,
+                ),
 
                 //password
                 FormInputField(
