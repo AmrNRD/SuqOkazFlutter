@@ -37,6 +37,10 @@ class CategoriesServiceLocal {
     return null;
   }
 
+  Future<dynamic> deleteAllCategories() async {
+    return await appDataBase.deleteAllCategories();
+  }
+
   Future<dynamic> deleteCategory(int id) async {
     return await appDataBase.deleteCategory(id);
   }

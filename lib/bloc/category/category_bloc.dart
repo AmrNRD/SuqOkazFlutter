@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suqokaz/data/models/category_model.dart';
 import 'package:suqokaz/data/repositories/categories.repository.dart';
 import 'package:suqokaz/data/sources/local/local.database.dart';
@@ -45,6 +47,9 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
             await loadCategories();
             _categoriesDataRepository.saveLocalCategories(categories);
             nestedCategories = CategoriesUtil.nestCategories(categories);
+            SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+            String dateTime=DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+            sharedPreferences.setString("lastUpdateToCategories", dateTime);
           }
         }
         yield CategoryLoadedState(
@@ -75,6 +80,13 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
           currentRootSubCategoryId: currentRootSubCategoryId,
         );
       } else if (event is ResetCategoryEvent) {
+        await _categoriesDataRepository.resetAllCategories();
+        nestedCategories=[];
+        selectedParentCategoryIndex = 0;
+        currentParentCategoryId = 0;
+        selectSubCategoryIndex = 0;
+        currentRootSubCategoryId = 0;
+        categories=[];
         yield CategoryLoadedState(
           nestedCategories: nestedCategories,
           currentParentCatId: currentParentCategoryId,
@@ -82,6 +94,41 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
           selectedCategoryIndex: selectedParentCategoryIndex,
           currentRootSubCategoryId: currentRootSubCategoryId,
         );
+      } else if (event is ReloadCategoryEvent) {
+        yield CategoryLoadingState();
+        await _categoriesDataRepository.resetAllCategories();
+
+
+        nestedCategories=[];
+        selectedParentCategoryIndex = 0;
+        currentParentCategoryId = 0;
+        selectSubCategoryIndex = 0;
+        currentRootSubCategoryId = 0;
+        categories=[];
+
+        if (nestedCategories.isEmpty) {
+          List<CategoryData> localCategories = await _categoriesDataRepository.getAllCategories();
+          nestedCategories = CategoriesUtil.nestCategories(localCategories);
+          if (nestedCategories.isEmpty) {
+            categories = [];
+            await loadCategories();
+            _categoriesDataRepository.saveLocalCategories(categories);
+            nestedCategories = CategoriesUtil.nestCategories(categories);
+          }
+        }
+        SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+        String dateTime=DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+        sharedPreferences.setString("lastUpdateToCategories", dateTime);
+
+        yield CategoryLoadedState(
+          nestedCategories: nestedCategories,
+          currentParentCatId: currentParentCategoryId,
+          subSelectedCategoryIndex: selectSubCategoryIndex,
+          selectedCategoryIndex: selectedParentCategoryIndex,
+          currentRootSubCategoryId: currentRootSubCategoryId,
+        );
+
+
       }
     } catch (e) {
       yield CategoryErrorState(e.toString());

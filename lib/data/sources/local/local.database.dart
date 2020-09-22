@@ -97,6 +97,8 @@ class AppDataBase extends _$AppDataBase {
       .get();
   Future insertCategory(CategoryData categoryData) => into(category).insert(categoryData);
   Future updateCategory(CategoryData categoryData) => update(category).replace(categoryData);
+  Future deleteAllCategories() => delete(category).go();
+
   Future deleteCategory(int id) => (delete(category)
         ..where(
           (c) => c.id.equals(id),
