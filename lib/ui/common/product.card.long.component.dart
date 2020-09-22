@@ -31,7 +31,6 @@ class ProductCardLongComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(isInFav);
     return GestureDetector(
       onTap: (onItemTap != null) ? onItemTap : null,
       child: Container(
@@ -55,13 +54,10 @@ class ProductCardLongComponent extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Container(
-                child:ClipRRect(
-                  borderRadius: BorderRadius.circular(5.0),
-                  child: ImageProcessor.image(
-                    url: product.imageFeature,
-                    fit: BoxFit.cover,
-                  ),
-                ) ,
+                child: ImageProcessor.image(
+                  url: product.imageFeature,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
             SizedBox(
@@ -85,7 +81,7 @@ class ProductCardLongComponent extends StatelessWidget {
                       ),
                       showAttributes
                           ? Column(
-                              children: product.variations[0].attributes
+                              children: product.selectedVaraition.attributes
                                   .map(
                                     (e) => Container(
                                       margin: EdgeInsets.symmetric(vertical: 2),
@@ -126,14 +122,14 @@ class ProductCardLongComponent extends StatelessWidget {
                         BlocProvider.of<WishlistBloc>(context).add(
                           AddProductToWishListEvent(
                             productModel: product,
-                            varId: product.variations[0].id,
+                            varId: product.selectedVaraition.id,
                           ),
                         );
                       } else {
                         BlocProvider.of<WishlistBloc>(context).add(
                           RemoveWishListItemEvent(
                             productId: product.id,
-                            varId: product.variations[0].id,
+                            varId: product.selectedVaraition.id,
                           ),
                         );
                       }
