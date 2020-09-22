@@ -192,13 +192,10 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                     InkWell(
                       borderRadius: BorderRadius.all(Radius.circular(5)),
                       onTap: () {
-                        // Navigator.pushNamed(
-                        //     context, Constants.orderDetailsScreen,
-                        //     arguments: ordersList[index]);
+                        Navigator.pushNamed(context, Constants.orderDetailsPage, arguments: ordersList[index]);
                       },
                       child: OrderCard(
                         order: ordersList[index],
-
                       ),
                     ),
                     (index != (ordersList.length - 1)) ? Divider() : Container()
@@ -223,65 +220,62 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
 
 class OrderCard extends StatelessWidget {
   final OrderModel order;
-  final Function onTap;
 
-  const OrderCard({Key key, @required this.order, @required this.onTap}) : super(key: key);
+
+  const OrderCard({Key key, @required this.order}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        InkWell(
-          onTap: onTap,
-          child: Container(
-            margin: EdgeInsets.all(AppDimens.marginEdgeCase24),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                  Text("#" + order.number, style: Theme.of(context).textTheme.subtitle1),
-                  SizedBox(height: 2),
-                  Text(AppLocalizations.of(context).translate("currency", replacement: "${order.total}"), style: Theme.of(context).textTheme.headline2),
-                  SizedBox(height: AppDimens.marginDefault6),
-                  Text(AppLocalizations.of(context).translate("total_items", replacement: "${order.lineItems.length}") + "  " + AppLocalizations.of(context).translate("date", replacement: "${DateFormat("d/M/y  kk:mm a", AppLocalizations.of(context).currentLanguage,).format(order.createdAt)}"), style: Theme.of(context).textTheme.subtitle2),
-                  SizedBox(height: AppDimens.marginDefault4),
-                  SizedBox(height: AppDimens.marginDefault16),
-                  OrderStatusCard(status: order.status),
-                ]),
-                //PHOTO
-                // Column(
-                //   children: <Widget>[
-                //     Container(
-                //       decoration: BoxDecoration(
-                //         borderRadius: BorderRadius.circular(5),
-                //         color: Colors.white,
-                //         boxShadow: [
-                //           BoxShadow(
-                //             color: Color(0xFFEFEFEF).withOpacity(0.05),
-                //             blurRadius: 5,
-                //             offset: Offset(0, 1),
-                //           ),
-                //         ],
-                //         border: Border.all(color: AppColors.customGreyLevels[200], width: 2),
-                //       ),
-                //       child: Image.asset(
-                //         "assets/images/dummy_phone.png",
-                //         fit: BoxFit.contain,
-                //         height: screenAwareSize(78, context),
-                //         width: screenAwareSize(78, context),
-                //       ),
-                //     ),
-                //     SizedBox(height: AppDimens.marginDefault20),
-                //     InkWell(
-                //       onTap: () {},
-                //       child: Text(
-                //         AppLocalizations.of(context).translate("rate_this_product"),
-                //         style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.grey),
-                //       ),
-                //     ),
-                //   ],
-                // )
-              ],
-            ),
+        Container(
+          margin: EdgeInsets.all(AppDimens.marginEdgeCase24),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                Text("#" + order.number, style: Theme.of(context).textTheme.subtitle1),
+                SizedBox(height: 2),
+                Text(AppLocalizations.of(context).translate("currency", replacement: "${order.total}"), style: Theme.of(context).textTheme.headline2),
+                SizedBox(height: AppDimens.marginDefault6),
+                Text(AppLocalizations.of(context).translate("total_items", replacement: "${order.lineItems.length}") + "  " + AppLocalizations.of(context).translate("date", replacement: "${DateFormat("d/M/y  kk:mm a", AppLocalizations.of(context).currentLanguage,).format(order.createdAt)}"), style: Theme.of(context).textTheme.subtitle2),
+                SizedBox(height: AppDimens.marginDefault4),
+                SizedBox(height: AppDimens.marginDefault16),
+                OrderStatusCard(status: order.status),
+              ]),
+              //PHOTO
+              // Column(
+              //   children: <Widget>[
+              //     Container(
+              //       decoration: BoxDecoration(
+              //         borderRadius: BorderRadius.circular(5),
+              //         color: Colors.white,
+              //         boxShadow: [
+              //           BoxShadow(
+              //             color: Color(0xFFEFEFEF).withOpacity(0.05),
+              //             blurRadius: 5,
+              //             offset: Offset(0, 1),
+              //           ),
+              //         ],
+              //         border: Border.all(color: AppColors.customGreyLevels[200], width: 2),
+              //       ),
+              //       child: Image.asset(
+              //         "assets/images/dummy_phone.png",
+              //         fit: BoxFit.contain,
+              //         height: screenAwareSize(78, context),
+              //         width: screenAwareSize(78, context),
+              //       ),
+              //     ),
+              //     SizedBox(height: AppDimens.marginDefault20),
+              //     InkWell(
+              //       onTap: () {},
+              //       child: Text(
+              //         AppLocalizations.of(context).translate("rate_this_product"),
+              //         style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.grey),
+              //       ),
+              //     ),
+              //   ],
+              // )
+            ],
           ),
         ),
         Divider(height: 1,color: AppColors.customGreyLevels[100],)

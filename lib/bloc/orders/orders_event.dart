@@ -26,3 +26,10 @@ class CreateOrder extends OrdersEvent{
 
   CreateOrder(this.order);
 }
+
+
+
+class GetOrderDetails extends OrdersEvent{
+  final OrderModel order;
+  GetOrderDetails(this.order);
+}
