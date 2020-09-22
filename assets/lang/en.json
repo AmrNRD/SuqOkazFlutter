@@ -18,6 +18,7 @@
     "product_quantity": "Products %s",
     "product_value": "VALUE OF ITEMS",
     "order_product": "Products",
+    "date": "Date: %s",
     "status": "Status: ",
     "payment": "Payment: ",
     "payment_title": "PAYMENT",
@@ -127,7 +128,7 @@
     "phone_number_label": "Phone Number*",
     "company_hotel": "Company / Hotel",
     "add_info": "Additional Information",
-    "wishlist": "Wishlist",
+
     "no_product": "No products",
     "no_product_details": "No product available for this category at the moment.",
     "search": "Search",
@@ -214,5 +215,6 @@
     "price": "Price",
     "Choose your categories": "Choose your categories",
     "no_categories": "Unspecified Category",
-    "subcategory": "Sub Category"
+    "subcategory": "Sub Category",
+    "total_items": "Total items: %s"
 }

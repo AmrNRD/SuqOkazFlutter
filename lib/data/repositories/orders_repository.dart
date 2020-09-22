@@ -35,6 +35,7 @@ class OrdersDataRepository extends OrdersRepository {
       var str = convert.jsonEncode(params);
       var bytes = convert.utf8.encode(str);
       var base64Str = convert.base64.encode(bytes);
+      print("${Constants.baseUrl}/wp-json/api/flutter_user/checkout");
 
       final http.Response response =
       await http.post("${Constants.baseUrl}/wp-json/api/flutter_user/checkout",

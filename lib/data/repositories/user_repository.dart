@@ -98,10 +98,9 @@ class UserDataRepository implements UserRepository {
 
       final body = convert.jsonDecode(respStr);
 
-
       if (response.statusCode == 200) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        UserModel userModel=await getUserInfo(body['cookie']);
+        UserModel userModel=UserModel.fromJson(body['user']);
         prefs.setString('userData', json.encode(userModel));
         await prefs.setString('access_token',body['cookie']);
         return userModel;
