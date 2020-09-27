@@ -186,7 +186,7 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage> with Tick
       tabs.add(
         Tab(
           child: Container(
-            padding: EdgeInsetsDirectional.only(start: 12, end: 12, top: 2, bottom: 2),
+            margin: EdgeInsetsDirectional.only(start: 20, end: 20, top: 2, bottom: 2),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(18),
               border: Border.all(color: AppColors.primaryColors[50], width: 0.2),
@@ -202,14 +202,16 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage> with Tick
       tabs.add(
         Tab(
           child: Container(
-            padding: EdgeInsetsDirectional.only(start: 12, end: 12, top: 2, bottom: 2),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(18),
               border: Border.all(color: AppColors.primaryColors[50], width: 0.2),
             ),
-            child: Text(
-              AppLocalizations.of(context).translate("all_categories"),
-              textAlign: TextAlign.center,
+            child: Container(
+              margin: EdgeInsetsDirectional.only(start: 20, end: 20, top: 2, bottom: 2),
+              child: Text(
+                AppLocalizations.of(context).translate("all_categories"),
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
         ),

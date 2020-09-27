@@ -102,11 +102,7 @@ class _ProductListViewComponentState extends State<ProductListViewComponent>
 
   @override
   void didChangeDependencies(){
-    if(widget.filterData.containsKey('minPrice'))
-      {
-        productBloc.add(GetProductsEvent(maxPrice:widget.filterData['maxPrice'],minPrice: widget.filterData['minPrice'],categoryID: widget.categoryId  ));
-      }
-
+    productBloc.add(GetProductsEvent(maxPrice:widget.filterData['maxPrice'],minPrice: widget.filterData['minPrice'],categoryID: widget.categoryId,orderBy: widget.orderBy,order: widget.order ));
     super.didChangeDependencies();
   }
 
