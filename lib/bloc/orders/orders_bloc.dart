@@ -30,6 +30,7 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
   Stream<OrdersState> mapEventToState(
     OrdersEvent event,
   ) async* {
+    try{
       /// Get products event
       if (event is GetOrdersEvent) {
         if (!lastPageReached && !isLoading) {
@@ -90,7 +91,9 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
           yield OrderLoadedState(order: order,products: detailProducts);
 
 
-      }
+      }}catch(error){
+      yield OrdersErrorState(message: error.toString());
+    }
 
   }
 

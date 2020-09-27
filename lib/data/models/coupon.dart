@@ -18,4 +18,14 @@ class Coupon {
       print(e.toString());
     }
   }
+
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "code": code,
+      "discount": amount.toStringAsFixed(2),
+      "discount_tax": "0",
+    };
+  }
 }

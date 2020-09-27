@@ -279,8 +279,8 @@ class _PaymentPageState extends State<PaymentPage> {
                       startText: AppLocalizations.of(context).translate("total"),
                       endText: AppLocalizations.of(context).translate(
                         "currency",
-                        replacement: BlocProvider.of<CartBloc>(context)
-                            .totalPrice
+                        replacement:( BlocProvider.of<CartBloc>(context)
+                            .totalPrice-(widget.discount??0))
                             .toStringAsFixed(2),
                       ),
                     ),
@@ -301,6 +301,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         order.shipping=widget.addressModel;
                         order.paymentMethod=selectedPaymentMethod;
                         order.billing=widget.addressModel;
+                        order.coupon=widget.coupon;
                         order.shippingMethod=widget.shippingMethod;
                         order.lineItems=BlocProvider.of<CartBloc>(context).productIdToProductItem.values.toList();
                         BlocProvider.of<OrdersBloc>(context).add(CreateOrder(order));

@@ -1,3 +1,4 @@
+import 'package:suqokaz/data/models/coupon.dart';
 import 'package:suqokaz/data/models/payment_method_model.dart';
 import 'package:suqokaz/data/models/product_model.dart';
 import 'package:suqokaz/data/models/shipping_method_model.dart';
@@ -23,6 +24,7 @@ class OrderModel {
   AddressModel billing;
   bool isPaid;
   AddressModel shipping;
+  Coupon coupon;
   ShippingMethod shippingMethod;
   PaymentMethod paymentMethod;
   String currency;
@@ -86,25 +88,27 @@ class OrderModel {
       var items = lineItems.map((index) {
         return index.toJson();
       }).toList();
-
-
-      return {
-        "set_paid":isPaid,
-        "status": status,
-        "total": total.toString(),
-        "payment_method": paymentMethod.id,
-        "payment_method_title": paymentMethod.title,
-        "number": number,
-        "billing": billing.toJson(),
-        "shipping":shipping.toJson(),
-        "line_items": items,
-        "customer_id": Root.user.id,
-        "date_created": createdAt.toString(),
-        "shipping_lines":[{
-          "method_id":shippingMethod.id,
-          "method_title":shippingMethod.title
-        }]
-      };
+    Map<String, dynamic>  json ={
+    "set_paid":isPaid,
+    "status": status,
+    "total": total.toString(),
+    "payment_method": paymentMethod.id,
+    "payment_method_title": paymentMethod.title,
+    "number": number,
+    "billing": billing.toJson(),
+    "shipping":shipping.toJson(),
+    "line_items": items,
+    "customer_id": Root.user.id,
+    "date_created": createdAt.toString(),
+    "shipping_lines":[{
+    "method_id":shippingMethod.id,
+    "method_title":shippingMethod.title
+    }]
+  };
+    if(coupon!=null){
+      json['coupon_lines']=[coupon.toJson(),];
+    }
+      return json;
     }
 
 

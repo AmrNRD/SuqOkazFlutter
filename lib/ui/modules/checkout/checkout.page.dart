@@ -290,8 +290,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   startText: AppLocalizations.of(context).translate("total"),
                   endText: AppLocalizations.of(context).translate(
                     "currency",
-                    replacement: BlocProvider.of<CartBloc>(context)
-                        .totalPrice
+                    replacement:( BlocProvider.of<CartBloc>(context)
+                        .totalPrice-(widget.discount??0))
                         .toStringAsFixed(2),
                   ),
                 ),
