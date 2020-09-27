@@ -126,10 +126,13 @@ class RouteGenerator {
           builder: (_) => AddAddressPage(),
         );
       case Constants.checkoutPage:
-        return MaterialPageRoute(
-          settings: RouteSettings(name: Constants.checkoutPage),
-          builder: (_) => CheckoutPage(),
-        );
+        if (args is List) {
+          return MaterialPageRoute(
+            settings: RouteSettings(name: Constants.checkoutPage),
+            builder: (_) => CheckoutPage(productItems: args[0], discount: args[1], coupon: args[2],),
+          );
+        }
+        return _errorRoute();
       case Constants.paymentPage:
         if (args is List) {
           return MaterialPageRoute(
@@ -137,6 +140,8 @@ class RouteGenerator {
             builder: (_) => PaymentPage(
               addressModel: args[0],
               shippingMethod: args[1],
+              discount: args[2],
+              coupon: args[3],
             ),
           );
         }
