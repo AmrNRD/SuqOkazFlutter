@@ -289,10 +289,14 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage> with Tick
     Map results = res as Map;
     setState(() {
       filterData = results;
-      parentId = filterData['category'];
-      subCategories = filterData['subCategories'];
+      if(filterData['category']!=null)
+        parentId = filterData['category'];
+      if(filterData['subCategories']!=null)
+        subCategories = filterData['subCategories'];
+      if(filterData['subcategory']!=null)
       selectedSubCategoryId = filterData['subcategory'];
-      selectedSubCategory = filterData['subcategory'];
+      if(filterData['subcategory']!=null)
+        selectedSubCategory = filterData['subcategory'];
       tabs = [];
       tabBarView = [];
     });
