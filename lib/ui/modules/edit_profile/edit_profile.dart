@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:suqokaz/bloc/user/user_bloc.dart';
+import 'package:suqokaz/bloc/user/user_event.dart';
 import 'package:suqokaz/bloc/user/user_state.dart';
+import 'package:suqokaz/data/models/user_model.dart';
 import 'package:suqokaz/ui/common/custom_appbar.dart';
 import 'package:suqokaz/ui/common/custom_cancel_save.component.dart';
 import 'package:suqokaz/ui/common/form_input.dart';
@@ -40,7 +44,6 @@ class _EditProfileState extends State<EditProfile> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: CustomAppBar(
-        //TODO: translate
         text: AppLocalizations.of(context).translate(
           "profile",
           defaultText: "Profile",
@@ -50,20 +53,27 @@ class _EditProfileState extends State<EditProfile> {
       body: BlocListener<UserBloc, UserState>(
           listener: (context, state) {
             if (state is UserLoadedState) {
-//            _scaffoldKey.currentState.showSnackBar(
-//              SnackBar(
-//                duration: Duration(seconds: 1),
-//                backgroundColor: Colors.green,
-//                content: Text(
-//                  AppLocalizations.of(context).translate("cart_add_success"),
-//                  style: Theme.of(context)
-//                      .textTheme
-//                      .headline2
-//                      .copyWith(color: Colors.white),
-//                ),
-//              ),
-//            );
-              Navigator.of(context).pop();
+              setState(() {
+                Root.user=Root.user;
+              });
+           _scaffoldKey.currentState.showSnackBar(
+             SnackBar(
+               duration: Duration(seconds: 1),
+               backgroundColor: Colors.green,
+               content: Text(
+                 AppLocalizations.of(context).translate("updated_successfully",defaultText:"updated successfully" ),
+                 style: Theme.of(context)
+                     .textTheme
+                     .headline2
+                     .copyWith(color: Colors.white),
+               ),
+             ),
+           );
+           Duration _duration = new Duration(seconds: 2);
+           Timer(_duration, (){
+             Navigator.of(context).pop();
+           });
+
             }
           },
           child: SingleChildScrollView(
@@ -88,7 +98,6 @@ class _EditProfileState extends State<EditProfile> {
                       textAlign: TextAlign.start,
                     ),
                     SizedBox(height: AppDimens.marginDefault16),
-                    //todo:replace with user real data
                     FormInput(
                       translationKey: "name",
                       focusNode: nameFocusNode,
@@ -138,8 +147,9 @@ class _EditProfileState extends State<EditProfile> {
 
   void showChangePasswordModel() {}
 
-  //todo:implement update request
-  void onSave() {}
+  void onSave() {
+    BlocProvider.of<UserBloc>(context).add(UpdateUserProfile(UserModel(id: Root.user.id,name:_profileData['name'] ,email: _profileData['email'] )));
+  }
 
   void popUpPasswordModel() {
     showDialog(

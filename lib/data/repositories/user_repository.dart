@@ -188,15 +188,17 @@ class UserDataRepository implements UserRepository {
   @override
   Future<UserModel> update(UserModel user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String token=prefs.getString('token');
-    final body = convert.jsonEncode({...user.toJson(), "cookie": token});
+    String token=prefs.getString('access_token');
+    print(token);
 
-    final http.Response response = await http.post(
-        "${Constants.baseUrl}/wp-json/api/flutter_user/update_user_profile",
-        body: body);
+    final body = convert.jsonEncode({...user.toUpdateJson(), "cookie": token});
 
+    final http.Response response = await http.post("${Constants.baseUrl}/wp-json/api/flutter_user/update_user_profile", body: body);
+    print(response.body);
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      UserModel userModel=UserModel.fromJson(jsonDecode(response.body));
+      prefs.setString('userData', json.encode(userModel));
+      return userModel;
     } else {
       throw Exception(Constants.isRTL ? "خطأ اثناء تحديث البيانات, حاول لاحقا" : "Can not update user info");
     }
@@ -204,7 +206,6 @@ class UserDataRepository implements UserRepository {
 
   @override
   Future<UserModel> updateProfilePicture(String photo, String name) {
-    // TODO: implement updateProfilePicture
 
   }
 
