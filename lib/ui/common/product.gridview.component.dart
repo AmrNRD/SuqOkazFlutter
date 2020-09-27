@@ -108,7 +108,7 @@ class _ProductGridViewComponentState extends State<ProductGridViewComponent>
   void didChangeDependencies(){
     if(widget.filterData.containsKey('minPrice'))
     {
-      productBloc.add(GetProductsEvent(maxPrice:widget.filterData['maxPrice'],minPrice: widget.filterData['minPrice'],categoryID: widget.filterData['selectedCategoryID'] ));
+      productBloc.add(GetProductsEvent(maxPrice:widget.filterData['maxPrice'],minPrice: widget.filterData['minPrice'],categoryID: widget.categoryId ));
     }
 
     super.didChangeDependencies();

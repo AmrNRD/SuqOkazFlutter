@@ -285,6 +285,9 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage> with Tick
   }
 
   onFilterClick() async {
+    filterData['category']=parentId;
+    filterData['subCategories']=subCategories;
+    filterData['subcategory']=selectedSubCategory;
     var res = await Navigator.of(context).pushNamed(Constants.filterPage, arguments: filterData);
     Map results = res as Map;
     setState(() {
