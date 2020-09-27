@@ -19,7 +19,7 @@ class UserModel {
       id: data['id']!=null?int.tryParse(data['id'].toString()):int.tryParse(data['ID'].toString()),
       name: data['user_nicename']!=null?data['user_nicename']:data['nicename'],
       email: data['user_email']!=null?data['user_email']:data['email'],
-      image: data['image'].toString(),
+      image: data['image']??data['avatar'],
     );
   }
 
@@ -28,6 +28,12 @@ class UserModel {
         'nicename': name,
         'email': email,
         'image': image,
+      };
+  Map<String, dynamic> toUpdateJson() => {
+    "user_id": id,
+    "display_name": name,
+    "user_email": email,
+    "user_nicename": name,
       };
 
 
@@ -50,7 +56,7 @@ class UserModel {
           user["picture"]["data"] != null &&
           user["picture"]['data']['url'] != null
           ? user["picture"]['data']['url']
-          : '';
+          : user['avatar']??null;
 
     } catch (e) {
       print(e.toString());
