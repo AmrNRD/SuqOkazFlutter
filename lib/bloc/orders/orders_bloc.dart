@@ -45,28 +45,21 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
             pageIndex: currentPage,
             perPage: event.perPage,
             userID: event.userID);
-            print(ordersList);
-            print("here 1");
           // Process data
           if (ordersList is List) {
             // Init data holder
             List<OrderModel> dataList = [];
-            print("here 2");
             // Loop on data
             for (var item in ordersList) {
               var order = OrderModel.fromJson(item);
               dataList.add(order);
             }
-            print("here 3");
-            print(dataList);
-            print(dataList.runtimeType);
 
             // Go to next page
             currentPage++;
 
             // Check last page
             if (ordersList.isEmpty) lastPageReached = true;
-            print("here 4");
             // Yield result
             yield OrdersLoadedState(orders:dataList,isLoadMoreMode: event.isLoadMoreMode, lastPageReached: lastPageReached);
           } else {

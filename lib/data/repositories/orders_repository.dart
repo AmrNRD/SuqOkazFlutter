@@ -74,7 +74,7 @@ class OrdersDataRepository extends OrdersRepository {
           }));
       var body = convert.jsonDecode(response.body);
       if (response.statusCode == 200 && body is String) {
-        return "${Constants.baseUrl}/mstore-checkout?code=$body";
+        return "${Constants.baseUrl}/checkout?code=$body";
       } else {
         var message = body["message"];
         throw Exception(
