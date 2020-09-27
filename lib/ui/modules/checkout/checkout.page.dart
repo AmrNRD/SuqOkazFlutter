@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:suqokaz/bloc/address/address_bloc.dart';
 import 'package:suqokaz/bloc/cart/cart_bloc.dart';
 import 'package:suqokaz/bloc/shipping/shipping_bloc.dart';
+import 'package:suqokaz/data/models/coupon.dart';
 import 'package:suqokaz/data/models/order_model.dart';
 import 'package:suqokaz/data/models/shipping_method_model.dart';
 import 'package:suqokaz/data/repositories/address.repository.dart';
@@ -26,12 +27,12 @@ import 'package:suqokaz/utils/core.util.dart';
 import 'package:suqokaz/utils/snack_bar.dart';
 
 class CheckoutPage extends StatelessWidget {
-  final List<ProductItem> productItems;
-  static final GlobalKey<ScaffoldState> scaffoldKey =
-      GlobalKey<ScaffoldState>();
-  final TextEditingController discountController = TextEditingController();
+   final List<ProductItem> productItems;
+   final double discount;
+   final Coupon coupon;
+  static GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  CheckoutPage({Key key, this.productItems}) : super(key: key);
+  CheckoutPage({Key key,@required this.productItems,@required this.discount,@required this.coupon }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,21 +45,22 @@ class CheckoutPage extends StatelessWidget {
       ),
       body: CheckoutScreen(
         productItems: productItems,
-        discountController: discountController,
+        discount: discount,
+        coupon: coupon,
       ),
     );
   }
 }
 
 class CheckoutScreen extends StatefulWidget {
+  final List<ProductItem> productItems;
+  final double discount;
+  final Coupon coupon;
   const CheckoutScreen({
     Key key,
-    @required this.productItems,
-    @required this.discountController,
+    @required this.productItems, this.discount, this.coupon,
   }) : super(key: key);
 
-  final List<ProductItem> productItems;
-  final TextEditingController discountController;
 
   @override
   _CheckoutScreenState createState() => _CheckoutScreenState();
@@ -270,7 +272,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 InvoiceComponent(
                   startText: AppLocalizations.of(context).translate("discount"),
                   endText: AppLocalizations.of(context)
-                      .translate("currency", replacement: "0.0"),
+                      .translate("currency", replacement: widget.discount.toStringAsFixed(2)),
                   isDiscount: true,
                 ),
                 SizedBox(
@@ -328,7 +330,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 Constants.paymentPage,
                                 arguments: [
                                   _selectedAddressModel,
-                                  _selectedShippingMethod
+                                  _selectedShippingMethod,
+                                  widget.discount,
+                                  widget.coupon
                                 ],
                               ),
                 ),

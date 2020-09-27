@@ -1,12 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:suqokaz/bloc/cart/cart_bloc.dart';
+import 'package:suqokaz/bloc/coupon/coupon_bloc.dart';
 import 'package:suqokaz/bloc/wishlist/wishlist_bloc.dart';
+import 'package:suqokaz/data/models/coupon.dart';
 import 'package:suqokaz/data/models/order_model.dart';
+import 'package:suqokaz/data/repositories/coupon.repository.dart';
 import 'package:suqokaz/ui/common/custom_raised_button.dart';
 import 'package:suqokaz/ui/common/input_field.dart';
 import 'package:suqokaz/ui/common/invoice.component.dart';
 import 'package:suqokaz/ui/modules/cart/components/cart.product.component.dart';
+import 'package:suqokaz/ui/style/app.colors.dart';
 import 'package:suqokaz/ui/style/app.dimens.dart';
 import 'package:suqokaz/utils/app.localization.dart';
 import 'package:suqokaz/utils/constants.dart';
@@ -26,13 +33,22 @@ class _CartDetailsScreenState extends State<CartDetailsScreen> {
   Map<String, Null> wishListMaper = {};
 
   bool isLoading = false;
+  Timer _debounce;
+
+  double discount=0;
+  Icon couponSuffixIcon;
+  Color couponBorderColor;
+  Coupon coupon;
 
   int productId = 0;
   int variationId = 0;
 
+  CouponBloc couponBloc;
+
   @override
   void initState() {
     super.initState();
+    couponBloc=new CouponBloc(new CouponDataRepository());
     wishListMaper = BlocProvider.of<WishlistBloc>(context).wishListMaper;
   }
 
@@ -87,25 +103,70 @@ class _CartDetailsScreenState extends State<CartDetailsScreen> {
                     SizedBox(
                       height: AppDimens.marginDefault20,
                     ),
-                    // Text(
-                    //   AppLocalizations.of(context).translate("discount_title"),
-                    //   style: Theme.of(context).textTheme.headline2,
-                    //   textAlign: TextAlign.center,
-                    // ),
-                    // SizedBox(
-                    //   height: AppDimens.marginDefault12,
-                    // ),
-                    // CustomInputTextField(
-                    //   controller: discountController,
-                    //   validator: (value) {
-                    //     return true;
-                    //   },
-                    //   maxLines: 1,
-                    //   minLines: 1,
-                    //   textInputType: TextInputType.multiline,
-                    //   isCollapes: true,
-                    //   onFieldSubmit: (_) {},
-                    // ),
+                   BlocProvider<CouponBloc>(
+                     create: (context)=>couponBloc,
+                     child: BlocListener<CouponBloc,CouponState>(
+                       listener: (context,state){
+                         if(state is CouponLoading){
+                          setState(() {
+                            couponBorderColor=AppColors.customGreyLevels[200].withOpacity(0.6);
+                            discount=0;
+                            coupon=null;
+                            couponSuffixIcon=Icon(Icons.swap_vertical_circle);
+                          });
+                         }else if(state is CouponLoaded){
+                           setState(() {
+                             couponBorderColor=Colors.green.withOpacity(0.6);
+                             discount=state.coupon.amount;
+                             coupon=state.coupon;
+                             couponSuffixIcon=Icon(FontAwesomeIcons.check);
+                           });
+                         }else if(state is CouponError){
+                           setState(() {
+                             couponBorderColor=Colors.redAccent;
+                             discount=0;
+                             coupon=null;
+                             couponSuffixIcon=Icon(FontAwesomeIcons.times);
+                           });
+                         }
+                       },
+                       child: Column(
+                         children: [
+                           Text(
+                             AppLocalizations.of(context).translate("discount_title"),
+                             style: Theme.of(context).textTheme.headline2,
+                             textAlign: TextAlign.center,
+                           ),
+                           SizedBox(
+                             height: AppDimens.marginDefault12,
+                           ),
+                           CustomInputTextField(
+                             controller: discountController,
+                             borderColor: couponBorderColor,
+                             suffixIcon: couponSuffixIcon,
+                             validator: (value) {
+                               return true;
+                             },
+                             onChange: (value){
+                               if (_debounce?.isActive ?? false) {
+                                 _debounce.cancel();
+                               }
+
+                               _debounce = Timer(const Duration(milliseconds: 500), () async {
+                                 if (value.length >= 3) {
+                                  couponBloc.add(GetCoupon(value));
+                                 } else {
+
+                                 }
+                               });
+                             },
+                             textInputType: TextInputType.text,
+
+                           ),
+                         ],
+                       ),
+                     ),
+                   ),
                     SizedBox(
                       height: screenAwareSize(180, context),
                     ),
@@ -146,7 +207,7 @@ class _CartDetailsScreenState extends State<CartDetailsScreen> {
                   ),
                   InvoiceComponent(
                     startText: AppLocalizations.of(context).translate("discount"),
-                    endText: AppLocalizations.of(context).translate("currency", replacement: "0.0"),
+                    endText: AppLocalizations.of(context).translate("currency", replacement: discount.toStringAsFixed(2)),
                     isDiscount: true,
                   ),
                   SizedBox(
@@ -166,7 +227,7 @@ class _CartDetailsScreenState extends State<CartDetailsScreen> {
                     isLoading: false,
                     label: AppLocalizations.of(context).translate("checkout"),
                     onPress: () {
-                      Navigator.pushNamed(context, Constants.checkoutPage);
+                      Navigator.pushNamed(context, Constants.checkoutPage,arguments: [widget.productItems,discount,coupon]);
                     },
                   )
                 ],

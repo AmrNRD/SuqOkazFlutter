@@ -8,10 +8,6 @@ class OrdersService {
   APICaller apiCaller = new APICaller();
 
   Future<dynamic> getOrders({int userID, int pageIndex, int perPage}) async {
-    print('heeeeeeeeeee');
-    print(Root.user);
-    print(Root.user.id);
-    print(Root.user.name);
     String url = "/orders?customer=${Root.user.id}&per_page=$perPage&page=$pageIndex";
     final String oAuthUrl = apiCaller.getOAuthURL("GET", url, true);
     apiCaller.setUrl(oAuthUrl);

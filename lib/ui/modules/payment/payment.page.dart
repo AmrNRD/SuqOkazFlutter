@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:suqokaz/bloc/cart/cart_bloc.dart';
 import 'package:suqokaz/bloc/orders/orders_bloc.dart';
 import 'package:suqokaz/bloc/payment_method/payment_method_bloc.dart';
+import 'package:suqokaz/data/models/coupon.dart';
 import 'package:suqokaz/data/models/order_model.dart';
 import 'package:suqokaz/data/models/payment_method_model.dart';
 import 'package:suqokaz/data/models/shipping_method_model.dart';
@@ -28,8 +29,10 @@ import 'package:suqokaz/utils/snack_bar.dart';
 class PaymentPage extends StatefulWidget {
   final AddressModel addressModel;
   final ShippingMethod shippingMethod;
+  final double discount;
+  final Coupon coupon;
   const PaymentPage(
-      {Key key, @required this.addressModel, @required this.shippingMethod})
+      {Key key, @required this.addressModel, @required this.shippingMethod, this.discount, this.coupon})
       : super(key: key);
 
   @override
@@ -252,7 +255,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       startText:
                           AppLocalizations.of(context).translate("discount"),
                       endText: AppLocalizations.of(context)
-                          .translate("currency", replacement: "0.0"),
+                          .translate("currency", replacement: widget.discount.toStringAsFixed(2)),
                       isDiscount: true,
                     ),
                     SizedBox(
