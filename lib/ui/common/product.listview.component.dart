@@ -38,6 +38,7 @@ class ProductListViewComponent extends StatefulWidget {
 
 class _ProductListViewComponentState extends State<ProductListViewComponent>
     with AutomaticKeepAliveClientMixin<ProductListViewComponent>, TickerProviderStateMixin {
+
   @override
   bool get wantKeepAlive {
     return true;

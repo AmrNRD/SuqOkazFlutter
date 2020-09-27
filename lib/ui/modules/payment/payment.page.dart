@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:suqokaz/bloc/cart/cart_bloc.dart';
@@ -95,36 +97,39 @@ class _PaymentPageState extends State<PaymentPage> {
           }else if(state is OrderUrlLoadedState){
             print('--------------------------------------');
             print(state.url);
-            BlocProvider.of<CartBloc>(context).add(CheckoutCartEvent());
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      PaymentWebview(
-                        url: state.url,
-                          onFinish: (number) {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => Scaffold(
-                                  body: Center(
-                                    child: GenericState(
-                                      imagePath: Constants.imagePath["delivery_success"],
-                                      titleKey: AppLocalizations.of(context).translate("congrat"),
-                                      bodyKey: AppLocalizations.of(context).translate("congrat_body"),
-                                      buttonKey: AppLocalizations.of(context).translate("my_orders"),
-                                     onPress: (){
-                                        Navigator.pushNamedAndRemoveUntil(context, Constants.homePage, (route) => false);
-                                     },
+            Timer(Duration(seconds: 5), () {
+              BlocProvider.of<CartBloc>(context).add(CheckoutCartEvent());
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          PaymentWebview(
+                              url: state.url,
+                              onFinish: (number) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => Scaffold(
+                                      body: Center(
+                                        child: GenericState(
+                                          imagePath: Constants.imagePath["delivery_success"],
+                                          titleKey: AppLocalizations.of(context).translate("congrat"),
+                                          bodyKey: AppLocalizations.of(context).translate("congrat_body"),
+                                          buttonKey: AppLocalizations.of(context).translate("my_orders"),
+                                          onPress: (){
+                                            Navigator.pushNamedAndRemoveUntil(context, Constants.homePage, (route) => false);
+                                          },
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
 
-                            );
-                          })),
-                ModalRoute.withName(Constants.homePage)
-            );
+                                );
+                              })),
+                  ModalRoute.withName(Constants.homePage)
+              );
+            });
+
           }else if(state is OrdersErrorState){
             setState(() {
               isLoading=false;
