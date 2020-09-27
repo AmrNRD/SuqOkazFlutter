@@ -16,14 +16,40 @@ class VariationHelper {
     commonVariations.add(productModel.variations[selectedVariationIndex]);
     selectedVariation = selectedVariationIndex;
     commonVariationLocatorBuilder();
+
     //TODO refactor commonVariationFinder
     // print("TEST");
     // print(productModel.variations[selectedVariationIndex].attributes[0].name);
     // print(productModel.variations[selectedVariationIndex].attributes[0].option);
-    commonVariationFinder(
-      productModel.variations[selectedVariationIndex].attributes[0].name,
-      productModel.variations[selectedVariationIndex].attributes[0].option,
-    );
+    if (productModel.variations[selectedVariationIndex].inStock) {
+      commonVariationFinder(
+        productModel.variations[selectedVariationIndex].attributes[0].name,
+        productModel.variations[selectedVariationIndex].attributes[0].option,
+      );
+    } else {
+      ProductVariation variation = productModel.variations.firstWhere((element) => element.inStock, orElse: null);
+      if (variation != null) {
+        selectedVariation = productModel.variations.indexOf(variation) ?? 0;
+        print(
+          variation.attributes[0].name,
+        );
+        print(
+          variation.attributes[0].option,
+        );
+        commonVariationFinder(
+          variation.attributes[0].name,
+          variation.attributes[0].option,
+        );
+      } else {
+        print(productModel.variations[selectedVariationIndex].attributes[0].name);
+        print(productModel.variations[selectedVariationIndex].attributes[0].option);
+        commonVariationFinder(
+          productModel.variations[selectedVariationIndex].attributes[0].name,
+          productModel.variations[selectedVariationIndex].attributes[0].option,
+        );
+      }
+    }
+
     //print("TEST");
   }
 
@@ -36,6 +62,16 @@ class VariationHelper {
         temp = [];
         for (ProductVariation variation in productModel.variations) {
           for (Attribute variationAttribute in variation.attributes) {
+            // print("---------------");
+            // print(attribute.toJson());
+            // print(attribute.name);
+            // print(attributeValue);
+            // print("---------------");
+            // print("---------------");
+            // print(variationAttribute.toJson());
+            // print(variationAttribute.name);
+            // print(variationAttribute.option);
+            // print("---------------");
             if (variationAttribute.name == attribute.name) {
               if (variationAttribute.option == attributeValue) {
                 temp.add(variation);
@@ -61,14 +97,18 @@ class VariationHelper {
     List<ProductVariation> temp = [];
 
     if (commonVariationLocator.containsKey(filterName)) {
-      commonVariationLocator[filterName][filterValue][0].attributes.forEach((attribute) {
-        if (commonVariationLocator[attribute.name][attribute.option].isNotEmpty) {
-          temp.addAll(commonVariationLocator[attribute.name][attribute.option]);
-        }
-      });
+      if (commonVariationLocator[filterName].containsKey(filterValue)) {
+        commonVariationLocator[filterName][filterValue][0].attributes.forEach((attribute) {
+          if (commonVariationLocator[attribute.name][attribute.option].isNotEmpty) {
+            temp.addAll(commonVariationLocator[attribute.name][attribute.option]);
+          }
+        });
+      }
     }
-
     commonVariations = temp;
+    if (commonVariations.isEmpty) {
+      commonVariations = (commonVariationLocator.values.toList().first).values.toList().first;
+    }
   }
 
   Color containerColor(

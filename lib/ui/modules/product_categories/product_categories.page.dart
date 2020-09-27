@@ -42,13 +42,9 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage> with Tick
   Map filterData = {};
   String order;
 
-
-
   int parentId;
   List<dynamic> subCategories;
   int selectedSubCategoryId;
-
-
 
   onChangeViewClick() {
     tabBarView.clear();
@@ -109,9 +105,9 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage> with Tick
   @override
   void initState() {
     super.initState();
-    parentId=widget.parentId;
-    subCategories=widget.subCategories;
-    selectedSubCategoryId=widget.selectedSubCategoryId;
+    parentId = widget.parentId;
+    subCategories = widget.subCategories;
+    selectedSubCategoryId = widget.selectedSubCategoryId;
     SchedulerBinding.instance.addPostFrameCallback((_) {
       isFirstTime = false;
       createSubCategoryTabs();
@@ -143,29 +139,31 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage> with Tick
             onSortClick: _showModalSheet,
             onFilterViewClick: onFilterClick,
           ),
-          Container(
-            margin: EdgeInsets.only(right: 16, left: 16, top: 16),
-            height: screenAwareSize(30, context),
-            width: double.infinity,
-            child: (_tabController != null)
-                ? (_tabController.length == 0)
-                    ? Container()
-                    : TabBar(
-                        tabs: tabs,
-                        labelPadding: EdgeInsets.symmetric(horizontal: 4, vertical: 0),
-                        indicatorPadding: EdgeInsets.symmetric(horizontal: 4),
-                        controller: _tabController,
-                        isScrollable: true,
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        labelColor: Colors.white,
-                        unselectedLabelColor: AppColors.customGreyLevels[50],
-                        indicator: BoxDecoration(
-                          borderRadius: BorderRadius.circular(18),
-                          color: AppColors.primaryColors[50],
-                        ),
-                      )
-                : Container(),
-          ),
+          subCategories.length == 0
+              ? Container()
+              : Container(
+                  margin: EdgeInsets.only(right: 16, left: 16, top: 16),
+                  height: screenAwareSize(30, context),
+                  width: double.infinity,
+                  child: (_tabController != null)
+                      ? (_tabController.length == 0)
+                          ? Container()
+                          : TabBar(
+                              tabs: tabs,
+                              labelPadding: EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+                              indicatorPadding: EdgeInsets.symmetric(horizontal: 4),
+                              controller: _tabController,
+                              isScrollable: true,
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              labelColor: Colors.white,
+                              unselectedLabelColor: AppColors.customGreyLevels[50],
+                              indicator: BoxDecoration(
+                                borderRadius: BorderRadius.circular(18),
+                                color: AppColors.primaryColors[50],
+                              ),
+                            )
+                      : Container(),
+                ),
           Expanded(
             child: Container(
               child: ((_tabController != null)
@@ -184,21 +182,40 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage> with Tick
   }
 
   createSubCategoryTabs() {
-    tabs.add(
-      Tab(
-        child: Container(
-          padding: EdgeInsetsDirectional.only(start: 12, end: 12, top: 2, bottom: 2),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: AppColors.primaryColors[50], width: 0.2),
-          ),
-          child: Text(
-            AppLocalizations.of(context).translate("all_categories"),
-            textAlign: TextAlign.center,
+    if (subCategories.isNotEmpty) {
+      tabs.add(
+        Tab(
+          child: Container(
+            padding: EdgeInsetsDirectional.only(start: 12, end: 12, top: 2, bottom: 2),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(color: AppColors.primaryColors[50], width: 0.2),
+            ),
+            child: Text(
+              AppLocalizations.of(context).translate("all_categories"),
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
-      ),
-    );
+      );
+    } else {
+      tabs.add(
+        Tab(
+          child: Container(
+            padding: EdgeInsetsDirectional.only(start: 12, end: 12, top: 2, bottom: 2),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(color: AppColors.primaryColors[50], width: 0.2),
+            ),
+            child: Text(
+              AppLocalizations.of(context).translate("all_categories"),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      );
+    }
+
     for (int i = 0; i < subCategories.length; i++) {
       tabs.add(
         Tab(
@@ -226,7 +243,7 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage> with Tick
               order: order,
               orderBy: orderBy,
               filterData: filterData,
-              onProductsChange: (products){
+              onProductsChange: (products) {
                 setState(() {
                   this.products = products;
                 });
@@ -237,7 +254,7 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage> with Tick
               order: order,
               orderBy: orderBy,
               filterData: filterData,
-              onProductsChange:  (products){
+              onProductsChange: (products) {
                 setState(() {
                   this.products = products;
                 });
@@ -268,26 +285,26 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage> with Tick
   }
 
   onFilterClick() async {
-   var res= await Navigator.of(context).pushNamed(Constants.filterPage,arguments: filterData);
-   Map results = res as Map;
+    var res = await Navigator.of(context).pushNamed(Constants.filterPage, arguments: filterData);
+    Map results = res as Map;
     setState(() {
-       filterData=results;
-       parentId=filterData['category'];
-       subCategories=filterData['subCategories'];
-       selectedSubCategoryId=filterData['subcategory'];
-       selectedSubCategory= filterData['subcategory'];
-       tabs=[];
-       tabBarView=[];
-     });
+      filterData = results;
+      parentId = filterData['category'];
+      subCategories = filterData['subCategories'];
+      selectedSubCategoryId = filterData['subcategory'];
+      selectedSubCategory = filterData['subcategory'];
+      tabs = [];
+      tabBarView = [];
+    });
 
     createSubCategoryTabs();
-   createTabBarView(isList);
-   setState(() {
-     _tabController = TabController(
-       vsync: this,
-       length: subCategories.length + 1,
-       initialIndex: selectedSubCategory,
-     );
-   });
+    createTabBarView(isList);
+    setState(() {
+      _tabController = TabController(
+        vsync: this,
+        length: subCategories.length + 1,
+        initialIndex: selectedSubCategory,
+      );
+    });
   }
 }

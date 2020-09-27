@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:suqokaz/bloc/banner/banner_bloc.dart';
 import 'package:suqokaz/bloc/category/category_bloc.dart';
 import 'package:suqokaz/bloc/product/product_bloc.dart';
 import 'package:suqokaz/bloc/user/user_bloc.dart';
@@ -38,7 +39,6 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
     CartPage(),
     ProfilePage(),
   ];
-  final List<String> appBarTitle = [];
   List<BottomNavigationBarItem> items = [];
   @override
   initState() {
@@ -57,30 +57,12 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
     BlocProvider.of<CategoryBloc>(context).add(GetCategoriesEvent());
 
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      appBarTitle.add(
-        AppLocalizations.of(context).translate("home", defaultText: "Home"),
-      );
-      if (Root.user != null) {
-        appBarTitle.add(
-          AppLocalizations.of(context).translate("wishlist", defaultText: "Wishlist"),
-        );
-        appBarTitle.add(
-          AppLocalizations.of(context).translate(
-            "cart",
-            defaultText: "Cart",
-          ),
-        );
-      } else {
+      if (Root.user == null) {
         body = [
           HomeTabPage(featuredBloc: _featuredProducts, latestBloc: _latestProducts),
           ProfilePage(),
         ];
       }
-      appBarTitle.add(AppLocalizations.of(context).translate("settings", defaultText: "settings"));
-
-      setState(() {
-        appBarTitle;
-      });
     });
   }
 
@@ -102,7 +84,6 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
       },
       child: Scaffold(
         key: HomeNavigationPage.scaffoldKey,
-        appBar: CustomAppBar(text: appBarTitle.length < 3 ? "" : appBarTitle[_currentSelectedTab]),
         body: body[_currentSelectedTab],
         bottomNavigationBar: BottomNavigationBar(
           items: Root.user != null

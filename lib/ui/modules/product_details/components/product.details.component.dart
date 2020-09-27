@@ -31,13 +31,16 @@ class _ProductDetailsComponentState extends State<ProductDetailsComponent> {
   int quantity = 1;
 
   updateQuantity(int quantity) {
-    setState(() {
-      quantity = quantity;
-      widget.updateSettings(
-        quantity,
-        _variationHelper.commonVariations[_variationHelper.selectedVariation].id,
-        widget.productModel.variations.indexOf(_variationHelper.commonVariations[_variationHelper.selectedVariation]),
-      );
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      setState(() {
+        selectedVariationModel = _variationHelper.commonVariations[0];
+        quantity = quantity;
+        widget.updateSettings(
+          quantity,
+          _variationHelper.commonVariations[0].id,
+          widget.productModel.variations.indexOf(_variationHelper.commonVariations[0]),
+        );
+      });
     });
   }
 

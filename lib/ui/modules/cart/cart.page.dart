@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:suqokaz/bloc/cart/cart_bloc.dart';
+import 'package:suqokaz/ui/common/custom_appbar.dart';
 import 'package:suqokaz/ui/common/genearic.state.component.dart';
 import 'package:suqokaz/ui/common/loading.component.dart';
 import 'package:suqokaz/ui/modules/cart/screens/cart.details.screen.dart';
+import 'package:suqokaz/utils/app.localization.dart';
 import 'package:suqokaz/utils/constants.dart';
 
 class CartPage extends StatelessWidget {
@@ -13,38 +15,43 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CartBloc, CartState>(
-      builder: (BuildContext context, CartState state) {
-        print(state.runtimeType);
-        if (state is CartLoadedState) {
-          if (state.products.isEmpty || state.products == null) {
+    return Scaffold(
+      appBar: CustomAppBar(
+        text: AppLocalizations.of(context).translate("cart", defaultText: "Cart"),
+      ),
+      body: BlocBuilder<CartBloc, CartState>(
+        builder: (BuildContext context, CartState state) {
+          print(state.runtimeType);
+          if (state is CartLoadedState) {
+            if (state.products.isEmpty || state.products == null) {
+              return Center(
+                child: GenericState(
+                  imagePath: Constants.imagePath["empty_box"],
+                  titleKey: "empty cart title",
+                  bodyKey: "empty cart body",
+                  removeButton: true,
+                ),
+              );
+            } else {
+              return CartDetailsScreen(
+                productItems: state.products,
+              );
+            }
+          } else if (state is CartLoadingState) {
+            return LoadingWidget();
+          } else if (state is CartErrorState) {
             return Center(
               child: GenericState(
-                imagePath: Constants.imagePath["empty_box"],
-                titleKey: "empty cart title",
-                bodyKey: "empty cart body",
+                imagePath: Constants.imagePath["error"],
+                titleKey: "error_title",
+                bodyKey: state.message,
                 removeButton: true,
               ),
             );
-          } else {
-            return CartDetailsScreen(
-              productItems: state.products,
-            );
           }
-        } else if (state is CartLoadingState) {
-          return LoadingWidget();
-        } else if (state is CartErrorState) {
-          return Center(
-            child: GenericState(
-              imagePath: Constants.imagePath["error"],
-              titleKey: "error_title",
-              bodyKey: state.message,
-              removeButton: true,
-            ),
-          );
-        }
-        return Container();
-      },
+          return Container();
+        },
+      ),
     );
   }
 }

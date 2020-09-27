@@ -122,6 +122,8 @@ class ProductItem {
   String total;
   String price;
   List<Attribute> attribute;
+  List<String> images;
+  String imageFeature;
 
   ProductItem({
     this.productId,
@@ -132,14 +134,46 @@ class ProductItem {
     this.featuredImage,
     this.price,
     this.attribute,
+    this.images,
+    this.imageFeature
   });
 
   ProductItem.fromJson(Map<String, dynamic> parsedJson) {
     productId = GuardParser.safeCast<int>(parsedJson["product_id"]);
     variationId = GuardParser.safeCast<int>(parsedJson["variation_id"]);
     name = GuardParser.safeCast<String>(parsedJson["name"]);
+    price = GuardParser.safeCast<String>(parsedJson["price"]);
     quantity = GuardParser.safeCast<int>(parsedJson["quantity"]);
     total = GuardParser.safeCast<String>(parsedJson["total"]);
+
+    // get images links from meta data
+    if (parsedJson.containsKey("meta_data")&&parsedJson['meta_data']!=[]) {
+       List<String> list = [];
+      var metaDataImages = parsedJson['meta_data'].firstWhere(
+            (item) => item['key'] == '_knawatfibu_wcgallary',
+        orElse: () => null,
+      );
+      if (metaDataImages != null) {
+        var metaDataImagesList = metaDataImages['value'] as List;
+        if (metaDataImagesList != null) {
+          metaDataImagesList.forEach((element) {
+            if (element['url'] is String) {
+              list.add(element['url'] as String);
+            }
+          });
+        }
+        for (var item in parsedJson["images"]) {
+          if (item is Map) {
+            list.add(item["src"]);
+          } else {
+            list.add(item);
+          }
+        }
+        images = list;
+        imageFeature = images[0];
+      }
+      }
+
   }
 
   Map<String, dynamic> toJson() {
@@ -149,6 +183,7 @@ class ProductItem {
       "quantity": quantity,
       "total": total,
       "price": price,
+      "image_feature":imageFeature
     };
   }
 

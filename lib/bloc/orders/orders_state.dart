@@ -21,8 +21,8 @@ class OrdersLoadedState extends OrdersState {
 
 class OrderLoadedState extends OrdersState {
   final OrderModel order;
-
-  OrderLoadedState({this.order});
+  final List<ProductItem>products;
+  OrderLoadedState({this.order,this.products});
 }
 
 

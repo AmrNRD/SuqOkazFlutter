@@ -13,20 +13,24 @@ class BannerBloc extends Bloc<BannerEvent, BannerState> {
   BannerBloc() : super(BannerLoadingState());
 
   APICaller _apiCaller = APICaller();
-
+  static List<BannerModel> banners = [];
   @override
   Stream<BannerState> mapEventToState(
     BannerEvent event,
   ) async* {
     if (event is GetBannerEvent) {
-      yield BannerLoadingState();
-      _apiCaller.setUrl("${Constants.baseUrl}/wp-json/wp/v2/bannersss");
-      var rawData = await _apiCaller.getData();
-      List<BannerModel> banners = [];
-      rawData.forEach((element) {
-        banners.add(BannerModel.fromJson(element));
-      });
-
+      print("---------------------");
+      print(banners.length);
+      print("---------------------");
+      if (banners.isEmpty) {
+        yield BannerLoadingState();
+        _apiCaller.setUrl("${Constants.baseUrl}/wp-json/wp/v2/bannersss");
+        var rawData = await _apiCaller.getData();
+        banners = [];
+        rawData.forEach((element) {
+          banners.add(BannerModel.fromJson(element));
+        });
+      }
       yield BannerLoadedState(banners.reversed.toList());
     }
   }

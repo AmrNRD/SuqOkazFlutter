@@ -33,10 +33,28 @@ class _LandingSplashScreenState extends State<LandingSplashScreen> {
     super.initState();
     BlocProvider.of<UserBloc>(context).add(GetUser());
     BlocProvider.of<CartBloc>(context).add(GetCartEvent());
-    BlocProvider.of<CategoryBloc>(context).add(GetCategoriesEvent());
     BlocProvider.of<WishlistBloc>(context).add(GetWishListEvent());
+    loadCategory();
   }
+  void loadCategory() async{
+    print('--------------------------------------------');
+    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    if(sharedPreferences.containsKey('lastUpdateToCategories')){
+      DateTime lastUpdateToCategories=DateTime.parse(sharedPreferences.getString('lastUpdateToCategories'));
+      if(lastUpdateToCategories.difference(DateTime.now()).inDays>3){
+        print("lastUpdateToCategories were before 3 days");
+        print("reloading category");
+        BlocProvider.of<CategoryBloc>(context).add(ReloadCategoryEvent());
+      }else{
 
+        BlocProvider.of<CategoryBloc>(context).add(GetCategoriesEvent());
+      }
+    }else{
+      print("lastUpdateToCategories were not found");
+      print("reloading category");
+      BlocProvider.of<CategoryBloc>(context).add(ReloadCategoryEvent());
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return BlocListener<CategoryBloc, CategoryState>(
@@ -109,4 +127,6 @@ class _LandingSplashScreenState extends State<LandingSplashScreen> {
     else
       Navigator.of(context).pushReplacementNamed(_route);
   }
+
+
 }

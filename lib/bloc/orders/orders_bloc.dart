@@ -30,7 +30,6 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
   Stream<OrdersState> mapEventToState(
     OrdersEvent event,
   ) async* {
-    try {
       /// Get products event
       if (event is GetOrdersEvent) {
         if (!lastPageReached && !isLoading) {
@@ -46,24 +45,28 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
             pageIndex: currentPage,
             perPage: event.perPage,
             userID: event.userID);
-
+            print(ordersList);
+            print("here 1");
           // Process data
           if (ordersList is List) {
             // Init data holder
             List<OrderModel> dataList = [];
-
+            print("here 2");
             // Loop on data
             for (var item in ordersList) {
               var order = OrderModel.fromJson(item);
               dataList.add(order);
             }
+            print("here 3");
+            print(dataList);
+            print(dataList.runtimeType);
 
             // Go to next page
             currentPage++;
 
             // Check last page
             if (ordersList.isEmpty) lastPageReached = true;
-
+            print("here 4");
             // Yield result
             yield OrdersLoadedState(orders:dataList,isLoadMoreMode: event.isLoadMoreMode, lastPageReached: lastPageReached);
           } else {
@@ -83,18 +86,19 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
           yield OrderLoadedState(order: order);
         }
       }
-    } catch (exception) {
-      print(exception);
-      // Yield error with message, exception can't be casted to string in some cases
-      try{
-        yield OrdersErrorState(message: exception.toString());
-      }catch(_){
-        yield OrdersErrorState(message: "Error occurred"); // TODO: translate
+      else if(event is GetOrderDetails){
+        yield OrdersLoadingState();
+        List<ProductItem>detailProducts=await ordersRepository.getOrderDetails(event.order.lineItems);
+          print("out");
+          print("-------------------------------------------------");
+          print(detailProducts.length);
+          OrderModel order=event.order;
+          print(detailProducts[0].imageFeature);
+          yield OrderLoadedState(order: order,products: detailProducts);
+
+
       }
-    } finally{
-      // Mark is finished loading
-      isLoading = false;
-    }
+
   }
 
   void resetBloc(){

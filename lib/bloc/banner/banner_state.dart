@@ -1,10 +1,7 @@
 part of 'banner_bloc.dart';
 
-abstract class BannerState extends Equatable {
+abstract class BannerState {
   const BannerState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class BannerLoadingState extends BannerState {}

@@ -43,7 +43,6 @@ class CategoriesRepository extends CategoriesDataRepository {
 
   @override
   Future resetAllCategories() {
-    // TODO: implement resetAllCategories
-    throw UnimplementedError();
+    return _categoriesLocalService.deleteAllCategories();
   }
 }
