@@ -25,11 +25,13 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
     WishlistEvent event,
   ) async* {
     try {
+      print(event.runtimeType);
       if (event is GetWishListEvent) {
         yield WishlistLoadingState();
         List<WishlistItem> wishListItem = await _wishlistDataRepository.getWishlist();
 
         wishListItem.forEach((element) async {
+          print(element.toJson());
           wishListMaper[element.productId.toString() + element.variationId.toString()] = null;
           await parseProduct(element.productId, element.variationId);
         });
@@ -38,7 +40,7 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
         yield WishlistLoadingState();
         wishListMaper.remove(event.productId.toString() + event.varId.toString());
         list.removeWhere(
-          (product) => product.id == event.productId && product.variations[0].id == event.varId,
+          (product) => product.id == event.productId && product.selectedVaraition.id == event.varId,
         );
         await _wishlistDataRepository.removeWishlistItem(
           event.productId,
@@ -51,7 +53,9 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
           variationId: event.varId,
         );
 
-        if (event.productModel == null) {
+        ProductModel productModel = event.productModel;
+
+        if (productModel == null) {
           wishListMaper[event.productId.toString() + event.varId.toString()] = null;
           await _wishlistDataRepository.addWishlistItem(
             event.productId,
@@ -59,20 +63,23 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
           );
           await parseProduct(event.productId, event.varId);
         } else {
-          wishListMaper[event.productModel.id.toString() + event.varId.toString()] = null;
+          wishListMaper[productModel.id.toString() + event.varId.toString()] = null;
           await _wishlistDataRepository.addWishlistItem(
-            event.productModel.id,
+            productModel.id,
             event.varId,
           );
+
           if (event.productModel.variations.isEmpty) {
-            event.productModel.variations = [
-              ProductVariation(
-                id: event.productModel.defaultVariationId,
-                attributes: event.productModel.defaultAttributes,
-              )
-            ];
+            productModel.selectedVaraition = ProductVariation(
+              id: event.productModel.defaultVariationId,
+              attributes: event.productModel.defaultAttributes,
+            );
+          } else {
+            productModel.selectedVaraition = productModel.variations
+                .firstWhere((element) => element.id == productModel.defaultVariationId, orElse: null);
           }
-          list.add(event.productModel);
+          productModel.defaultVariationId = event.varId;
+          list.add(productModel);
         }
         // list.forEach((element) {
         //   element.attributes.forEach((element) {
@@ -88,10 +95,10 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
 
   Future<void> parseProduct(int productId, int variationId) async {
     var productRawData = await _productsRepository.getProductDetails(productId: productId.toString());
-    ProductModel productModel = ProductModel.fromJson(productRawData);
+    ProductModel parsedProduct = ProductModel.fromJson(productRawData);
     var varRawData = await _productsRepository.getProductVariationsById(productId, variationId);
     ProductVariation variation = ProductVariation.fromJson(varRawData);
-    productModel.variations = [variation];
-    list.add(productModel);
+    parsedProduct.selectedVaraition = variation;
+    list.add(parsedProduct);
   }
 }

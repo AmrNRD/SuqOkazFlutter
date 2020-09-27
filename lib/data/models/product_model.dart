@@ -18,6 +18,7 @@ class ProductModel {
   List<String> images;
   String categoryName;
   String imageFeature;
+  ProductVariation selectedVaraition;
   List<ProductAttribute> attributes;
   List<ProductAttribute> infors = [];
   List<ProductVariation> variations = [];
@@ -247,6 +248,9 @@ class ProductAttribute {
     name = parsedJson["name"];
     parsedJson["options"].forEach(
       (element) {
+        element = element.replaceAll(" ", "");
+        element = element.replaceAll("-", " ");
+        element = element.replaceAll("/", " ");
         options.add(element);
       },
     );
@@ -282,10 +286,14 @@ class Attribute {
     var sad = int.tryParse(parsedJson["option"]);
     if (sad == null) {
       option = Uri.decodeFull(parsedJson["option"]).toString().toUpperCase();
+      option = option.replaceAll(" ", "");
       option = option.replaceAll("-", " ");
+      option = option.replaceAll("/", " ");
     } else {
       option = parsedJson["option"].toString().toUpperCase();
+      option = option.replaceAll(" ", "");
       option = option.replaceAll("-", " ");
+      option = option.replaceAll("/", " ");
     }
   }
 
