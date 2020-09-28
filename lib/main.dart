@@ -57,8 +57,19 @@ class _RootState extends State<Root> {
         this.localeLoaded = true;
         if (locale != null) {
           Root.locale = locale;
+          if(locale==Locale("en", "US"))
+            setState(() {
+              Root.fontFamily = AppFonts.fontRoboto;
+            });
+          else
+            setState(() {
+              Root.fontFamily = AppFonts.fontTajawal;
+            });
         } else {
           Root.locale = Locale("en", "US");
+            setState(() {
+              Root.fontFamily = AppFonts.fontRoboto;
+            });
         }
       });
     });
@@ -68,6 +79,14 @@ class _RootState extends State<Root> {
     setState(() {
       Root.locale = newLocale;
     });
+    if(newLocale==Locale("en", "US"))
+      setState(() {
+        Root.fontFamily = AppFonts.fontRoboto;
+      });
+    else
+      setState(() {
+        Root.fontFamily = AppFonts.fontTajawal;
+      });
   }
 
   _fetchLocale() async {
