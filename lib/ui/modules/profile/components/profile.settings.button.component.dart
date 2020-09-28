@@ -79,7 +79,7 @@ class SettingsButtonComponent extends StatelessWidget {
   }
 
   launchToAboutURL() async {
-    const url = 'https://suqokaz.com/en/about/';
+    const url = 'https://suqokaz.com/%d9%85%d9%86-%d9%86%d8%ad%d9%86/';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -103,7 +103,7 @@ class SettingsButtonComponent extends StatelessWidget {
                     lableKey,
                     defaultText: lableKey,
                   ),
-                  style: Theme.of(context).textTheme.button,
+                  style: Theme.of(context).textTheme.headline3,
                 ),
                 Row(
                   children: <Widget>[
@@ -115,7 +115,7 @@ class SettingsButtonComponent extends StatelessWidget {
                                 hintKey,
                                 defaultText: hintKey,
                               ),
-                              style: Theme.of(context).textTheme.bodyText1.copyWith(
+                              style: Theme.of(context).textTheme.headline3.copyWith(
                                     color: Colors.black.withOpacity(0.3),
                                   ),
                             ),

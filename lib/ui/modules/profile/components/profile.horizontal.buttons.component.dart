@@ -80,7 +80,7 @@ class HorizontalButtonsComponent extends StatelessWidget {
             localKey,
             defaultText: localKey,
           ),
-          style: Theme.of(context).textTheme.headline4,
+          style: Theme.of(context).textTheme.headline3,
         ),
       ],
     );
