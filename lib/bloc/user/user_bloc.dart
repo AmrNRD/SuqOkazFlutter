@@ -37,6 +37,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }else if (event is LoginUserWithFacebook) {
         Root.user=await userRepository.loginWithFacebook(event.userID,event.email,event.name,event.token,event.profileUrl,event.profileUrl);
         yield UserLoadedState();
+      }else if (event is LoginUserWithGoogle) {
+        Root.user=await userRepository.loginWithGoogle(event.userID,event.email,event.name,event.token,event.profileUrl,event.profileUrl);
+        yield UserLoadedState();
+      }else if (event is LoginUserWithApple) {
+        Root.user=await userRepository.loginWithApple(event.userID,event.email,event.name,event.token,event.profileUrl,event.profileUrl);
+        yield UserLoadedState();
       }else if (event is UpdateUserProfile) {
         Root.user=await userRepository.update(event.user);
         yield UserLoadedState();

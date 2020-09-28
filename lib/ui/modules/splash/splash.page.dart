@@ -104,13 +104,13 @@ class _LandingSplashScreenState extends State<LandingSplashScreen> {
   startTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     //if user registered
-    if (prefs.containsKey('userData')) {
-      //if email is verified
+    // if (prefs.containsKey('userData')) {
+    //   //if email is verified
       _route = Constants.homePage;
-    } else {
-      //if user not registered
-      _route = Constants.authPage;
-    }
+    // } else {
+    //   //if user not registered
+    //   _route = Constants.authPage;
+    // }
 
     Duration _duration = new Duration(seconds: 2);
     return new Timer(_duration, navigationPage);
