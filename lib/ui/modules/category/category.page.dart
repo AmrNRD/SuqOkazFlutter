@@ -38,7 +38,6 @@ class _CategoryPageState extends State<CategoryPage> {
     return Scaffold(
       key: CategoryPage.scaffoldKey,
       appBar: CustomAppBar(
-        canPop: true,
         elevation: 0,
         text: AppLocalizations.of(context).translate("all_categories"),
       ),
