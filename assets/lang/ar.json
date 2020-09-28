@@ -50,7 +50,7 @@
     "cart_add_success": "تم الاضافة الي عربة التسوق بنجاح",
     "review_add_success": "تم اضافة التقيم بنجاح.",
     "review_add_failuer": "حدث مشكلة اثناء اضافة التقيم, برجاء المحاولة مرة اخري.",
-    "search_product_title": "البحث عن المنتاجت",
+    "search_product_title": "البحث عن المنتاجات",
     "search_product_body": "قم يكتابة اسم المنتج لتبداء البحث",
     "wishlist": "المفضلة",
     "move_to_wishlist": "اضف الي المفضلة",
@@ -208,5 +208,6 @@
     "price": "السعر",
     "Choose your categories": "اختر تصنيف",
     "date": "التاريخ: %s",
-    "total_items": "عدد القطع: %s"
+    "total_items": "عدد القطع: %s",
+    "onSale":"خصومات"
 }

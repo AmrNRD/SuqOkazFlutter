@@ -216,5 +216,6 @@
     "Choose your categories": "Choose your categories",
     "no_categories": "Unspecified Category",
     "subcategory": "Sub Category",
-    "total_items": "Total items: %s"
+    "total_items": "Total items: %s",
+    "onSale":"On Sale"
 }

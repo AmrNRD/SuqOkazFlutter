@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:suqokaz/bloc/banner/banner_bloc.dart';
 import 'package:suqokaz/bloc/category/category_bloc.dart';
 import 'package:suqokaz/bloc/product/product_bloc.dart';
 import 'package:suqokaz/bloc/user/user_bloc.dart';
 import 'package:suqokaz/bloc/user/user_state.dart';
 import 'package:suqokaz/data/repositories/products_repository.dart';
-import 'package:suqokaz/ui/common/custom_appbar.dart';
-import 'package:suqokaz/ui/modules/cart/cart.page.dart';
 import 'package:suqokaz/ui/modules/category/category.page.dart';
 import 'package:suqokaz/ui/modules/home/home.tab.dart';
 import 'package:suqokaz/ui/modules/profile/profile.page.dart';
@@ -30,11 +27,13 @@ class HomeNavigationPage extends StatefulWidget {
 class _HomeNavigationPageState extends State<HomeNavigationPage> {
   static final ProductBloc _featuredProducts = ProductBloc(ProductsRepository());
   static final ProductBloc _latestProducts = ProductBloc(ProductsRepository());
+  static final ProductBloc _onSaleProducts = ProductBloc(ProductsRepository());
 
   List<Widget> body = [
     HomeTabPage(
       featuredBloc: _featuredProducts,
       latestBloc: _latestProducts,
+      onSaleBloc: _onSaleProducts,
     ),
     WishlistPage(),
     CategoryPage(),
@@ -55,12 +54,19 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
           orderBy: DateTime.now().year.toString(),
         ),
       );
+    _onSaleProducts
+      ..add(
+        GetProductsEvent(
+          isLoadMoreMode: false,
+          onSale: true,
+        ),
+      );
     BlocProvider.of<CategoryBloc>(context).add(GetCategoriesEvent());
 
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       if (Root.user == null) {
         body = [
-          HomeTabPage(featuredBloc: _featuredProducts, latestBloc: _latestProducts),
+          HomeTabPage(featuredBloc: _featuredProducts, latestBloc: _latestProducts,onSaleBloc: _onSaleProducts,),
           ProfilePage(),
         ];
       }

@@ -52,7 +52,7 @@ class ProductModel {
       defaultAttributes = defaultAttributesList;
       id = parsedJson["id"];
 
-      if (parsedJson["variations"] != null) {
+      if (parsedJson["variations"] != null &&parsedJson["variations"].length>1) {
         defaultVariationId = parsedJson["variations"][0];
       }
       if (parsedJson["categories"] != null) {
