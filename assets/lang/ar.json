@@ -208,5 +208,6 @@
     "price": "السعر",
     "Choose your categories": "اختر تصنيف",
     "date": "التاريخ: %s",
-    "total_items": "عدد القطع: %s"
+    "total_items": "عدد القطع: %s",
+    "onSale":"خصومات"
 }

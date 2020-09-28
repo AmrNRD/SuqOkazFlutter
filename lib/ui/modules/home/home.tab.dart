@@ -18,11 +18,13 @@ import 'components/categories.banner.grid.component.dart';
 class HomeTabPage extends StatefulWidget {
   final ProductBloc featuredBloc;
   final ProductBloc latestBloc;
+  final ProductBloc onSaleBloc;
 
   const HomeTabPage({
     Key key,
     @required this.featuredBloc,
     @required this.latestBloc,
+    @required this.onSaleBloc,
   }) : super(key: key);
 
   @override
@@ -125,6 +127,14 @@ class _HomeTabPageState extends State<HomeTabPage> {
                     : CategoriesBannerGridComponent(
                         banners: banners.length > 5 ? banners?.sublist(5) : [],
                       ),
+
+                HomeProductDisplayComponent(
+                  labelKey: "onSale",
+                  productBloc: widget.onSaleBloc,
+                ),
+                SizedBox(
+                  height: AppDimens.marginEdgeCase24,
+                ),
               ],
             ),
           ),
