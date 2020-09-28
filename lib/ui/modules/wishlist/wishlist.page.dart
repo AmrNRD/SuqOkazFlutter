@@ -25,7 +25,7 @@ class WishlistPage extends StatelessWidget {
                   child: GenericState(
                     imagePath: Constants.imagePath["empty_box"],
                     titleKey: "You don't have any items in the wishlist",
-                    bodyKey: "Feature will be added in next relese.",
+                    bodyKey: "addToWishlist",
                     removeButton: true,
                   ),
                 ),

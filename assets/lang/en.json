@@ -217,5 +217,8 @@
     "no_categories": "Unspecified Category",
     "subcategory": "Sub Category",
     "total_items": "Total items: %s",
-    "onSale":"On Sale"
+    "onSale":"On Sale",
+    "You don't have any items in the wishlist": "You don't have any items in the wishlist",
+    "addToWishlist": "Start adding items to it.",
+    "sale": "Sale"
 }

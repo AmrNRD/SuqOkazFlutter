@@ -147,7 +147,7 @@ class ProductCardComponent extends StatelessWidget {
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: Text(
-                              "Sale",
+                              AppLocalizations.of(context).translate("sale"),
                               style: Theme.of(context)
                                   .textTheme
                                   .headline3
