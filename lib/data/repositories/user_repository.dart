@@ -253,7 +253,7 @@ class UserDataRepository implements UserRepository {
       var endPoint = "${Constants.baseUrl}/wp-json/api/flutter_user/fb_connect/?second=$cookieLifeTime""&access_token=$token";
 
       var response = await http.get(endPoint);
-
+      print("response");
       var jsonDecode = convert.jsonDecode(response.body);
 
       if (jsonDecode['wp_user_id'] == null || jsonDecode["cookie"] == null) {
