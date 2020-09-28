@@ -117,11 +117,7 @@ class AppDataBase extends _$AppDataBase {
 
   // CartItems CRUD
   Stream<List<CartItem>> watchAllCartItems() => select(cartItems).watch();
-  Future<List<CartItem>> getAllCartItems(int cartId) => (select(cartItems)
-        ..where(
-          (c) => c.cartId.equals(cartId),
-        ))
-      .get();
+  Future<List<CartItem>> getAllCartItems(int cartId) => select(cartItems).get();
 
   Future<int> countAllCartItems(int cartId) async {
     List<CartItem> cartItems = await getAllCartItems(cartId);

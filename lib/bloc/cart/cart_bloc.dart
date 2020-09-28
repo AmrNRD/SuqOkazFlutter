@@ -137,7 +137,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       );
     } else if (event is GetCartEvent) {
       yield CartLoadingState();
-      cartData = await _cartDataRepository.getCart();
       totalPrice = 0;
       await loadCart();
       yield CartLoadedState(productIdToProductItem.values.toList(), totalCartQuantity, productIdToCartItem);
@@ -161,12 +160,11 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   loadCart() async {
     //Load cart items for the first time the app loads
     cartData = await _cartDataRepository.getCart();
+    print("=========================================================================================================");
     //If cartData is not null, then get the cart Items count
     if (cartData != null) {
-      List<CartItem> cartItems = await _cartDataRepository.getCartItems(
-        cartData.id,
-      );
-      if (cartItems.isNotEmpty) {
+      List<CartItem> cartItems = await _cartDataRepository.getCartItems(cartData.id);
+
         totalCartQuantity = await _cartDataRepository.getCartItemsCount(cartData.id);
         await Future.forEach(cartItems, (element) async {
           productIdToQuantity[element.id.toString() + element.variationId.toString()] = element.quantity;
@@ -193,9 +191,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           totalPrice += (double.parse(productModel.price) *
               productIdToQuantity[productModel.id.toString() + element.variationId.toString()]);
         });
-      } else {
-        await _cartDataRepository.deleteCart(cartData.id);
-      }
     }
     firstTimeCall = false;
   }
