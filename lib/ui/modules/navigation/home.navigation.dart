@@ -89,41 +89,54 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
           items: Root.user != null
               ? [
                   BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
-                      _currentSelectedTab == 0 ? "assets/icons/home_selected_icon.svg" : "assets/icons/home_icon.svg",
+                    icon: Padding(
+                      padding: const EdgeInsetsDirectional.only(bottom: 4),
+                      child: SvgPicture.asset(
+                        _currentSelectedTab == 0 ? "assets/icons/home_selected_icon.svg" : "assets/icons/home_icon.svg",
+                      ),
                     ),
                     title: Text(
                       AppLocalizations.of(context).translate("home", defaultText: "Home"),
+                      style: TextStyle(fontWeight: FontWeight.w500,fontSize: 13),
                     ),
                   ),
                   BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
+                    icon: Padding(
+                        padding: const EdgeInsetsDirectional.only(bottom: 4),
+                        child: SvgPicture.asset(
                       _currentSelectedTab == 1
                           ? "assets/icons/heart_selected_icon.svg"
                           : "assets/icons/heart_nav_icon.svg",
-                    ),
+                    )),
                     title: Text(
-                      AppLocalizations.of(context).translate("wishlist", defaultText: "Wish List"),
+                      AppLocalizations.of(context).translate("wishlist", defaultText: "Wishlist"),
+                      style: TextStyle(fontWeight: FontWeight.w500,fontSize: 13),
                     ),
                   ),
                   BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
+                    icon: Padding(
+                        padding: const EdgeInsetsDirectional.only(bottom: 4),
+                        child: SvgPicture.asset(
                       _currentSelectedTab == 2
                           ? "assets/icons/shopping_selected_icon.svg"
                           : "assets/icons/shopping_icon.svg",
-                    ),
+                    )),
                     title: Text(
                       AppLocalizations.of(context).translate("cart", defaultText: "Cart"),
+                      style: TextStyle(fontWeight: FontWeight.w500,fontSize: 13),
                     ),
                   ),
                   BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
+                    icon: Padding(
+                        padding: const EdgeInsetsDirectional.only(bottom: 4),
+                        child: SvgPicture.asset(
                       (_currentSelectedTab == 3 && Root.user != null) || (_currentSelectedTab == 1 && Root.user == null)
                           ? "assets/icons/user_selected_icon.svg"
                           : "assets/icons/user_icon.svg",
-                    ),
+                    )),
                     title: Text(
                       AppLocalizations.of(context).translate("settings", defaultText: "settings"),
+                      style: TextStyle(fontWeight: FontWeight.w500,fontSize: 13),
                     ),
                   ),
                 ]

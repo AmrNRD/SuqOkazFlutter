@@ -17,7 +17,7 @@ class PaymentMethodDataRepository extends PaymentMethodRepository {
     List<PaymentMethod> list = [];
     for (var itemData in res) {
       var item = PaymentMethod.fromJson(itemData);
-      list.add(item);
+      if(item.enabled)list.add(item);
     }
     return list;
   }

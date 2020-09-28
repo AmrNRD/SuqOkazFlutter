@@ -51,7 +51,6 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   void initState() {
 
-    selectedPaymentMethodId = "cod";
     super.initState();
     _paymentBloc = new PaymentMethodBloc(new PaymentMethodDataRepository());
     _paymentBloc.add(GetAllPaymentMethodEvent());
@@ -189,11 +188,9 @@ class _PaymentPageState extends State<PaymentPage> {
                           ),
                         ),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
                             Text(widget.shippingMethod.title),
-                            Divider(),
-                            Text(widget.shippingMethod.description),
                           ],
                         ),
                       ),
@@ -267,10 +264,10 @@ class _PaymentPageState extends State<PaymentPage> {
                       height: 8,
                     ),
                     InvoiceComponent(
-                      startText:
-                          AppLocalizations.of(context).translate("delivery"),
+                      startText: AppLocalizations.of(context).translate("delivery"),
                       endText: AppLocalizations.of(context)
-                          .translate("currency", replacement: "0.0"),
+                          .translate("currency", replacement: calculateShippingLocally(BlocProvider.of<CartBloc>(context)
+                          .totalPrice).toString()),
                     ),
                     SizedBox(
                       height: 8,
@@ -280,7 +277,8 @@ class _PaymentPageState extends State<PaymentPage> {
                       endText: AppLocalizations.of(context).translate(
                         "currency",
                         replacement:( BlocProvider.of<CartBloc>(context)
-                            .totalPrice-(widget.discount??0))
+                            .totalPrice-(widget.discount??0) + calculateShippingLocally(BlocProvider.of<CartBloc>(context)
+                            .totalPrice))
                             .toStringAsFixed(2),
                       ),
                     ),
@@ -291,6 +289,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       isLoading:isLoading,
                       label:
                           AppLocalizations.of(context).translate("do_order"),
+                      style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500),
                       onPress:
                         selectedPaymentMethod == null
                             ? (){showScaffoldSnackBar(context: context,scaffoldKey: _scaffoldKey, message:AppLocalizations.of(context).translate("please_select_payment_method"));}
@@ -377,12 +376,15 @@ class PaymentMethodComponent extends StatelessWidget {
             child: BlocListener<PaymentMethodBloc, PaymentMethodState>(
               listener: (context,state){
                 if (state is PaymentMethodListLoadedState) {
-                  if(selectedPaymentMethod==null){
+                  if(selectedPaymentMethod == null){
                    for(PaymentMethod payment in state.paymentMethods) {
-                     if(payment.id==selectedPaymentMethodId){
+                     if(payment.id == selectedPaymentMethodId){
                        onPaymentMethodChange(payment);
                      }
                    }
+                  }
+                  if(selectedPaymentMethodId == null && state.paymentMethods.length == 1){
+                    onPaymentMethodChange(state.paymentMethods.first);
                   }
                 }
               },

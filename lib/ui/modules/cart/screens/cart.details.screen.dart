@@ -131,6 +131,7 @@ class _CartDetailsScreenState extends State<CartDetailsScreen> {
                          }
                        },
                        child: Column(
+                         crossAxisAlignment: CrossAxisAlignment.start,
                          children: [
                            Text(
                              AppLocalizations.of(context).translate("discount_title"),
@@ -214,10 +215,20 @@ class _CartDetailsScreenState extends State<CartDetailsScreen> {
                     height: 8,
                   ),
                   InvoiceComponent(
+                    startText: AppLocalizations.of(context).translate("delivery"),
+                    endText: AppLocalizations.of(context)
+                        .translate("currency", replacement: calculateShippingLocally(BlocProvider.of<CartBloc>(context)
+                        .totalPrice).toString()),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  InvoiceComponent(
                     startText: AppLocalizations.of(context).translate("total"),
                     endText: AppLocalizations.of(context).translate(
                       "currency",
-                      replacement: BlocProvider.of<CartBloc>(context).totalPrice.toStringAsFixed(2),
+                      replacement: (BlocProvider.of<CartBloc>(context).totalPrice + calculateShippingLocally(BlocProvider.of<CartBloc>(context)
+                          .totalPrice)).toStringAsFixed(2),
                     ),
                   ),
                   SizedBox(
@@ -226,6 +237,7 @@ class _CartDetailsScreenState extends State<CartDetailsScreen> {
                   CustomRaisedButton(
                     isLoading: false,
                     label: AppLocalizations.of(context).translate("checkout"),
+                    style: TextStyle(fontWeight: FontWeight.w500,color: Colors.white),
                     onPress: () {
                       Navigator.pushNamed(context, Constants.checkoutPage,arguments: [widget.productItems,discount,coupon]);
                     },
