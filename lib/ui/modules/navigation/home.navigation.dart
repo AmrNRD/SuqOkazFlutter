@@ -10,6 +10,7 @@ import 'package:suqokaz/bloc/user/user_state.dart';
 import 'package:suqokaz/data/repositories/products_repository.dart';
 import 'package:suqokaz/ui/common/custom_appbar.dart';
 import 'package:suqokaz/ui/modules/cart/cart.page.dart';
+import 'package:suqokaz/ui/modules/category/category.page.dart';
 import 'package:suqokaz/ui/modules/home/home.tab.dart';
 import 'package:suqokaz/ui/modules/profile/profile.page.dart';
 import 'package:suqokaz/ui/modules/wishlist/wishlist.page.dart';
@@ -36,7 +37,7 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
       latestBloc: _latestProducts,
     ),
     WishlistPage(),
-    CartPage(),
+    CategoryPage(),
     ProfilePage(),
   ];
   List<BottomNavigationBarItem> items = [];
@@ -118,12 +119,11 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
                         padding: const EdgeInsetsDirectional.only(bottom: 4),
                         child: SvgPicture.asset(
                       _currentSelectedTab == 2
-                          ? "assets/icons/shopping_selected_icon.svg"
-                          : "assets/icons/shopping_icon.svg",
-                    )),
+                          ? "assets/icons/category_selected_icon.svg"
+                          :"assets/icons/category_icon.svg",
+                    ),
                     title: Text(
-                      AppLocalizations.of(context).translate("cart", defaultText: "Cart"),
-                      style: TextStyle(fontWeight: FontWeight.w500,fontSize: 13),
+                      AppLocalizations.of(context).translate("category", defaultText: "Category"),
                     ),
                   ),
                   BottomNavigationBarItem(

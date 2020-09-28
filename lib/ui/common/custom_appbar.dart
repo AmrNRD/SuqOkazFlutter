@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:suqokaz/utils/constants.dart';
 
+import 'cart_button_count.component.dart';
+
 class CustomAppBar extends PreferredSize {
   final text;
   final double height;
   final double elevation;
   final bool canPop;
+  final bool disableCart;
   final bool removeSearch;
   final Widget leadingButton;
   final List<Widget> actionButtons;
@@ -18,6 +21,7 @@ class CustomAppBar extends PreferredSize {
     this.elevation,
     this.removeSearch = false,
     this.leadingButton,
+    this.disableCart=false,
     this.actionButtons
   });
 
@@ -39,19 +43,9 @@ class CustomAppBar extends PreferredSize {
             .copyWith(fontWeight: FontWeight.w500),
       )
           : text,
-      leading: canPop ? null : leadingButton ?? IconButton(
-        icon: SvgPicture.asset(
-          "assets/icons/category_icon.svg",
-          height: 16,
-          width: 16,
-          fit: BoxFit.contain,
-        ),
-        onPressed: () {
-          Navigator.pushNamed(
-            context,
-            Constants.categoryPage,
-          );
-        },
+      leading: canPop ? null : leadingButton ?? CartButtonWithCountComponent(
+        removeMargin: false,
+        disableCart: disableCart,
       ),
       actions:actionButtons==null?  <Widget>[
         removeSearch

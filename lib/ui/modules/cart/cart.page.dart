@@ -17,6 +17,7 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
+        canPop: true,
         text: AppLocalizations.of(context).translate("cart", defaultText: "Cart"),
       ),
       body: BlocBuilder<CartBloc, CartState>(
