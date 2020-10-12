@@ -231,7 +231,8 @@ class UserDataRepository implements UserRepository {
 
   @override
   Future<UserModel> loginWithApple(String userID, String email, String name, String token, String profileUrl, String platform) async {
-    var endPoint = "${Constants.baseUrl}/wp-json/api/flutter_user/apple_login?email=$email&display_name=$name&user_name=${email.split("@")[0]}";
+
+    var endPoint = "${Constants.baseUrl}/wp-json/api/flutter_user/apple_login?email=$email&display_name=$name&user_name=$name";
 
     var response = await http.get(endPoint);
 
