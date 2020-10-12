@@ -307,7 +307,13 @@ class _LoginScreenState extends State<LoginScreen> {
               content: Text(name, style: Theme.of(context).textTheme.headline2.copyWith(color: Colors.white)),
               backgroundColor: AppColors.accentColor1,
             ));
-             BlocProvider.of<UserBloc>(context)..add(LoginUserWithApple(userID, email, name, token, profileUrl, Platform.isIOS?"IOS":"Android"));
+
+            if(email==null){
+              Navigator.of(context).pushReplacementNamed(Constants.homePage);
+            }else{
+              BlocProvider.of<UserBloc>(context)..add(LoginUserWithApple(userID, email, name, token, profileUrl, Platform.isIOS?"IOS":"Android"));
+            }
+
             break;
           case AuthorizationStatus.error:
             Scaffold.of(context).showSnackBar(SnackBar(
