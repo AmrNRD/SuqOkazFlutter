@@ -38,6 +38,8 @@ class Constants {
   static const testSecretKey="sk_test_eG5EoySq5ZweGKpqmh4PRVi27ojropNCBifSETzg";
   static const testPublishableKey="pk_test_TekCZgcYEyt6kpsz2sA4ebaPKzUQuFsUp6tyhVJp";
 
+  static const livePublishableKey="pk_live_n4wnr6F1CvucQgJFW3jJas2KVcnRK8tT8bZbq2ch";
+
   // Local Keys
   static const kLocalKey = {
     "userInfo": "userInfo",

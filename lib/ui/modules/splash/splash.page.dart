@@ -42,16 +42,13 @@ class _LandingSplashScreenState extends State<LandingSplashScreen> {
     if(sharedPreferences.containsKey('lastUpdateToCategories')){
       DateTime lastUpdateToCategories=DateTime.parse(sharedPreferences.getString('lastUpdateToCategories'));
       if(lastUpdateToCategories.difference(DateTime.now()).inDays>3){
-        print("lastUpdateToCategories were before 3 days");
-        print("reloading category");
         BlocProvider.of<CategoryBloc>(context).add(ReloadCategoryEvent());
       }else{
 
         BlocProvider.of<CategoryBloc>(context).add(GetCategoriesEvent());
       }
     }else{
-      print("lastUpdateToCategories were not found");
-      print("reloading category");
+
       BlocProvider.of<CategoryBloc>(context).add(ReloadCategoryEvent());
     }
   }

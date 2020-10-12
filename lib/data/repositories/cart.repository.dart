@@ -14,6 +14,7 @@ abstract class CartRepository {
   Future<CartItem> getCartItemById(int productId, {int variationId});
   Future createCartItem(CartItem cartItem);
   Future deleteCartItem(int itemId, int varId);
+  Future deleteCartItems(int itemId);
   Future updateCartItem(CartItem cartItem);
 
   Future<List<AddressModel>> getAddresses();
@@ -47,6 +48,11 @@ class CartDataRepository extends CartRepository {
   @override
   Future deleteCartItem(int itemId, int varId) async {
     return _cartService.deleteCartItem(itemId, varId: varId);
+  }
+
+ @override
+  Future deleteCartItems(int itemId) async {
+    return _cartService.deleteCartItems(itemId);
   }
 
   @override

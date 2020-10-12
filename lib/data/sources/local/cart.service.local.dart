@@ -42,6 +42,9 @@ class CartService {
   Future deleteCartItem(int itemId, {@required int varId}) async {
     return await appDataBase.deleteCartItem(itemId, varId: varId);
   }
+  Future deleteCartItems(int itemId) async {
+    return await appDataBase.deleteCartItems(itemId);
+  }
 
   Future updateCartItem(CartItem cartItem) {
     return appDataBase.updateCartItem(cartItem);
