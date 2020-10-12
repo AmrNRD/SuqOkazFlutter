@@ -154,7 +154,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
           var category = CategoryModel.fromJson(item);
 
           // Set data
-          if (item['slug'] != "uncategorized") {
+          if (item['id'] != 91 && item['slug'] != "uncategorized" && item['slug'] != "%d8%ba%d9%8a%d8%b1-%d9%85%d8%b5%d9%86%d9%81") {
             categories.add(category);
           }
         }

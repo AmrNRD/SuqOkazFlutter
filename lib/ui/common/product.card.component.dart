@@ -17,6 +17,7 @@ class ProductCardComponent extends StatelessWidget {
   final bool allowMargin;
   final bool isInCart;
   final bool inInFav;
+  final double imageHeight;
 
   const ProductCardComponent({
     Key key,
@@ -27,6 +28,7 @@ class ProductCardComponent extends StatelessWidget {
     this.inInFav = false,
     @required this.variationId,
     @required this.attribute,
+    this.imageHeight = 130,
   }) : super(key: key);
 
   @override
@@ -35,7 +37,6 @@ class ProductCardComponent extends StatelessWidget {
       width: 140,
       margin: EdgeInsetsDirectional.only(
         end: allowMargin ? 8 : 0,
-        bottom: allowMargin ? 8 : 0,
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -54,14 +55,17 @@ class ProductCardComponent extends StatelessWidget {
         child: Stack(
           children: [
             Container(
-              height: screenAwareSize(130, context),
-              child: ImageProcessor.image(
+              height: screenAwareSize(imageHeight, context),
+              child: product.imageFeature != null ? ImageProcessor.image(
                 url: product.imageFeature,
                 fit: BoxFit.cover,
-              ),
+              ) : SvgPicture.asset(
+                          "assets/images/splash_background_pattern.svg",
+                         fit: BoxFit.cover,
+                       ),
             ),
             Positioned(
-              top: screenAwareSize(130, context),
+              top: screenAwareSize(imageHeight, context),
               bottom: 0,
               right: 0,
               left: 0,

@@ -96,6 +96,16 @@ class _PaymentPageState extends State<PaymentPage> {
           }else if(state is OrderUrlLoadedState){
             print('--------------------------------------');
             print(state.url);
+            _scaffoldKey.currentState.showSnackBar(
+              SnackBar(
+                duration: Duration(seconds: 2),
+                backgroundColor: Colors.green,
+                content: Text(
+                  AppLocalizations.of(context).translate("please_wait"),
+                  style: Theme.of(context).textTheme.headline2.copyWith(color: Colors.white),
+                ),
+              ),
+            );
             Timer(Duration(seconds: 5), () {
               BlocProvider.of<CartBloc>(context).add(CheckoutCartEvent());
               Navigator.pushAndRemoveUntil(

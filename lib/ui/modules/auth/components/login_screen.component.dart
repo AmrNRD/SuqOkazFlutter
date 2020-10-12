@@ -238,14 +238,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: Theme.of(context).textTheme.subtitle1,
                         children: [
                           TextSpan(
+                            text: "  ",
+                          ),
+                          TextSpan(
                             text: AppLocalizations.of(context).translate("signup"),
-                            style: Theme.of(context).textTheme.subtitle1.copyWith(color: AppColors.primaryColor1),
+                            style: Theme.of(context).textTheme.subtitle1.copyWith(color: AppColors.primaryColor1,fontWeight: FontWeight.w500),
                           )
                         ],
                       ),
                     ),
                   ),
-                )
+                ),
+                SizedBox(height: AppDimens.marginEdgeCase32),
+
               ],
             ),
           ),

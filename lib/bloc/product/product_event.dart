@@ -49,3 +49,12 @@ class GetProductVariationsEvent extends ProductEvent {
   // TODO: implement props
   List<Object> get props => throw UnimplementedError();
 }
+
+class GetProductDetailsEvent extends ProductEvent {
+  final String id;
+
+  GetProductDetailsEvent(this.id);
+  @override
+  // TODO: implement props
+  List<Object> get props => throw UnimplementedError();
+}

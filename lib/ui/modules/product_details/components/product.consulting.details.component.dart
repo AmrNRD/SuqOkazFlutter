@@ -45,9 +45,9 @@ class _ProductConsultingDetailsComponentState extends State<ProductConsultingDet
       ProductDescriptionComponent(
         description: widget.productModel.description,
       ),
-      ProductSpecificationComponent(
+      widget.productModel.variations.isNotEmpty ?  ProductSpecificationComponent(
         productAttributes: widget.productModel.variations[widget.selectedVariation].attributes,
-      ),
+      ) : Container(),
       ProductDetailsReviewComponent(
         scaffoldKey: widget.scaffoldKey,
         productId: widget.productModel.id,

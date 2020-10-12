@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:suqokaz/bloc/address/address_bloc.dart';
 import 'package:suqokaz/bloc/banner/banner_bloc.dart';
 import 'package:suqokaz/bloc/category/category_bloc.dart';
+import 'package:suqokaz/bloc/home_products/home_products_bloc.dart';
 import 'package:suqokaz/bloc/product/product_bloc.dart';
 import 'package:suqokaz/bloc/review/review_bloc.dart';
 import 'package:suqokaz/data/repositories/address.repository.dart';
@@ -99,6 +100,9 @@ class RouteGenerator {
               ),
               BlocProvider<BannerBloc>(
                 create: (BuildContext context) => BannerBloc(),
+              ),
+              BlocProvider<HomeProductsBloc>(
+                create: (BuildContext context) => HomeProductsBloc(ProductsRepository()),
               ),
             ],
             child: HomeNavigationPage(),

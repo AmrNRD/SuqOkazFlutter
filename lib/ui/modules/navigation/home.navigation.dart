@@ -127,9 +127,10 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
                       _currentSelectedTab == 2
                           ? "assets/icons/category_selected_icon.svg"
                           :"assets/icons/category_icon.svg",
-                    ),
+                    )),
                     title: Text(
                       AppLocalizations.of(context).translate("category", defaultText: "Category"),
+                      style: TextStyle(fontWeight: FontWeight.w500,fontSize: 13),
                     ),
                   ),
                   BottomNavigationBarItem(

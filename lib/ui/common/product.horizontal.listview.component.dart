@@ -26,10 +26,6 @@ class _ProductHorizontalListViewState extends State<ProductHorizontalListView> {
     super.initState();
     wishListMaper = BlocProvider.of<WishlistBloc>(context).wishListMaper;
 
-    print(
-        wishListMaper.containsKey(widget.products[0].id.toString() + widget.products[0].defaultVariationId.toString()));
-
-    print(widget.products[0].id.toString() + widget.products[0].defaultVariationId.toString());
   }
 
   @override

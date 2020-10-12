@@ -5,6 +5,7 @@ class Constants {
   // Base
   static const appName = "SuqOkaz";
   static const baseUrl = "https://suqokaz.com";
+  static const baseApiUrl = "https://api.suqokaz.com/api";
   static bool isRTL = false;
   static const dummyProfilePic = "";
 

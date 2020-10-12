@@ -67,7 +67,7 @@ class _CategoriesBannerGridComponentState extends State<CategoriesBannerGridComp
             child: StaggeredGridView.countBuilder(
               controller: _scrollController,
               crossAxisCount: 2,
-              itemCount: widget.banners.length,
+              itemCount: widget.banners.length - 1,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               crossAxisSpacing: AppDimens.marginDefault8,
@@ -76,34 +76,29 @@ class _CategoriesBannerGridComponentState extends State<CategoriesBannerGridComp
               scrollDirection: Axis.vertical,
               addAutomaticKeepAlives: true,
               itemBuilder: (BuildContext context, int index) {
-                if (index + 1 == widget.banners.length) {
-                  return Container();
-                } else {
-                  return widget.banners[index + 1].image == null
-                      ? Container()
-                      : GestureDetector(
-                          onTap: widget.banners[index].categoryId.isEmpty
-                              ? null
-                              : () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    Constants.productCategoriesPage,
-                                    arguments: [
-                                      widget.banners[index].categoryName ??
-                                          AppLocalizations.of(context).translate("no_categories"),
-                                      [],
-                                      int.tryParse(
-                                        widget.banners[index].categoryId,
-                                      )
-                                    ],
-                                  );
-                                },
-                          child: ImageProcessor.image(
-                            fit: BoxFit.fill,
-                            url: widget.banners[index + 1].image,
-                          ),
-                        );
-                }
+                return widget.banners[index + 1].image == null
+                    ? Container()
+                    : GestureDetector(
+                        onTap: widget.banners[index].categoryId.isEmpty
+                            ? null
+                            : () {
+                                Navigator.pushNamed(
+                                  context,
+                                  Constants.productCategoriesPage,
+                                  arguments: [
+                                    widget.banners[index].categoryName ?? AppLocalizations.of(context).translate("no_categories"),
+                                    [],
+                                    int.tryParse(
+                                      widget.banners[index].categoryId,
+                                    )
+                                  ],
+                                );
+                              },
+                        child: ImageProcessor.image(
+                          fit: BoxFit.fill,
+                          url: widget.banners[index + 1].image,
+                        ),
+                      );
               },
             ),
           )

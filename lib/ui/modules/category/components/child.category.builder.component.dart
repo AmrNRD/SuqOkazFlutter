@@ -55,7 +55,7 @@ class ChildCategoryBuilderComponent extends StatelessWidget {
                     childrenCategories[parentIndex].imageBanner == null
                         ? Container()
                         : ImageProcessor.image(
-                            fit: BoxFit.contain,
+                            fit: BoxFit.cover,
                             url: childrenCategories[parentIndex].imageBanner,
                           ),
                   ],
@@ -98,10 +98,13 @@ class ChildCategoryBuilderComponent extends StatelessWidget {
                         Container(
                           color: AppColors.customGreyLevels[400],
                           child: Center(
-                            child: ImageProcessor.image(
-                              url: childrenCategories[parentIndex].children[index].image,
-                              fit: BoxFit.contain,
-                              height: screenAwareSize(70, context),
+                            child: Container(
+                              width: double.infinity,
+                              child: ImageProcessor.image(
+                                url: childrenCategories[parentIndex].children[index].image,
+                                fit: BoxFit.cover,
+                                height: screenAwareSize(70, context),
+                              ),
                             ),
                           ),
                         ),

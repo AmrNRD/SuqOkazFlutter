@@ -236,7 +236,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           });
         });
       } catch (e) {
-        throw Exception("Error occurred");
+        throw Exception(AppLocalizations.of(context).translate("error_title"));
       }
     }
     return dataList;
@@ -348,7 +348,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
             return Center(
               child: GenericState(
                 imagePath: Constants.imagePath["error"],
-                titleKey: "Error occurred", //TODO : translate
+                titleKey: AppLocalizations.of(context).translate("error_title"), //TODO : translate
                 bodyKey: "Please try again.",
                 removeButton: true,
               ),

@@ -142,8 +142,7 @@ class _AddToCartButtonState extends State<AddToCartButton> {
               child: Center(
                 child: Container(
                   padding: EdgeInsets.symmetric(
-                      vertical:
-                          MediaQuery.of(context).padding.bottom <= 20 ? 20 : MediaQuery.of(context).padding.bottom - 5),
+                      vertical: MediaQuery.of(context).padding.bottom <= 20 ? 20 : MediaQuery.of(context).padding.bottom - 5),
                   child: Text(
                     widget.activeButton
                         ? AppLocalizations.of(context).translate("add_cart")
@@ -159,15 +158,13 @@ class _AddToCartButtonState extends State<AddToCartButton> {
                 child: InkWell(
                   onTap: widget.activeButton
                       ? () {
-                   Root.user!=null? BlocProvider.of<CartBloc>(context).add(
-                     AddProductToCartEvent(
-                       widget.productModel,
-                       productQuantity,
-                       widget.variationId,
-                       widget.attributes,
-                     ),
-                   ): Navigator.of(context).pushNamedAndRemoveUntil(Constants.authPage, (Route<dynamic> route) => false);;
-                  }
+                          if(Root.user != null) {
+                            BlocProvider.of<CartBloc>(context).add(
+                              AddProductToCartEvent(widget.productModel, productQuantity, widget.variationId, widget.attributes,),);
+                            Navigator.pushNamed(context, Constants.cartPage);
+
+                          }else{ Navigator.of(context).pushNamedAndRemoveUntil(Constants.authPage, (Route<dynamic> route) => false);}
+                        }
                       : null,
                 ),
               ),

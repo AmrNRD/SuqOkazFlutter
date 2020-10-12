@@ -99,6 +99,19 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         ProductModel productModel = event.productModel;
         productModel.variations = productVariations;
         yield ProductVariationsLoadedState(productModel: productModel);
+
+      }else if (event is GetProductDetailsEvent) {
+
+        // Set loading state
+        yield ProductsLoadingState(isLoadMoreMode: false);
+
+        var productRawData = await productsRepository.getProductDetails(productId: event.id);
+        ProductModel parsedProduct = ProductModel.fromJson(productRawData);
+
+        // Yield result
+        yield ProductDetailsLoadedState(
+          productModel: parsedProduct
+        );
       }
     } catch (exception) {
       // Yield error with message, exception can't be casted to string in some cases

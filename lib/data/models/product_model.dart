@@ -40,6 +40,7 @@ class ProductModel {
   Map<String, dynamic> multiCurrencies;
 
   String storeId;
+  bool loadedFromApi = false;
 
   ProductModel();
 
@@ -139,7 +140,7 @@ class ProductModel {
       images = list;
       imageFeature = images[0];
       if (!skip) {
-// get video link
+        // get video link
         var video = parsedJson['meta_data'].firstWhere(
           (item) => item['key'] == '_video_url' || item['key'] == '_woofv_video_embed',
           orElse: () => null,
@@ -231,6 +232,30 @@ class ProductModel {
       categoryId = json['categoryId'];
       multiCurrencies = json['multiCurrencies'];
       stockQuantity = json['stock_quantity'];
+    } catch (e) {}
+  }
+
+  ProductModel.fromApiJson(Map<String, dynamic> json) {
+    try {
+
+      id = GuardParser.safeCast<int>(json["id"] == null ? null : json['id']);
+      sku = GuardParser.safeCast<String>(json["sku"] == null ? null : json['sku']);
+      name = GuardParser.safeCast<String>(json["name"] == null ? null : json['name']);
+      price = GuardParser.safeCast<String>(json["price"] == null ? null : double.parse(json['price'].toString()).toStringAsFixed(2));
+      regularPrice = GuardParser.safeCast<String>(json["regularPrice"] == null ? null : double.parse(json['regularPrice'].toString()).toStringAsFixed(2));
+      salePrice = GuardParser.safeCast<String>(json["salePrice"] == null ? null : double.parse(json['salePrice'].toString()).toStringAsFixed(2));
+      onSale = json['onSale'] == null ? false : (json['onSale'] == 1);
+      loadedFromApi = true;
+
+      if(json['images'] != null && json['images'] is List){
+        List<String> imgs = [];
+        for (var item in json['images']) {
+          imgs.add(item);
+        }
+        images = imgs;
+        if(images[0] != null) imageFeature = images[0];
+      }
+
     } catch (e) {}
   }
 
