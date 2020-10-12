@@ -33,7 +33,10 @@ class PaymentPage extends StatefulWidget {
   final ShippingMethod shippingMethod;
   final double discount;
   final Coupon coupon;
-  const PaymentPage(
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController numberController = TextEditingController();
+
+  PaymentPage(
       {Key key, @required this.addressModel, @required this.shippingMethod, this.discount, this.coupon})
       : super(key: key);
 
@@ -288,6 +291,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                }
                              },
                              focusNode: nameFocusNode,
+                             controller: widget.nameController,
                              onSave: (value) => paymentInfo['name'] = value,
                              textInputType: TextInputType.text,
                              hintText: AppLocalizations.of(context)
@@ -330,6 +334,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                    .translate('invalid_value');
                                },
                              focusNode: numberFocusNode,
+                             controller: widget.numberController,
                              onSave: (value) => paymentInfo['number'] = value,
                              textInputType: TextInputType.number,
                              hintText: AppLocalizations.of(context).translate("card_number"),

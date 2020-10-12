@@ -56,7 +56,7 @@ class _CategoriesBannerGridComponentState extends State<CategoriesBannerGridComp
                         },
                   child: ImageProcessor.image(
                     fit: BoxFit.fill,
-                    url: widget.banners[0].image,
+                    url: widget.banners[0].imagelink,
                   ),
                 )
               : Container(),
@@ -76,7 +76,7 @@ class _CategoriesBannerGridComponentState extends State<CategoriesBannerGridComp
               scrollDirection: Axis.vertical,
               addAutomaticKeepAlives: true,
               itemBuilder: (BuildContext context, int index) {
-                return widget.banners[index + 1].image == null
+                return widget.banners[index + 1].imagelink == null
                     ? Container()
                     : GestureDetector(
                         onTap: widget.banners[index].categoryId.isEmpty
@@ -96,7 +96,7 @@ class _CategoriesBannerGridComponentState extends State<CategoriesBannerGridComp
                               },
                         child: ImageProcessor.image(
                           fit: BoxFit.fill,
-                          url: widget.banners[index + 1].image,
+                          url: widget.banners[index + 1].imagelink,
                         ),
                       );
               },

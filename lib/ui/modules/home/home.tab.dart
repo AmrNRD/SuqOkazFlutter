@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -41,8 +42,7 @@ class HomeTabPage extends StatefulWidget {
   _HomeTabPageState createState() => _HomeTabPageState();
 }
 
-class _HomeTabPageState extends State<HomeTabPage> with AutomaticKeepAliveClientMixin<HomeTabPage>{
-
+class _HomeTabPageState extends State<HomeTabPage> with AutomaticKeepAliveClientMixin<HomeTabPage> {
   // Banners variables
   bool isBannerLoading = false;
   List<List<BannerModel>> banners = [];
@@ -145,6 +145,32 @@ class _HomeTabPageState extends State<HomeTabPage> with AutomaticKeepAliveClient
                     child: SizedBox(
                   height: AppDimens.marginSeparator16,
                 )),
+                // First banner
+                isBannerLoading
+                    ? SliverToBoxAdapter(
+                        child: LoadingWidget(
+                        size: 30,
+                      ))
+                    : SliverToBoxAdapter(
+                        child: CategoriesBannerGridComponent(
+                        banners: banners.length > 0 ? banners[0] : [],
+                      )),
+                //Divider
+                SliverToBoxAdapter(
+                    child: SizedBox(
+                  height: AppDimens.marginSeparator16,
+                )),
+                // Featured
+                SliverToBoxAdapter(
+                    child: HomeProductDisplayComponent(
+                  labelKey: "FEATURED",
+                  productBloc: widget.featuredBloc,
+                )),
+                // Divider
+                SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: AppDimens.marginSeparator16,
+                    )),
                 // For you
                 BlocListener<HomeProductsBloc, HomeProductsState>(
                   listener: (BuildContext context, HomeProductsState state) {
@@ -194,32 +220,6 @@ class _HomeTabPageState extends State<HomeTabPage> with AutomaticKeepAliveClient
                     child: SizedBox(
                   height: AppDimens.marginSeparator16,
                 )),
-                // First banner
-                isBannerLoading
-                    ? SliverToBoxAdapter(
-                        child: LoadingWidget(
-                        size: 30,
-                      ))
-                    : SliverToBoxAdapter(
-                        child: CategoriesBannerGridComponent(
-                        banners: banners.length > 0 ? banners[0] : [],
-                      )),
-                //Divider
-                SliverToBoxAdapter(
-                    child: SizedBox(
-                  height: AppDimens.marginSeparator16,
-                )),
-                // Featured
-                SliverToBoxAdapter(
-                    child: HomeProductDisplayComponent(
-                  labelKey: "FEATURED",
-                  productBloc: widget.featuredBloc,
-                )),
-                //Divider
-                SliverToBoxAdapter(
-                    child: SizedBox(
-                  height: AppDimens.marginSeparator16,
-                )),
                 // Latest
                 SliverToBoxAdapter(
                   child: HomeProductDisplayComponent(
@@ -252,11 +252,14 @@ class _HomeTabPageState extends State<HomeTabPage> with AutomaticKeepAliveClient
                     productBloc: widget.onSaleBloc,
                   ),
                 ),
-                //Divider
                 SliverToBoxAdapter(
-                    child: SizedBox(
-                  height: AppDimens.marginSeparator16,
-                )),
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.only(start: 8),
+                      child: Text(
+                  AppLocalizations.of(context).translate("more", defaultText: "More"),
+                  style: Theme.of(context).textTheme.headline1,
+                ),
+                    )),
                 // Other banners
                 SliverToBoxAdapter(
                   child: LayoutBuilder(
@@ -290,9 +293,8 @@ class _HomeTabPageState extends State<HomeTabPage> with AutomaticKeepAliveClient
                         staggeredTileBuilder: (int index) => StaggeredTile.count(1, 1.35),
                         itemBuilder: (BuildContext context, int index) {
                           if (index < apiInfiniteProducts.length) {
-
                             return Padding(
-                              padding: EdgeInsetsDirectional.only(start:(index.isEven) ? 8 : 0, end: (index.isEven) ? 0 : 8),
+                              padding: EdgeInsetsDirectional.only(start: (index.isEven) ? 8 : 0, end: (index.isEven) ? 0 : 8),
                               child: ProductCardComponent(
                                 product: apiInfiniteProducts[index],
                                 onItemTap: () => Navigator.pushNamed(

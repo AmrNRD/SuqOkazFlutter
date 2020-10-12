@@ -24,7 +24,7 @@ class BannerBloc extends Bloc<BannerEvent, BannerState> {
       print("---------------------");
       if (banners.isEmpty) {
         yield BannerLoadingState();
-        _apiCaller.setUrl("${Constants.baseUrl}/wp-json/wp/v2/bannersss");
+        _apiCaller.setUrl("${Constants.baseApiUrl}/banners");
         var rawData = await _apiCaller.getData();
         banners = [];
         rawData.forEach((element) {

@@ -1,33 +1,23 @@
 class BannerModel {
-  int id;
-  String slug;
-  String categoryId;
-  String categoryName;
-  String image;
-
   BannerModel({
-    this.id,
-    this.slug,
     this.categoryId,
     this.categoryName,
-    this.image,
+    this.imagelink,
   });
 
-  BannerModel.fromJson(Map<String, dynamic> parsedJson) {
-    id = parsedJson["id"];
-    categoryId = parsedJson["acf"]["category_id"];
-    categoryName = parsedJson["acf"]["category_name"];
-    image = parsedJson["acf"]["imagelink"];
-    slug = parsedJson["slug"];
-  }
+  String categoryId;
+  String categoryName;
+  String imagelink;
 
-  Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "slug": slug,
-      "categoryId": categoryId,
-      "category_name": categoryName,
-      "image": image,
-    };
-  }
+  factory BannerModel.fromJson(Map<String, dynamic> json) => BannerModel(
+    categoryId: json["category_id"] == null ? null : json["category_id"],
+    categoryName: json["category_name"] == null ? null : json["category_name"],
+    imagelink: json["imagelink"] == null ? null : json["imagelink"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "category_id": categoryId == null ? null : categoryId,
+    "category_name": categoryName == null ? null : categoryName,
+    "imagelink": imagelink == null ? null : imagelink,
+  };
 }
