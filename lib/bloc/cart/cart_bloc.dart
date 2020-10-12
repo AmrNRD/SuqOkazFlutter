@@ -71,7 +71,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       if (cartData == null) {
         await _cartDataRepository.createCart(
           // ignore: missing_required_param
-          CartData(),
+          CartData(userEmail: Root.user.email),
         );
         cartData = await _cartDataRepository.getCart(Root.user.email);
       }
