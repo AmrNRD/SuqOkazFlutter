@@ -18,55 +18,62 @@ class CartButtonWithCountComponent extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CartButtonWithCountComponentState createState() =>
-      _CartButtonWithCountComponentState();
+  _CartButtonWithCountComponentState createState() => _CartButtonWithCountComponentState();
 }
 
-class _CartButtonWithCountComponentState
-    extends State<CartButtonWithCountComponent> {
-
+class _CartButtonWithCountComponentState extends State<CartButtonWithCountComponent> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    cartCounter = BlocProvider.of<CartBloc>(context).totalCartQuantity;
   }
+
+  int cartCounter = 0;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: widget.disableCart
-          ? null
-          : () {
-        if (Root.user == null) {
-          Navigator.pushNamed(context, Constants.authPage);
-        } else {
-          Navigator.pushNamed(context, Constants.cartPage);
+    return BlocListener<CartBloc, CartState>(
+      listener: (BuildContext context, CartState state) {
+        if (state is CartLoadedState) {
+          setState(() {
+            cartCounter = state.counter;
+          });
         }
       },
-      child: Container(
-        color: Colors.transparent,
-        margin: widget.removeMargin
-            ? EdgeInsets.zero
-            : EdgeInsetsDirectional.only(start: 10),
-        child: Stack(
-          alignment: AlignmentDirectional.center,
-          children: <Widget>[
-            SvgPicture.asset(
-              "assets/icons/ic_cart_unselected.svg",
-              height: 16,
-              width: 16,
-            ),
-            Container(
-              margin: EdgeInsetsDirectional.only(bottom: 18, start: 14),
-              child: buildCounter(),
-            ),
-          ],
+      child: GestureDetector(
+        onTap: widget.disableCart
+            ? null
+            : () {
+                if (Root.user == null) {
+                  Navigator.pushNamed(context, Constants.authPage);
+                } else {
+                  Navigator.pushNamed(context, Constants.cartPage);
+                }
+              },
+        child: Container(
+          color: Colors.transparent,
+          margin: widget.removeMargin ? EdgeInsets.zero : EdgeInsetsDirectional.only(start: 10),
+          child: Stack(
+            alignment: AlignmentDirectional.center,
+            children: <Widget>[
+              SvgPicture.asset(
+                "assets/icons/ic_cart_unselected.svg",
+                height: 16,
+                width: 16,
+              ),
+              Container(
+                margin: EdgeInsetsDirectional.only(bottom: 18, start: 14),
+                child: buildCounter(),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget buildCounter() {
-    return BlocProvider.of<CartBloc>(context).totalCartQuantity == 0
+    return cartCounter == 0
         ? Container()
         : Container(
             decoration: BoxDecoration(
@@ -80,7 +87,7 @@ class _CartButtonWithCountComponentState
             child: Container(
               margin: EdgeInsets.all(4),
               child: Text(
-                '${BlocProvider.of<CartBloc>(context).totalCartQuantity}',
+                '$cartCounter',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 10,

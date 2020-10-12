@@ -32,29 +32,29 @@ class _LandingSplashScreenState extends State<LandingSplashScreen> {
   void initState() {
     super.initState();
     BlocProvider.of<UserBloc>(context).add(GetUser());
-    BlocProvider.of<CartBloc>(context).add(GetCartEvent());
     BlocProvider.of<WishlistBloc>(context).add(GetWishListEvent());
     loadCategory();
   }
-  void loadCategory() async{
+
+  void loadCategory() async {
     print('--------------------------------------------');
-    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-    if(sharedPreferences.containsKey('lastUpdateToCategories')){
-      DateTime lastUpdateToCategories=DateTime.parse(sharedPreferences.getString('lastUpdateToCategories'));
-      if(lastUpdateToCategories.difference(DateTime.now()).inDays>3){
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    if (sharedPreferences.containsKey('lastUpdateToCategories')) {
+      DateTime lastUpdateToCategories = DateTime.parse(sharedPreferences.getString('lastUpdateToCategories'));
+      if (lastUpdateToCategories.difference(DateTime.now()).inDays > 3) {
         print("lastUpdateToCategories were before 3 days");
         print("reloading category");
         BlocProvider.of<CategoryBloc>(context).add(ReloadCategoryEvent());
-      }else{
-
+      } else {
         BlocProvider.of<CategoryBloc>(context).add(GetCategoriesEvent());
       }
-    }else{
+    } else {
       print("lastUpdateToCategories were not found");
       print("reloading category");
       BlocProvider.of<CategoryBloc>(context).add(ReloadCategoryEvent());
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<CategoryBloc, CategoryState>(
@@ -68,6 +68,7 @@ class _LandingSplashScreenState extends State<LandingSplashScreen> {
       child: BlocListener<UserBloc, UserState>(
         listener: (BuildContext context, UserState state) async {
           if (state is UserLoadedState) {
+            BlocProvider.of<CartBloc>(context).add(GetCartEvent());
           } else if (state is UserErrorState) {}
         },
         child: Scaffold(
@@ -106,7 +107,7 @@ class _LandingSplashScreenState extends State<LandingSplashScreen> {
     //if user registered
     // if (prefs.containsKey('userData')) {
     //   //if email is verified
-      _route = Constants.homePage;
+    _route = Constants.homePage;
     // } else {
     //   //if user not registered
     //   _route = Constants.authPage;
@@ -127,6 +128,4 @@ class _LandingSplashScreenState extends State<LandingSplashScreen> {
     else
       Navigator.of(context).pushReplacementNamed(_route);
   }
-
-
 }

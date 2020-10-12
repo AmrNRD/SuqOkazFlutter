@@ -42,11 +42,18 @@ class CartPage extends StatelessWidget {
             return LoadingWidget();
           } else if (state is CartErrorState) {
             return Center(
-              child: GenericState(
-                imagePath: Constants.imagePath["error"],
-                titleKey: "error_title",
-                bodyKey: state.message,
-                removeButton: true,
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                child: GenericState(
+                  imagePath: Constants.imagePath["error"],
+                  titleKey: "error_title",
+                  buttonKey: "refresh",
+                  bodyKey: state.message,
+                  removeButton: false,
+                  onPress: () {
+                    BlocProvider.of<CartBloc>(context).add(GetCartEvent());
+                  },
+                ),
               ),
             );
           }
