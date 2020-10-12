@@ -38,19 +38,15 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       if (event is IncreaseItemInCartEvent) {
         await updateCartItem(true, event.productId, event.variationId);
         totalCartQuantity = await _cartDataRepository.getCartItemsCount(cartData.id);
-        yield CartLoadedState(
-          productIdToProductItem.values.toList(),
-          totalCartQuantity,
-          productIdToCartItem,
-        );
+        yield CartLoadedState(productIdToProductItem.values.toList(), totalCartQuantity, productIdToCartItem,);
       } else if (event is RemovedItemInCartEvent) {
-        totalPrice -=
-            double.parse(productIdToProductItem[event.productId.toString() + event.variationId.toString()].price) *
-                productIdToQuantity[event.productId.toString() + event.variationId.toString()];
+        totalPrice -= double.parse(productIdToProductItem[event.productId.toString() + event.variationId.toString()].price) *
+            productIdToQuantity[event.productId.toString() + event.variationId.toString()];
         await _cartDataRepository.deleteCartItem(event.productId, event.variationId);
-        if (productIdToCartItem.values.toList().isEmpty) {
-          await _cartDataRepository
-              .deleteCart(productIdToCartItem[event.productId.toString() + event.variationId.toString()].cartId);
+        if (productIdToCartItem.values
+            .toList()
+            .isEmpty) {
+          await _cartDataRepository.deleteCart(productIdToCartItem[event.productId.toString() + event.variationId.toString()].cartId);
         }
         productIdToQuantity.remove(event.productId.toString() + event.variationId.toString());
         productIdToCartItem.remove(event.productId.toString() + event.variationId.toString());
@@ -70,40 +66,28 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
         cartData = await _cartDataRepository.getCart(Root.user.email);
         if (cartData == null) {
-          await _cartDataRepository.createCart(
-            // ignore: missing_required_param
-            CartData(userEmail: Root.user.email),
-          );
+          await _cartDataRepository.createCart(// ignore: missing_required_param
+            CartData(userEmail: Root.user.email),);
           cartData = await _cartDataRepository.getCart(Root.user.email);
         }
         //Check if the product exisit in the cart before adding
         CartItem cartItem = await _cartDataRepository.getCartItemById(
-          event._productModel.id,
-          variationId: event.variationId ?? event._productModel.defaultVariationId,
-        );
+          event._productModel.id, variationId: event.variationId ?? event._productModel.defaultVariationId,);
         //If there is no cart items for this product, create one
         if (cartItem == null) {
-          await _cartDataRepository.createCartItem(
-            CartItem(
-              id: event._productModel.id,
-              quantity: event.quantity,
-              cartId: cartData.id,
-              variationId: event.variationId ?? event._productModel.defaultVariationId,
-            ),
-          );
+          await _cartDataRepository.createCartItem(CartItem(id: event._productModel.id,
+            quantity: event.quantity,
+            cartId: cartData.id,
+            variationId: event.variationId ?? event._productModel.defaultVariationId,),);
           cartItem = await _cartDataRepository.getCartItemById(event._productModel.id, variationId: event.variationId);
         }
         //Else get the saved cart item and update it's quantity
         else {
-          cartItem = CartItem(
-            cartId: cartItem.cartId,
+          cartItem = CartItem(cartId: cartItem.cartId,
             id: cartItem.id,
             quantity: event.quantity,
-            variationId: event.variationId ?? event._productModel.defaultVariationId,
-          );
-          await _cartDataRepository.updateCartItem(
-            cartItem,
-          );
+            variationId: event.variationId ?? event._productModel.defaultVariationId,);
+          await _cartDataRepository.updateCartItem(cartItem,);
         }
 
         productIdToCartItem[event._productModel.id.toString() + event.variationId.toString() ??
@@ -111,8 +95,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         productIdToQuantity[event._productModel.id.toString() + event.variationId.toString() ??
             event._productModel.defaultVariationId.toString()] = cartItem.quantity;
 
-        ProductItem productItem = ProductItem(
-          productId: event._productModel.id,
+        ProductItem productItem = ProductItem(productId: event._productModel.id,
           quantity: productIdToQuantity[event._productModel.id.toString() + event.variationId.toString()],
           featuredImage: event._productModel.imageFeature,
           name: event._productModel.name,
@@ -120,23 +103,16 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           variationId: event.variationId,
           attribute: event.attributes,
           total: (double.parse(event._productModel.price) *
-                  productIdToQuantity[event._productModel.id.toString() + event.variationId.toString()])
-              .toStringAsFixed(2),
-        );
+              productIdToQuantity[event._productModel.id.toString() + event.variationId.toString()]).toStringAsFixed(2),);
 
         productIdToProductItem[event._productModel.id.toString() + event.variationId.toString()] = productItem;
-        productIdToProductItem[event._productModel.id.toString() + event.variationId.toString()].total = (double.parse(
-                    productIdToProductItem[event._productModel.id.toString() + event.variationId.toString()].price) *
-                productIdToQuantity[event._productModel.id.toString() + event.variationId.toString()])
-            .toStringAsFixed(2);
+        productIdToProductItem[event._productModel.id.toString() + event.variationId.toString()].total =
+            (double.parse(productIdToProductItem[event._productModel.id.toString() + event.variationId.toString()].price) *
+                productIdToQuantity[event._productModel.id.toString() + event.variationId.toString()]).toStringAsFixed(2);
         totalPrice += double.parse(productItem.total);
         totalCartQuantity = await _cartDataRepository.getCartItemsCount(cartData.id);
 
-        yield CartLoadedState(
-          productIdToProductItem.values.toList(),
-          totalCartQuantity,
-          productIdToCartItem,
-        );
+        yield CartLoadedState(productIdToProductItem.values.toList(), totalCartQuantity, productIdToCartItem,);
       } else if (event is GetCartEvent) {
         yield CartLoadingState();
         print("SAD");
@@ -146,35 +122,30 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         print("SAD");
         await loadCart();
 
-      yield CartLoadedState(
-        productIdToProductItem.values.toList(),
-        totalCartQuantity,
-        productIdToCartItem,
-      );
-    } else if (event is GetCartEvent) {
-      yield CartLoadingState();
-      totalPrice = 0;
-      await loadCart();
-      yield CartLoadedState(productIdToProductItem.values.toList(), totalCartQuantity, productIdToCartItem);
-    } else if (event is CheckoutCartEvent) {
-      yield CartLoadingState();
-      await _cartDataRepository.deleteCartItems(cartData.id);
-      cartData = await _cartDataRepository.getCart();
-      totalCartQuantity = 0;
-      productIdToQuantity = {};
-      productIdToCartItem = {};
-      productIdToProductItem = {};
-      totalPrice = 0;
-      yield CartLoadedState(productIdToProductItem.values.toList(), totalCartQuantity, productIdToCartItem);
-    }
+        yield CartLoadedState(productIdToProductItem.values.toList(), totalCartQuantity, productIdToCartItem,);
+      } else if (event is GetCartEvent) {
+        yield CartLoadingState();
+        totalPrice = 0;
+        await loadCart();
+        yield CartLoadedState(productIdToProductItem.values.toList(), totalCartQuantity, productIdToCartItem);
+      } else if (event is CheckoutCartEvent) {
+        yield CartLoadingState();
+        await _cartDataRepository.deleteCartItems(cartData.id);
+        cartData = await _cartDataRepository.getCart(cartData.userEmail);
+        totalCartQuantity = 0;
+        productIdToQuantity = {};
+        productIdToCartItem = {};
+        productIdToProductItem = {};
+        totalPrice = 0;
+        yield CartLoadedState(productIdToProductItem.values.toList(), totalCartQuantity, productIdToCartItem);
+      }
+    } catch (e) {}
   }
 
   loadCart() async {
     //Load cart items for the first time the app loads
-    print("A7a 1");
     cartData = await _cartDataRepository.getCart(Root.user.email);
-    print("A7a 2");
-    print("=========================================================================================================");
+
     //If cartData is not null, then get the cart Items count
     if (cartData != null) {
       List<CartItem> cartItems = await _cartDataRepository.getCartItems(cartData.id);
