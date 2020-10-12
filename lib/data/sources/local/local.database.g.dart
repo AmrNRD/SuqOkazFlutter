@@ -410,16 +410,18 @@ class $CategoryTable extends Category with TableInfo<$CategoryTable, CategoryDat
 
 class CartData extends DataClass implements Insertable<CartData> {
   final int id;
+  final String userEmail;
   final int addressId;
   final String shippingMethodId;
   final String discountCoupon;
-  CartData({@required this.id, this.addressId, this.shippingMethodId, this.discountCoupon});
+  CartData({@required this.id, @required this.userEmail, this.addressId, this.shippingMethodId, this.discountCoupon});
   factory CartData.fromData(Map<String, dynamic> data, GeneratedDatabase db, {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     return CartData(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      userEmail: stringType.mapFromDatabaseResponse(data['${effectivePrefix}user_email']),
       addressId: intType.mapFromDatabaseResponse(data['${effectivePrefix}address_id']),
       shippingMethodId: stringType.mapFromDatabaseResponse(data['${effectivePrefix}shipping_method_id']),
       discountCoupon: stringType.mapFromDatabaseResponse(data['${effectivePrefix}discount_coupon']),
@@ -430,6 +432,9 @@ class CartData extends DataClass implements Insertable<CartData> {
     final map = <String, Expression>{};
     if (!nullToAbsent || id != null) {
       map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || userEmail != null) {
+      map['user_email'] = Variable<String>(userEmail);
     }
     if (!nullToAbsent || addressId != null) {
       map['address_id'] = Variable<int>(addressId);
@@ -446,6 +451,7 @@ class CartData extends DataClass implements Insertable<CartData> {
   CartCompanion toCompanion(bool nullToAbsent) {
     return CartCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      userEmail: userEmail == null && nullToAbsent ? const Value.absent() : Value(userEmail),
       addressId: addressId == null && nullToAbsent ? const Value.absent() : Value(addressId),
       shippingMethodId: shippingMethodId == null && nullToAbsent ? const Value.absent() : Value(shippingMethodId),
       discountCoupon: discountCoupon == null && nullToAbsent ? const Value.absent() : Value(discountCoupon),
@@ -456,6 +462,7 @@ class CartData extends DataClass implements Insertable<CartData> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return CartData(
       id: serializer.fromJson<int>(json['id']),
+      userEmail: serializer.fromJson<String>(json['userEmail']),
       addressId: serializer.fromJson<int>(json['addressId']),
       shippingMethodId: serializer.fromJson<String>(json['shippingMethodId']),
       discountCoupon: serializer.fromJson<String>(json['discountCoupon']),
@@ -466,14 +473,17 @@ class CartData extends DataClass implements Insertable<CartData> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'userEmail': serializer.toJson<String>(userEmail),
       'addressId': serializer.toJson<int>(addressId),
       'shippingMethodId': serializer.toJson<String>(shippingMethodId),
       'discountCoupon': serializer.toJson<String>(discountCoupon),
     };
   }
 
-  CartData copyWith({int id, int addressId, String shippingMethodId, String discountCoupon}) => CartData(
+  CartData copyWith({int id, String userEmail, int addressId, String shippingMethodId, String discountCoupon}) =>
+      CartData(
         id: id ?? this.id,
+        userEmail: userEmail ?? this.userEmail,
         addressId: addressId ?? this.addressId,
         shippingMethodId: shippingMethodId ?? this.shippingMethodId,
         discountCoupon: discountCoupon ?? this.discountCoupon,
@@ -482,6 +492,7 @@ class CartData extends DataClass implements Insertable<CartData> {
   String toString() {
     return (StringBuffer('CartData(')
           ..write('id: $id, ')
+          ..write('userEmail: $userEmail, ')
           ..write('addressId: $addressId, ')
           ..write('shippingMethodId: $shippingMethodId, ')
           ..write('discountCoupon: $discountCoupon')
@@ -490,13 +501,14 @@ class CartData extends DataClass implements Insertable<CartData> {
   }
 
   @override
-  int get hashCode =>
-      $mrjf($mrjc(id.hashCode, $mrjc(addressId.hashCode, $mrjc(shippingMethodId.hashCode, discountCoupon.hashCode))));
+  int get hashCode => $mrjf($mrjc(id.hashCode,
+      $mrjc(userEmail.hashCode, $mrjc(addressId.hashCode, $mrjc(shippingMethodId.hashCode, discountCoupon.hashCode)))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is CartData &&
           other.id == this.id &&
+          other.userEmail == this.userEmail &&
           other.addressId == this.addressId &&
           other.shippingMethodId == this.shippingMethodId &&
           other.discountCoupon == this.discountCoupon);
@@ -504,29 +516,34 @@ class CartData extends DataClass implements Insertable<CartData> {
 
 class CartCompanion extends UpdateCompanion<CartData> {
   final Value<int> id;
+  final Value<String> userEmail;
   final Value<int> addressId;
   final Value<String> shippingMethodId;
   final Value<String> discountCoupon;
   const CartCompanion({
     this.id = const Value.absent(),
+    this.userEmail = const Value.absent(),
     this.addressId = const Value.absent(),
     this.shippingMethodId = const Value.absent(),
     this.discountCoupon = const Value.absent(),
   });
   CartCompanion.insert({
     this.id = const Value.absent(),
+    @required String userEmail,
     this.addressId = const Value.absent(),
     this.shippingMethodId = const Value.absent(),
     this.discountCoupon = const Value.absent(),
-  });
+  }) : userEmail = Value(userEmail);
   static Insertable<CartData> custom({
     Expression<int> id,
+    Expression<String> userEmail,
     Expression<int> addressId,
     Expression<String> shippingMethodId,
     Expression<String> discountCoupon,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (userEmail != null) 'user_email': userEmail,
       if (addressId != null) 'address_id': addressId,
       if (shippingMethodId != null) 'shipping_method_id': shippingMethodId,
       if (discountCoupon != null) 'discount_coupon': discountCoupon,
@@ -534,9 +551,14 @@ class CartCompanion extends UpdateCompanion<CartData> {
   }
 
   CartCompanion copyWith(
-      {Value<int> id, Value<int> addressId, Value<String> shippingMethodId, Value<String> discountCoupon}) {
+      {Value<int> id,
+      Value<String> userEmail,
+      Value<int> addressId,
+      Value<String> shippingMethodId,
+      Value<String> discountCoupon}) {
     return CartCompanion(
       id: id ?? this.id,
+      userEmail: userEmail ?? this.userEmail,
       addressId: addressId ?? this.addressId,
       shippingMethodId: shippingMethodId ?? this.shippingMethodId,
       discountCoupon: discountCoupon ?? this.discountCoupon,
@@ -548,6 +570,9 @@ class CartCompanion extends UpdateCompanion<CartData> {
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int>(id.value);
+    }
+    if (userEmail.present) {
+      map['user_email'] = Variable<String>(userEmail.value);
     }
     if (addressId.present) {
       map['address_id'] = Variable<int>(addressId.value);
@@ -565,6 +590,7 @@ class CartCompanion extends UpdateCompanion<CartData> {
   String toString() {
     return (StringBuffer('CartCompanion(')
           ..write('id: $id, ')
+          ..write('userEmail: $userEmail, ')
           ..write('addressId: $addressId, ')
           ..write('shippingMethodId: $shippingMethodId, ')
           ..write('discountCoupon: $discountCoupon')
@@ -583,6 +609,18 @@ class $CartTable extends Cart with TableInfo<$CartTable, CartData> {
   GeneratedIntColumn get id => _id ??= _constructId();
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false, hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _userEmailMeta = const VerificationMeta('userEmail');
+  GeneratedTextColumn _userEmail;
+  @override
+  GeneratedTextColumn get userEmail => _userEmail ??= _constructUserEmail();
+  GeneratedTextColumn _constructUserEmail() {
+    return GeneratedTextColumn(
+      'user_email',
+      $tableName,
+      false,
+    );
   }
 
   final VerificationMeta _addressIdMeta = const VerificationMeta('addressId');
@@ -618,7 +656,7 @@ class $CartTable extends Cart with TableInfo<$CartTable, CartData> {
   }
 
   @override
-  List<GeneratedColumn> get $columns => [id, addressId, shippingMethodId, discountCoupon];
+  List<GeneratedColumn> get $columns => [id, userEmail, addressId, shippingMethodId, discountCoupon];
   @override
   $CartTable get asDslTable => this;
   @override
@@ -631,6 +669,11 @@ class $CartTable extends Cart with TableInfo<$CartTable, CartData> {
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
+    }
+    if (data.containsKey('user_email')) {
+      context.handle(_userEmailMeta, userEmail.isAcceptableOrUnknown(data['user_email'], _userEmailMeta));
+    } else if (isInserting) {
+      context.missing(_userEmailMeta);
     }
     if (data.containsKey('address_id')) {
       context.handle(_addressIdMeta, addressId.isAcceptableOrUnknown(data['address_id'], _addressIdMeta));

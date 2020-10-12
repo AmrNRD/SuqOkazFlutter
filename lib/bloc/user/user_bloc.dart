@@ -23,19 +23,20 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     try {
       yield UserLoadingState();
       if (event is GetUser) {
-        Root.user=await userRepository.fetchUserData();
+        Root.user = await userRepository.fetchUserData();
         yield UserLoadedState();
       } else if (event is LoginUser) {
         print("enter event LoginUser");
-       Root.user=await userRepository.login(event.email, event.password);
-       print("out of userRepository.login in the LoginUser in UserBloc");
-       print("user");
-       print(Root.user.toJson());
+        Root.user = await userRepository.login(event.email, event.password);
+        print("out of userRepository.login in the LoginUser in UserBloc");
+        print("user");
+        print(Root.user.toJson());
         yield UserLoadedState();
         print("yield UserLoadedState");
         print("out event LoginUser");
-      }else if (event is LoginUserWithFacebook) {
-        Root.user=await userRepository.loginWithFacebook(event.userID,event.email,event.name,event.token,event.profileUrl,event.profileUrl);
+      } else if (event is LoginUserWithFacebook) {
+        Root.user = await userRepository.loginWithFacebook(
+            event.userID, event.email, event.name, event.token, event.profileUrl, event.profileUrl);
         yield UserLoadedState();
       }else if (event is LoginUserWithGoogle) {
         Root.user=await userRepository.loginWithGoogle(event.userID,event.email,event.name,event.token,event.profileUrl,event.profileUrl);
@@ -45,14 +46,16 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         yield UserLoadedState();
       }else if (event is UpdateUserProfile) {
         Root.user=await userRepository.update(event.user);
+      } else if (event is UpdateUserProfile) {
+        Root.user = await userRepository.update(event.user);
         yield UserLoadedState();
-      }else if (event is SignUpUser) {
-        Root.user=await userRepository.signUp(event.email, event.password, event.passwordConfirmation);
+      } else if (event is SignUpUser) {
+        Root.user = await userRepository.signUp(event.email, event.password, event.passwordConfirmation);
         yield UserLoadedState();
       } else if (event is LogoutUser) {
         await userRepository.logout();
-          yield UserLoggedOutState();
-    }
+        yield UserLoggedOutState();
+      }
     } catch (error) {
       print(error.runtimeType);
       print(error.toString());

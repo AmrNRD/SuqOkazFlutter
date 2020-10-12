@@ -7,8 +7,8 @@ class CartService {
 
   CartService(this.appDataBase);
 
-  Future<CartData> getCart() {
-    return appDataBase.getCart();
+  Future<CartData> getCart(String userEmail) {
+    return appDataBase.getCart(userEmail);
   }
 
   Future deleteCart(int id) {

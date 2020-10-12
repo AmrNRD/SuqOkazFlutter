@@ -9,6 +9,7 @@ import 'package:suqokaz/data/models/shipping_method_model.dart';
 import 'package:suqokaz/data/repositories/cart.repository.dart';
 import 'package:suqokaz/data/repositories/products_repository.dart';
 import 'package:suqokaz/data/sources/local/local.database.dart';
+import 'package:suqokaz/main.dart';
 
 part 'cart_event.dart';
 part 'cart_state.dart';
@@ -66,13 +67,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       }
       //If the user has not created a cart before, create one
 
-      cartData = await _cartDataRepository.getCart();
+      cartData = await _cartDataRepository.getCart(Root.user.email);
       if (cartData == null) {
         await _cartDataRepository.createCart(
           // ignore: missing_required_param
           CartData(),
         );
-        cartData = await _cartDataRepository.getCart();
+        cartData = await _cartDataRepository.getCart(Root.user.email);
       }
       //Check if the product exisit in the cart before adding
       CartItem cartItem = await _cartDataRepository.getCartItemById(
@@ -147,7 +148,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         // ignore: missing_required_param
         CartData(),
       );
-      cartData = await _cartDataRepository.getCart();
+      cartData = await _cartDataRepository.getCart(Root.user.email);
       totalCartQuantity = 0;
       productIdToQuantity = {};
       productIdToCartItem = {};
