@@ -160,38 +160,38 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   loadCart() async {
     //Load cart items for the first time the app loads
-    cartData = await _cartDataRepository.getCart();
+    cartData = await _cartDataRepository.getCart(Root.user.email);
     print("=========================================================================================================");
     //If cartData is not null, then get the cart Items count
     if (cartData != null) {
       List<CartItem> cartItems = await _cartDataRepository.getCartItems(cartData.id);
 
-        totalCartQuantity = await _cartDataRepository.getCartItemsCount(cartData.id);
-        await Future.forEach(cartItems, (element) async {
-          productIdToQuantity[element.id.toString() + element.variationId.toString()] = element.quantity;
-          productIdToCartItem[element.id.toString() + element.variationId.toString()] = element;
+      totalCartQuantity = await _cartDataRepository.getCartItemsCount(cartData.id);
+      await Future.forEach(cartItems, (element) async {
+        productIdToQuantity[element.id.toString() + element.variationId.toString()] = element.quantity;
+        productIdToCartItem[element.id.toString() + element.variationId.toString()] = element;
 
-          var productRawData = await _productsDataRepository.getProductDetails(productId: element.id.toString());
-          ProductModel productModel = ProductModel.fromJson(productRawData);
-          var varRawData = await _productsDataRepository.getProductVariationsById(element.id, element.variationId);
+        var productRawData = await _productsDataRepository.getProductDetails(productId: element.id.toString());
+        ProductModel productModel = ProductModel.fromJson(productRawData);
+        var varRawData = await _productsDataRepository.getProductVariationsById(element.id, element.variationId);
 
-          ProductVariation variation = ProductVariation.fromJson(varRawData);
+        ProductVariation variation = ProductVariation.fromJson(varRawData);
 
-          productIdToProductItem[productModel.id.toString() + element.variationId.toString()] = ProductItem(
-            productId: productModel.id,
-            quantity: productIdToQuantity[productModel.id.toString() + element.variationId.toString()],
-            name: productModel.name,
-            featuredImage: productModel.imageFeature,
-            variationId: variation.id,
-            price: variation.price,
-            attribute: variation.attributes,
-            total: (double.parse(productModel.price) *
-                    productIdToQuantity[productModel.id.toString() + element.variationId.toString()])
-                .toStringAsFixed(2),
-          );
-          totalPrice += (double.parse(productModel.price) *
-              productIdToQuantity[productModel.id.toString() + element.variationId.toString()]);
-        });
+        productIdToProductItem[productModel.id.toString() + element.variationId.toString()] = ProductItem(
+          productId: productModel.id,
+          quantity: productIdToQuantity[productModel.id.toString() + element.variationId.toString()],
+          name: productModel.name,
+          featuredImage: productModel.imageFeature,
+          variationId: variation.id,
+          price: variation.price,
+          attribute: variation.attributes,
+          total: (double.parse(productModel.price) *
+                  productIdToQuantity[productModel.id.toString() + element.variationId.toString()])
+              .toStringAsFixed(2),
+        );
+        totalPrice += (double.parse(productModel.price) *
+            productIdToQuantity[productModel.id.toString() + element.variationId.toString()]);
+      });
     }
     firstTimeCall = false;
   }
