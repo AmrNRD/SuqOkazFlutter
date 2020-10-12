@@ -25,6 +25,15 @@ class OrderLoadedState extends OrdersState {
   OrderLoadedState({this.order,this.products});
 }
 
+class PaymentSuccessfulState extends OrdersState {
+ final Payment payment;
+ final int orderId;
+  PaymentSuccessfulState(this.payment, this.orderId);
+}
+
+class SetPayedSuccessfullyState extends OrdersState {
+  SetPayedSuccessfullyState();
+}
 
 class OrderUrlLoadedState extends OrdersState {
   final String url;

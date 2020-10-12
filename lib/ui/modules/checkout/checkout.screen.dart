@@ -255,7 +255,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 InvoiceComponent(
                   startText: AppLocalizations.of(context).translate("delivery"),
                   endText: AppLocalizations.of(context)
-                      .translate("currency", replacement: "0.0"),
+                      .translate("currency", replacement: calculateShippingLocally(BlocProvider.of<CartBloc>(context)
+                      .totalPrice).toString()),
                 ),
                 SizedBox(
                   height: 8,

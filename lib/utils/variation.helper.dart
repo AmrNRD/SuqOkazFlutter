@@ -27,26 +27,31 @@ class VariationHelper {
         productModel.variations[selectedVariationIndex].attributes[0].option,
       );
     } else {
-      ProductVariation variation = productModel.variations.firstWhere((element) => element.inStock, orElse: null);
-      if (variation != null) {
-        selectedVariation = productModel.variations.indexOf(variation) ?? 0;
-        print(
-          variation.attributes[0].name,
-        );
-        print(
-          variation.attributes[0].option,
-        );
-        commonVariationFinder(
-          variation.attributes[0].name,
-          variation.attributes[0].option,
-        );
-      } else {
-        print(productModel.variations[selectedVariationIndex].attributes[0].name);
-        print(productModel.variations[selectedVariationIndex].attributes[0].option);
-        commonVariationFinder(
-          productModel.variations[selectedVariationIndex].attributes[0].name,
-          productModel.variations[selectedVariationIndex].attributes[0].option,
-        );
+      if (productModel.variations.isNotEmpty) {
+
+        ProductVariation variation =
+            productModel.variations.firstWhere((element) => (element != null && element.inStock != null && element.inStock), orElse: () => null);
+
+        if (variation != null) {
+          selectedVariation = productModel.variations.indexOf(variation) ?? 0;
+          print(
+            variation.attributes[0].name,
+          );
+          print(
+            variation.attributes[0].option,
+          );
+          commonVariationFinder(
+            variation.attributes[0].name,
+            variation.attributes[0].option,
+          );
+        } else {
+          print(productModel.variations[selectedVariationIndex].attributes[0].name);
+          print(productModel.variations[selectedVariationIndex].attributes[0].option);
+          commonVariationFinder(
+            productModel.variations[selectedVariationIndex].attributes[0].name,
+            productModel.variations[selectedVariationIndex].attributes[0].option,
+          );
+        }
       }
     }
 

@@ -18,6 +18,7 @@ abstract class ProductsDataRepository {
       String orderBy, // date, id, include, title and slug. Default is date
       String search,
       String lang});
+
   Future<dynamic> getFeaturedProducts({
     int pageIndex,
     int categoryId,
@@ -39,6 +40,11 @@ abstract class ProductsDataRepository {
   Future<dynamic> getProductVariationsById(int id, int varId);
 
   Future<List<ProductVariation>> getProductVariations(int id);
+
+  Future<dynamic> getApiProducts(
+      {int pageIndex,
+        int perPage = 10,
+        String lang});
 }
 
 class ProductsRepository extends ProductsDataRepository {
@@ -60,7 +66,7 @@ class ProductsRepository extends ProductsDataRepository {
       String orderBy,
       String search,
       String lang}) async {
-    print("dfghjkhgfdsdfghjkjhgfdsfghjkhgfd");
+
     return await productsService.getProducts(
       lang: lang,
       pageIndex: pageIndex,
@@ -135,5 +141,18 @@ class ProductsRepository extends ProductsDataRepository {
   @override
   Future getProductVariationsById(int id, int varId) async {
     return await productsService.getProductVariationById(id, varId);
+  }
+
+  @override
+  Future getApiProducts(
+      {int pageIndex,
+        int perPage = 10,
+        String lang}) async {
+
+    return await productsService.getApiProducts(
+      lang: lang,
+      pageIndex: pageIndex,
+      perPage: perPage
+    );
   }
 }

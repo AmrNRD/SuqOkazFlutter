@@ -146,28 +146,26 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         print("SAD");
         await loadCart();
 
-        print("-------ASDASD-----");
-        yield CartLoadedState(productIdToProductItem.values.toList(), totalCartQuantity, productIdToCartItem);
-      } else if (event is CheckoutCartEvent) {
-        yield CartLoadingState();
-        await _cartDataRepository.deleteCart(cartData.id);
-        await _cartDataRepository.createCart(
-          // ignore: missing_required_param
-          CartData(),
-        );
-        cartData = await _cartDataRepository.getCart(Root.user.email);
-        totalCartQuantity = 0;
-        productIdToQuantity = {};
-        productIdToCartItem = {};
-        productIdToProductItem = {};
-        totalPrice = 0;
-        yield CartLoadedState(productIdToProductItem.values.toList(), totalCartQuantity, productIdToCartItem);
-      }
-    } catch (e, stacktrace) {
-      print("0----------------------0");
-      print(e.runtimeType);
-      print(stacktrace);
-      yield CartErrorState(e.toString());
+      yield CartLoadedState(
+        productIdToProductItem.values.toList(),
+        totalCartQuantity,
+        productIdToCartItem,
+      );
+    } else if (event is GetCartEvent) {
+      yield CartLoadingState();
+      totalPrice = 0;
+      await loadCart();
+      yield CartLoadedState(productIdToProductItem.values.toList(), totalCartQuantity, productIdToCartItem);
+    } else if (event is CheckoutCartEvent) {
+      yield CartLoadingState();
+      await _cartDataRepository.deleteCartItems(cartData.id);
+      cartData = await _cartDataRepository.getCart();
+      totalCartQuantity = 0;
+      productIdToQuantity = {};
+      productIdToCartItem = {};
+      productIdToProductItem = {};
+      totalPrice = 0;
+      yield CartLoadedState(productIdToProductItem.values.toList(), totalCartQuantity, productIdToCartItem);
     }
   }
 

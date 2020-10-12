@@ -1,8 +1,17 @@
+import 'package:suqokaz/utils/constants.dart';
+
 import 'base/api_caller.dart';
 
 class ProductsService {
   // Create ApiCaller instance
   APICaller apiCaller = new APICaller();
+
+  Future<dynamic> getProductDetails(int id) async {
+    String url = "/products/$id";
+    final String oAuthUrl = apiCaller.getOAuthURL("GET", url, true);
+    apiCaller.setUrl(oAuthUrl);
+    return await apiCaller.getData(headers: {});
+  }
 
   Future<dynamic> getProductVariation(int id) async {
     String url = "/products/$id/variations";
@@ -89,6 +98,22 @@ class ProductsService {
 
     // Set url to caller
     apiCaller.setUrl(oAuthUrl);
+
+    // Make GET request and return result
+    return await apiCaller.getData(headers: {});
+  }
+
+
+
+  Future<dynamic> getApiProducts({
+    lang = "en",
+    pageIndex,
+    perPage = 10,
+  }) async {
+
+    // Set url to caller
+    apiCaller.setUrl(Constants.baseApiUrl + "/products?fields[posts]=id,post_title,"
+        "post_status&include=taxonomies,meta,lookups&lang=$lang&per_page=$perPage&page=$pageIndex");
 
     // Make GET request and return result
     return await apiCaller.getData(headers: {});

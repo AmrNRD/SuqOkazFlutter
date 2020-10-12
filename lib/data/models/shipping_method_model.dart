@@ -4,6 +4,8 @@ class ShippingMethod {
   String title;
   String description;
 
+  ShippingMethod(this.id, this.title);
+
   Map<String, dynamic> toJson() {
     return {"id": id, "title": title};
   }

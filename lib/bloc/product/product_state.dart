@@ -31,3 +31,9 @@ class ProductVariationsLoadedState extends ProductState {
 
   ProductVariationsLoadedState({this.productModel});
 }
+
+class ProductDetailsLoadedState extends ProductState {
+  final ProductModel productModel;
+
+  ProductDetailsLoadedState({this.productModel});
+}

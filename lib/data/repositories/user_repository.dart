@@ -279,8 +279,7 @@ class UserDataRepository implements UserRepository {
 
     try {
       var endPoint =
-          "${Constants.baseUrl}/wp-json/api/flutter_user/google_login/?second=$cookieLifeTime"
-          "&access_token=$token";
+          "${Constants.baseUrl}/wp-json/api/flutter_user/google_login/?second=$cookieLifeTime&access_token=$token";
 
       var response = await http.get(endPoint);
 

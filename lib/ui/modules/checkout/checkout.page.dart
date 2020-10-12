@@ -81,6 +81,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     shippingBloc = ShippingBloc(new ShippingMethodDataRepository());
     shippingBloc.add(GetAllShippingEvent());
 
+    applyShippingMethod();
+
     super.initState();
   }
 
@@ -116,10 +118,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     create: (context) => addressBloc,
                     child: BlocListener<AddressBloc, AddressState>(
                       listener: (BuildContext context, AddressState state) {
-                        if (state is AddressesLoadedState) {
+                        if (state is AddressesLoadedState)
+                        {
                           if (state.addresses != null) {
-                            selectedAddressId = state.addresses[0].id;
-                            _selectedAddressModel = state.addresses[0];
+                            setState(() {
+                              selectedAddressId = state.addresses[0].id;
+                              _selectedAddressModel = state.addresses[0];
+                            });
                           }
                         }
                       },
@@ -173,7 +178,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   SizedBox(
                     height: AppDimens.marginEdgeCase32,
                   ),
-                  Text(
+                  /*Text(
                     AppLocalizations.of(context)
                         .translate("please_select_shipping_method"),
                     style: AppTheme.headline2.copyWith(
@@ -228,7 +233,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         return Container();
                       },
                     ),
-                  ),
+                  ),*/
                   SizedBox(
                     height: screenAwareSize(190, context),
                   ),
@@ -281,7 +286,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 InvoiceComponent(
                   startText: AppLocalizations.of(context).translate("delivery"),
                   endText: AppLocalizations.of(context)
-                      .translate("currency", replacement: "0.0"),
+                      .translate("currency", replacement: calculateShippingLocally(BlocProvider.of<CartBloc>(context)
+                      .totalPrice).toString()),
                 ),
                 SizedBox(
                   height: 8,
@@ -291,7 +297,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   endText: AppLocalizations.of(context).translate(
                     "currency",
                     replacement:( BlocProvider.of<CartBloc>(context)
-                        .totalPrice-(widget.discount??0))
+                        .totalPrice-(widget.discount??0) + calculateShippingLocally(BlocProvider.of<CartBloc>(context)
+                        .totalPrice))
                         .toStringAsFixed(2),
                   ),
                 ),
@@ -301,6 +308,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 CustomRaisedButton(
                   isLoading: false,
                   label: AppLocalizations.of(context).translate("checkout"),
+                  style: TextStyle(fontWeight: FontWeight.w500,color: Colors.white),
                   onPress: _selectedShippingMethod == null
                       ? () {
                           showScaffoldSnackBar(
@@ -308,9 +316,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             scaffoldKey: CheckoutPage.scaffoldKey,
                             backgroundColor: Colors.amber,
                             message: AppLocalizations.of(context).translate(
-                                "Please Selected valid shipping method",
+                                "Please Select valid shipping method",
                                 defaultText:
-                                "Please Selected valid shipping method"),
+                                "Please Select valid shipping method"),
                           );
                         }
                       : _selectedAddressModel == null
@@ -320,9 +328,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 scaffoldKey: CheckoutPage.scaffoldKey,
                                 backgroundColor: Colors.amber,
                                 message: AppLocalizations.of(context).translate(
-                                    "Please Selected or create valid shipping address",
+                                    "Please Select or create valid shipping address",
                                     defaultText:
-                                        "Plesae Select or create a valid shipping address"),
+                                        "Please Select or create a valid shipping address"),
                               );
                             }
                           : () => Navigator.pushNamed(
@@ -351,5 +359,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       arguments: addressModel,
     );
     BlocProvider.of<AddressBloc>(context).add(GetAllAddressEvent());
+  }
+
+  void applyShippingMethod(){
+    double shippingCost = calculateShippingLocally(BlocProvider.of<CartBloc>(context).totalPrice);
+    if(shippingCost > 0){
+      _selectedShippingMethod = new ShippingMethod("flat_rate","Flat Rate");
+      selectedShippingMethod = "flat_rate";
+    }else{
+      _selectedShippingMethod = new ShippingMethod("free_shipping","Free Shipping");
+      selectedShippingMethod = "free_shipping";
+    }
   }
 }

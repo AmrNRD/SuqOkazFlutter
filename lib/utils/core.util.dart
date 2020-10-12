@@ -20,6 +20,14 @@ double screenAwareWidth(double size, BuildContext context) {
   return size * drawingWidth / baseWidth;
 }
 
+double calculateShippingLocally(double totalPrice) {
+// This value 300 is agreed with backend team with customer, not changeable
+  if (totalPrice < 300.0)
+    return 40;
+  else
+    return 0;
+}
+
 class CustomScrollBehavior extends ScrollBehavior {
   @override
   Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection) {
@@ -51,14 +59,7 @@ Color generateRandomColor(int index) {
 
 class ImageProcessor {
   static Widget image(
-      {String url,
-      double width,
-      double height,
-      BoxFit fit,
-      String tag,
-      double offset = 0.0,
-      isVideo = false,
-      hidePlaceHolder = false}) {
+      {String url, double width, double height, BoxFit fit, String tag, double offset = 0.0, isVideo = false, hidePlaceHolder = false}) {
     if (height == null && width == null) {
       width = 200;
     }
@@ -106,8 +107,7 @@ class ImageProcessor {
         width: width ?? 100,
         height: height ?? 140,
       ),
-      errorWidget: (context, url, error) =>
-          Container(width: width, height: height ?? width * 1.2, color: AppColors.kEmptyColor),
+      errorWidget: (context, url, error) => Container(width: width, height: height ?? width * 1.2, color: AppColors.kEmptyColor),
     );
 
 //    return ImageCustom(url: imageUrl, mainUrl: url, width: width, fit: fit, height: height, offset: offset,);

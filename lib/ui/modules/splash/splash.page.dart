@@ -38,19 +38,16 @@ class _LandingSplashScreenState extends State<LandingSplashScreen> {
 
   void loadCategory() async {
     print('--------------------------------------------');
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    if (sharedPreferences.containsKey('lastUpdateToCategories')) {
-      DateTime lastUpdateToCategories = DateTime.parse(sharedPreferences.getString('lastUpdateToCategories'));
-      if (lastUpdateToCategories.difference(DateTime.now()).inDays > 3) {
-        print("lastUpdateToCategories were before 3 days");
-        print("reloading category");
+    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    if(sharedPreferences.containsKey('lastUpdateToCategories')){
+      DateTime lastUpdateToCategories=DateTime.parse(sharedPreferences.getString('lastUpdateToCategories'));
+      if(lastUpdateToCategories.difference(DateTime.now()).inDays>3){
         BlocProvider.of<CategoryBloc>(context).add(ReloadCategoryEvent());
       } else {
         BlocProvider.of<CategoryBloc>(context).add(GetCategoriesEvent());
       }
-    } else {
-      print("lastUpdateToCategories were not found");
-      print("reloading category");
+    }else{
+
       BlocProvider.of<CategoryBloc>(context).add(ReloadCategoryEvent());
     }
   }

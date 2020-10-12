@@ -30,6 +30,7 @@
     "card_holder": "اسم حامل البطاقة",
     "card_number": "رقم البطاقة",
     "month": "الشهر",
+    "enter_last_name": "ادخل الاسم الاخير",
     "year": "السنة",
     "ccv": "الرقم السري",
     "congrat": "تم ارسال طلبك بنجاح !",
@@ -53,6 +54,7 @@
     "search_product_title": "البحث عن المنتاجات",
     "search_product_body": "قم يكتابة اسم المنتج لتبداء البحث",
     "wishlist": "المفضلة",
+    "for_you": "من أجلك",
     "move_to_wishlist": "اضف الي المفضلة",
     "profile": "الاعدادات",
     "signup": "تسجيل",
@@ -212,5 +214,6 @@
     "onSale":"خصومات",
     "You don't have any items in the wishlist": "لا يوجد اي منتجات في المفضلات",
     "addToWishlist": "ابدا بوضع منتجات في المفضلات.",
-    "sale": "خصم"
+    "sale": "خصم",
+    "please_wait": "جارى الأضافة..."
 }

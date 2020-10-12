@@ -31,8 +31,9 @@ class ProductDetailsPage extends StatefulWidget {
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   final ProductBloc productDetailsBloc = ProductBloc(ProductsRepository());
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  ProductModel productModel;
 
   int selectedVariation = 0;
 
@@ -41,6 +42,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   int variationId = 0;
 
   bool isLoading = false;
+
+  bool apiProductLoaded = false;
 
   updateProductSettings(int quantity, int variationId, int selectedVariationIndex) {
     setState(() {
@@ -55,13 +58,20 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   void initState() {
     super.initState();
+
+    productModel = widget.productModel;
+
     BlocProvider.of<ReviewBloc>(context).add(
       GetProductReviewsEvent(
-        widget.productModel.id.toString(),
+        productModel.id.toString(),
       ),
     );
     wishListMaper = BlocProvider.of<WishlistBloc>(context).wishListMaper;
-    productDetailsBloc.add(GetProductVariationsEvent(widget.productModel));
+
+    productModel.loadedFromApi
+        ? productDetailsBloc.add(GetProductDetailsEvent(productModel.id.toString()))
+        : productDetailsBloc.add(GetProductVariationsEvent(productModel));
+
     _scrollController = ScrollController();
   }
 
@@ -82,92 +92,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       body: BlocBuilder<ProductBloc, ProductState>(
         cubit: productDetailsBloc,
         builder: (BuildContext context, ProductState state) {
-          if (state is ProductVariationsLoadedState) {
-            return BlocListener<CartBloc, CartState>(
-              listener: (context, state) {
-                if (state is CartLoadedState) {
-                  _scaffoldKey.currentState.showSnackBar(
-                    SnackBar(
-                      duration: Duration(seconds: 1),
-                      backgroundColor: Colors.green,
-                      content: Text(
-                        AppLocalizations.of(context).translate("cart_add_success"),
-                        style: Theme.of(context).textTheme.headline2.copyWith(color: Colors.white),
-                      ),
-                    ),
-                  );
-                }
-              },
-              child: Stack(
-                children: <Widget>[
-                  Positioned.fill(
-                    child: SingleChildScrollView(
-                      controller: _scrollController,
-                      child: Container(
-                        margin: EdgeInsets.all(24),
-                        child: Column(
-                          children: <Widget>[
-                            BlocListener<WishlistBloc, WishlistState>(
-                              listener: (context, state) {
-                                if (state is WishlistLoadedState) {
-                                  setState(() {
-                                    wishListMaper = BlocProvider.of<WishlistBloc>(context).wishListMaper;
-                                    isLoading = false;
-                                  });
-                                } else if (state is WishlistLoadingState) {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-                                } else {
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                }
-                              },
-                              child: ProductStatusBarComponent(
-                                productId: widget.productModel.id,
-                                variationId: variationId,
-                                isLoading: isLoading,
-                                inStock: widget.productModel.variations[selectedVariation].inStock,
-                                isInFav: wishListMaper.containsKey(widget.productModel.id.toString() +
-                                        widget.productModel.variations[selectedVariation].id.toString()) ??
-                                    false,
-                              ),
-                            ),
-                            CustomCarouselComponent(
-                              images: widget.productModel.images,
-                            ),
-                            ProductDetailsComponent(
-                              productModel: widget.productModel,
-                              updateSettings: updateProductSettings,
-                              selectedVariation: selectedVariation,
-                            ),
-                            ProductConsultingDetailsComponent(
-                              scrollController: _scrollController,
-                              productModel: widget.productModel,
-                              selectedVariation: selectedVariation,
-                              scaffoldKey: _scaffoldKey,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    left: 0,
-                    child: AddToCartButton(
-                      productModel: widget.productModel,
-                      activeButton: widget.productModel.variations[selectedVariation].inStock,
-                      attributes: widget.productModel.variations[selectedVariation].attributes,
-                      variationId: variationId,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          } else if (state is ProductsLoadingState) {
+          if (state is ProductVariationsLoadedState || state is ProductDetailsLoadedState) {
+            if (state is ProductDetailsLoadedState) {
+              productModel = state.productModel;
+              apiProductLoaded = true;
+              productDetailsBloc.add(GetProductVariationsEvent(productModel));
+            }
+          } else if (state is ProductsLoadingState && !apiProductLoaded) {
             return Center(
               child: LoadingWidget(),
             );
@@ -184,7 +115,90 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               ),
             );
           }
-          return Container();
+          return BlocListener<CartBloc, CartState>(
+            listener: (context, state) {
+              if (state is CartLoadedState) {
+                _scaffoldKey.currentState.showSnackBar(
+                  SnackBar(
+                    duration: Duration(seconds: 1),
+                    backgroundColor: Colors.green,
+                    content: Text(
+                      AppLocalizations.of(context).translate("cart_add_success"),
+                      style: Theme.of(context).textTheme.headline2.copyWith(color: Colors.white),
+                    ),
+                  ),
+                );
+              }
+            },
+            child: Stack(
+              children: <Widget>[
+                Positioned.fill(
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    child: Container(
+                      margin: EdgeInsets.all(24),
+                      child: Column(
+                        children: <Widget>[
+                          BlocListener<WishlistBloc, WishlistState>(
+                            listener: (context, state) {
+                              if (state is WishlistLoadedState) {
+                                setState(() {
+                                  wishListMaper = BlocProvider.of<WishlistBloc>(context).wishListMaper;
+                                  isLoading = false;
+                                });
+                              } else if (state is WishlistLoadingState) {
+                                setState(() {
+                                  isLoading = true;
+                                });
+                              } else {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              }
+                            },
+                            child: productModel.variations.isNotEmpty ? ProductStatusBarComponent(
+                              productId: productModel.id,
+                              variationId: variationId,
+                              isLoading: isLoading,
+                              inStock: productModel.variations[selectedVariation].inStock,
+                              isInFav: wishListMaper.containsKey(
+                                  productModel.id.toString() + productModel.variations[selectedVariation].id.toString()) ??
+                                  false,
+                            ) : Container(),
+                          ),
+                          CustomCarouselComponent(
+                            images: productModel.images,
+                          ),
+                          ProductDetailsComponent(
+                            productModel: productModel,
+                            updateSettings: updateProductSettings,
+                            selectedVariation: selectedVariation,
+                          ),
+                          ProductConsultingDetailsComponent(
+                            scrollController: _scrollController,
+                            productModel: productModel,
+                            selectedVariation: selectedVariation,
+                            scaffoldKey: _scaffoldKey,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                productModel.variations.isNotEmpty ? Positioned(
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  child: AddToCartButton(
+                    productModel: productModel,
+                    activeButton: productModel.variations[selectedVariation].inStock,
+                    attributes: productModel.variations[selectedVariation].attributes,
+                    variationId: variationId,
+                  ),
+                ) : Container(),
+              ],
+            ),
+          );
         },
       ),
     );

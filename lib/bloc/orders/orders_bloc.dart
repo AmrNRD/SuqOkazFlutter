@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:suqokaz/data/models/cart_model.dart';
 import 'package:suqokaz/data/models/order_model.dart';
+import 'package:suqokaz/data/models/payment.dart';
 import 'package:suqokaz/data/repositories/orders_repository.dart';
 
 part 'orders_event.dart';
@@ -68,19 +69,26 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
             yield OrdersErrorState(message: "Error occurred"); // TODO: translate
           }
         }
-      }
-      else if(event is CreateOrder) {
+      } else if(event is CreateOrder) {
         OrderModel order=await ordersRepository.createOrder(event.order);
-        if(order.status=="pending"&&order.paymentMethodId!="cod")
-        {
-         String url= await ordersRepository.getCheckoutUrl(order.toJson());
-
-         yield OrderUrlLoadedState(order: order,url: url);
-        }else {
+        // if(order.status=="pending"&&order.paymentMethodId!="cod")
+        // {
+        //  String url= await ordersRepository.getCheckoutUrl(order.toJson());
+        //
+        //  yield OrderUrlLoadedState(order: order,url: url);
+        // }else {
           yield OrderLoadedState(order: order);
-        }
-      }
-      else if(event is GetOrderDetails){
+        // }
+      } else if(event is CreateOrder) {
+        OrderModel order=await ordersRepository.createOrder(event.order);
+        yield OrderLoadedState(order: order);
+      }else if(event is CreatePayment){
+      Payment payment=await ordersRepository.createPayment(event.amount, event.name, event.number, event.cvc, event.month, event.year);
+      yield PaymentSuccessfulState(payment,event.orderId);
+      }else if(event is SetOrderPayed){
+        await ordersRepository.setOrderPayed(event.orderId);
+        yield SetPayedSuccessfullyState();
+      } else if(event is GetOrderDetails){
         yield OrdersLoadingState();
         List<ProductItem>detailProducts=await ordersRepository.getOrderDetails(event.order.lineItems);
           print("out");

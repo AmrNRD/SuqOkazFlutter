@@ -31,113 +31,125 @@ class _ProductDetailsComponentState extends State<ProductDetailsComponent> {
   int quantity = 1;
 
   updateQuantity(int quantity) {
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      setState(() {
-        selectedVariationModel = _variationHelper.commonVariations[0];
-        quantity = quantity;
-        widget.updateSettings(
-          quantity,
-          _variationHelper.commonVariations[0].id,
-          widget.productModel.variations.indexOf(_variationHelper.commonVariations[0]),
-        );
+    if(widget.productModel.variations.isNotEmpty){
+      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+        setState(() {
+          selectedVariationModel = _variationHelper.commonVariations[0];
+          quantity = quantity;
+          widget.updateSettings(
+            quantity,
+            _variationHelper.commonVariations[0].id,
+            widget.productModel.variations.indexOf(_variationHelper.commonVariations[0]),
+          );
+        });
       });
-    });
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    selectedVariationModel = widget.productModel.variations[widget.selectedVariation];
-    _variationHelper = VariationHelper(
-      widget.productModel,
-      widget.selectedVariation,
-    );
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+
+  }
+
+  validateVariationsHolder(){
+    if(selectedVariationModel == null || _variationHelper == null){
+      if(widget.productModel.variations.isNotEmpty){
+        selectedVariationModel = widget.productModel.variations[widget.selectedVariation];
+        _variationHelper = VariationHelper(
+          widget.productModel,
+          widget.selectedVariation,
+        );
+      }
+
       createAttributeList();
-      setState(() {
-        _attributeList;
-        updateQuantity(1);
-      });
-    });
+      updateQuantity(1);
+    }
   }
 
   createAttributeList() {
     _attributeList = [];
     var productAttributes = widget.productModel.attributes;
-    for (int i = 0; i < productAttributes.length; i++) {
-      _attributeList.add(
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(bottom: 4, top: 8),
-              child: Text(
-                "${productAttributes[i].name}".toUpperCase(),
-                textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.headline3.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
+    if(productAttributes != null){
+      for (int i = 0; i < productAttributes.length; i++) {
+        _attributeList.add(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(bottom: 4, top: 8),
+                child: Text(
+                  "${productAttributes[i].name}".toUpperCase(),
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.headline3.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
-            ),
-            Container(
-              width: double.infinity,
-              child: Wrap(
-                direction: Axis.horizontal,
-                alignment: WrapAlignment.start,
-                children: itemsBuilder(i, productAttributes[i]),
-              ),
-            ),
-          ],
-        ),
-      );
+              widget.productModel.variations.isNotEmpty ? Container(
+                width: double.infinity,
+                child: Wrap(
+                  direction: Axis.horizontal,
+                  alignment: WrapAlignment.start,
+                  children: itemsBuilder(i, productAttributes[i]),
+                ),
+              ) : Container(),
+            ],
+          ),
+        );
+      }
     }
+
   }
 
   List<Widget> itemsBuilder(int attrIndex, ProductAttribute productAttribute) {
     List<Widget> temp = [];
 
-    for (int i = 0; i < widget.productModel.attributes[attrIndex].options.length; i++) {
-      if (_variationHelper.commonVariationLocator[widget.productModel.attributes[attrIndex].name]
-              [widget.productModel.attributes[attrIndex].options[i]] !=
-          null) {
-        temp.add(
-          Container(
-            margin: EdgeInsetsDirectional.only(top: 8, bottom: 8, end: 8),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(20.0),
-              onTap: () {
-                _variationHelper.commonVariations = [];
-                searchVariationInList(
-                  productAttribute.name,
-                  productAttribute.options[i],
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
-                  border: _variationHelper.highlightButton(
-                    productAttribute.options[i],
+    try{
+      for (int i = 0; i < widget.productModel.attributes[attrIndex].options.length; i++) {
+        if (_variationHelper.commonVariationLocator[widget.productModel.attributes[attrIndex].name]
+        [widget.productModel.attributes[attrIndex].options[i]] != null) {
+
+          temp.add(
+            Container(
+              margin: EdgeInsetsDirectional.only(top: 8, bottom: 8, end: 8),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(20.0),
+                onTap: () {
+                  _variationHelper.commonVariations = [];
+                  searchVariationInList(
                     productAttribute.name,
-                  ),
-                  color: _variationHelper.containerColor(
                     productAttribute.options[i],
-                    productAttribute.name,
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    border: _variationHelper.highlightButton(
+                      productAttribute.options[i],
+                      productAttribute.name,
+                    ),
+                    color: _variationHelper.containerColor(
+                      productAttribute.options[i],
+                      productAttribute.name,
+                    ),
                   ),
-                ),
-                child: Text(
-                  "${productAttribute.options[i]}".toUpperCase(),
-                  style: Theme.of(context).textTheme.headline3.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
+                  child: Text(
+                    "${productAttribute.options[i]}".toUpperCase(),
+                    style: Theme.of(context).textTheme.headline3.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-        );
+          );
+        }
       }
-    }
+    }catch(e){}
+
     return temp;
   }
 
@@ -194,6 +206,9 @@ class _ProductDetailsComponentState extends State<ProductDetailsComponent> {
 
   @override
   Widget build(BuildContext context) {
+
+    validateVariationsHolder();
+
     return Column(
       children: <Widget>[
         SizedBox(
@@ -246,7 +261,7 @@ class _ProductDetailsComponentState extends State<ProductDetailsComponent> {
                 ],
               ),
             ),
-            Column(
+            selectedVariationModel != null ? Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 selectedVariationModel.onSale
@@ -283,7 +298,7 @@ class _ProductDetailsComponentState extends State<ProductDetailsComponent> {
                   ),
                 ),
               ],
-            )
+            ) : Container()
           ],
         ),
         ..._attributeList,

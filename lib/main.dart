@@ -66,9 +66,9 @@ class _RootState extends State<Root> {
               Root.fontFamily = AppFonts.fontTajawal;
             });
         } else {
-          Root.locale = Locale("en", "US");
+          Root.locale = Locale("ar", null);
             setState(() {
-              Root.fontFamily = AppFonts.fontRoboto;
+              Root.fontFamily = AppFonts.fontTajawal;
             });
         }
       });

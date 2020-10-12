@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:suqokaz/data/models/order_model.dart';
+import 'package:suqokaz/data/models/payment.dart';
 import 'package:suqokaz/data/models/product_model.dart';
 import 'package:suqokaz/data/repositories/products_repository.dart';
 import 'package:suqokaz/data/sources/remote/orders.service.dart';
@@ -10,6 +13,8 @@ import 'package:suqokaz/utils/constants.dart';
 abstract class OrdersRepository {
   Future<dynamic> getOrders({int pageIndex, int perPage = 20, int userID});
   Future createOrder(OrderModel order);
+  Future setOrderPayed(int orderId);
+  Future createPayment(double amount,String name,String number,int cvc,int month,int year);
   Future<String> getCheckoutUrl(Map<String, dynamic> params);
   Future getOrderDetails(List<ProductItem> products);
 }
@@ -55,7 +60,6 @@ class OrdersDataRepository extends OrdersRepository {
   @override
   Future createOrder(OrderModel order) async {
      var res=await productsService.createOrder(order);
-      print(res['id']);
      return OrderModel.fromJson(res);
   }
 
@@ -83,4 +87,22 @@ class OrdersDataRepository extends OrdersRepository {
       rethrow;
     }
   }
+
+  @override
+  Future createPayment(double amount,String name, String number, int cvc, int month, int year) async {
+
+   try{
+     var res=await productsService.createPayment(amount, name, number, cvc, month, year);
+     return Payment.fromJson(res);
+   }catch(error){
+
+   }
+  }
+
+  @override
+  Future setOrderPayed(int orderId) async {
+    var res=await productsService.setOrderPayed(orderId);
+    return OrderModel.fromJson(res);
+  }
+
 }
