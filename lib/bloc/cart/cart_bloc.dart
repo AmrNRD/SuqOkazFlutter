@@ -115,14 +115,16 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         yield CartLoadedState(productIdToProductItem.values.toList(), totalCartQuantity, productIdToCartItem,);
       } else if (event is GetCartEvent) {
         yield CartLoadingState();
-        print("SAD");
-        print("SAD");
+
         totalPrice = 0;
-        print("SAD");
-        print("SAD");
+
         await loadCart();
 
-        yield CartLoadedState(productIdToProductItem.values.toList(), totalCartQuantity, productIdToCartItem,);
+        yield CartLoadedState(
+          productIdToProductItem.values.toList(),
+          totalCartQuantity,
+          productIdToCartItem,
+        );
       } else if (event is GetCartEvent) {
         yield CartLoadingState();
         totalPrice = 0;
@@ -131,7 +133,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       } else if (event is CheckoutCartEvent) {
         yield CartLoadingState();
         await _cartDataRepository.deleteCartItems(cartData.id);
-        cartData = await _cartDataRepository.getCart(cartData.userEmail);
+        cartData = await _cartDataRepository.getCart(Root.user.email);
         totalCartQuantity = 0;
         productIdToQuantity = {};
         productIdToCartItem = {};
@@ -139,11 +141,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         totalPrice = 0;
         yield CartLoadedState(productIdToProductItem.values.toList(), totalCartQuantity, productIdToCartItem);
       }
-    } catch (e) {}
+    } catch (e) {
+      yield CartErrorState(e.toString());
+    }
   }
 
   loadCart() async {
     //Load cart items for the first time the app loads
+
     cartData = await _cartDataRepository.getCart(Root.user.email);
 
     //If cartData is not null, then get the cart Items count

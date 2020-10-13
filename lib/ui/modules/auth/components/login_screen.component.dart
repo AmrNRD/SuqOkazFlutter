@@ -50,8 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
           setState(() {
             isLoading = true;
           });
-        }
-       else if (state is UserLoadedState) {
+        } else if (state is UserLoadedState) {
           setState(() {
             isLoading = false;
           });
@@ -180,7 +179,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 SizedBox(height: AppDimens.marginEdgeCase32),
 
-                Center(child: Text(AppLocalizations.of(context).translate("Or"), style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 14))),
+                Center(
+                    child: Text(AppLocalizations.of(context).translate("Or"),
+                        style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 14))),
 
                 SizedBox(height: AppDimens.marginEdgeCase24),
 
@@ -242,7 +243,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           TextSpan(
                             text: AppLocalizations.of(context).translate("signup"),
-                            style: Theme.of(context).textTheme.subtitle1.copyWith(color: AppColors.primaryColor1,fontWeight: FontWeight.w500),
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1
+                                .copyWith(color: AppColors.primaryColor1, fontWeight: FontWeight.w500),
                           )
                         ],
                       ),
@@ -250,7 +254,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(height: AppDimens.marginEdgeCase32),
-
               ],
             ),
           ),
@@ -285,23 +288,30 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> initiateAppleLogin() async {
     try {
       if (await AppleSignIn.isAvailable()) {
+        print("1231312312312321");
         final AuthorizationResult result = await AppleSignIn.performRequests([
           AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
         ]);
+
+        print("------------------");
         switch (result.status) {
           case AuthorizationStatus.authorized:
             String name;
             String email;
+            print("---------12-------");
             final String providerType = "Apple";
             final String userID = result.credential.user;
             final String token = result.credential.user;
 
+            print("---------32------");
             if (result.credential.fullName.givenName != null && result.credential.fullName.familyName != null)
               name = result.credential.fullName.givenName + ' ' + result.credential.fullName.familyName;
             else if (result.credential.fullName.givenName != null) name = result.credential.fullName.givenName;
 
+            print("---------54-------");
             if (result.credential.email != null) email = result.credential.email.toLowerCase();
 
+            print("-------54--------");
             final String profileUrl = "images/profile.png";
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(name, style: Theme.of(context).textTheme.headline2.copyWith(color: Colors.white)),
@@ -350,7 +360,8 @@ class _LoginScreenState extends State<LoginScreen> {
           content: Text(profileUrl, style: Theme.of(context).textTheme.headline2.copyWith(color: Colors.white)),
           backgroundColor: AppColors.accentColor1,
         ));
-        BlocProvider.of<UserBloc>(context)..add(LoginUserWithGoogle(userID, email, name, token, profileUrl, Platform.isIOS?"IOS":"Android"));
+        BlocProvider.of<UserBloc>(context)
+          ..add(LoginUserWithGoogle(userID, email, name, token, profileUrl, Platform.isIOS ? "IOS" : "Android"));
       });
       await _googleSignIn.signIn();
     } catch (error) {}
@@ -381,7 +392,8 @@ class _LoginScreenState extends State<LoginScreen> {
           final String email = profile['email'] ?? '';
           final String profileUrl = profile['picture']['data']['url'];
 
-          BlocProvider.of<UserBloc>(context)..add(LoginUserWithFacebook(userID, email, name, token, profileUrl, Platform.isIOS?"IOS":"Android"));
+          BlocProvider.of<UserBloc>(context)
+            ..add(LoginUserWithFacebook(userID, email, name, token, profileUrl, Platform.isIOS ? "IOS" : "Android"));
           break;
       }
     } catch (error) {
