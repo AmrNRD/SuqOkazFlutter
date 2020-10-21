@@ -76,6 +76,8 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<UserBloc, UserState>(
+      key: UniqueKey(),
+
       listener: (context, state) {
         if (state is UserLoggedOutState) {
           Navigator.pushReplacementNamed(context, Constants.authPage);

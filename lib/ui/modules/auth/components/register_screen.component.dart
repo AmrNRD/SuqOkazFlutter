@@ -42,6 +42,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         padding: const EdgeInsets.symmetric(horizontal: AppDimens.marginEdgeCase24),
         margin: EdgeInsets.only(top: AppDimens.paddingEdgeCase40),
         child: BlocListener<UserBloc, UserState>(
+          key: UniqueKey(),
           listener: (BuildContext context, UserState state) {
             if (state is UserLoadedState) {
               setState(() {
