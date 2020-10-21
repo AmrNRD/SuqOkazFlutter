@@ -44,7 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: BlocListener<UserBloc, UserState>(
           key: UniqueKey(),
           listener: (BuildContext context, UserState state) {
-            if (state is UserLoadedState) {
+            if (state is UserSignedUpState) {
               setState(() {
                 isLoading = false;
               });

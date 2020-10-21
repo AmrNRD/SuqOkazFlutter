@@ -49,7 +49,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         yield UserLoadedState();
       } else if (event is SignUpUser) {
         Root.user = await userRepository.signUp(event.email, event.password, event.passwordConfirmation);
-        yield UserLoadedState();
+        yield UserSignedUpState(Root.user);
       } else if (event is LogoutUser) {
         await userRepository.logout();
         yield UserLoggedOutState();

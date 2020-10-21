@@ -128,90 +128,77 @@ class _RootState extends State<Root> {
           ),
         ),
       ],
-      child: BlocListener<UserBloc, UserState>(
-        listener: (context, state) {
-          if (state is UserLoadedState) {
-            setState(() {
-              Root.user = Root.user;
-            });
-          } else if (state is UserLoggedOutState) {
-            setState(() {
-              Root.user = null;
-            });
-          }
+      child: MaterialApp(
+        title: Constants.appName,
+        supportedLocales: application.supportedLocales(),
+        builder: (context, child) {
+          return ScrollConfiguration(
+            behavior: CustomScrollBehavior(),
+            child: child,
+          );
         },
-        child: MaterialApp(
-          title: Constants.appName,
-          supportedLocales: application.supportedLocales(),
-          builder: (context, child) {
-            return ScrollConfiguration(
-              behavior: CustomScrollBehavior(),
-              child: child,
-            );
-          },
-          theme: ThemeData(
-            scaffoldBackgroundColor: Colors.white,
-            primaryColor: Colors.white,
-            accentColor: AppColors.primaryColor1,
-            textTheme: AppTheme.textTheme,
-            fontFamily: Root.fontFamily,
-            cursorColor: AppColors.primaryColors[50],
-            cupertinoOverrideTheme: CupertinoThemeData(
-              primaryColor: AppColors.primaryColors[50],
-            ),
-            inputDecorationTheme: InputDecorationTheme(
-              contentPadding: EdgeInsets.all(10),
-              enabledBorder: OutlineInputBorder(
-                gapPadding: 0,
-                borderSide: BorderSide(
-                  color: AppColors.customGreyLevels[200].withOpacity(0.6),
-                  width: 1,
-                ),
-              ),
-              errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.red,
-                  width: 1,
-                ),
-              ),
-              focusedErrorBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.red,
-                  width: 1,
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColors.customGreyLevels[100],
-                  width: 0.3,
-                ),
-              ),
-              errorStyle: Theme.of(context).textTheme.subtitle2.copyWith(
-                    fontSize: 11,
-                    color: Colors.red,
-                  ),
-            ),
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white,
+          primaryColor: Colors.white,
+          accentColor: AppColors.primaryColor1,
+          textTheme: AppTheme.textTheme,
+          fontFamily: Root.fontFamily,
+          cursorColor: AppColors.primaryColors[50],
+          cupertinoOverrideTheme: CupertinoThemeData(
+            primaryColor: AppColors.primaryColors[50],
           ),
-          localizationsDelegates: [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          localeResolutionCallback: (locale, supportedLocales) {
-            for (var supportedLocale in supportedLocales) {
-              if (supportedLocale.languageCode == locale.languageCode &&
-                  supportedLocale.countryCode == locale.countryCode) {
-                return supportedLocale;
-              }
-            }
-            return supportedLocales.first;
-          },
-          locale: Root.locale,
-          debugShowCheckedModeBanner: false,
-          themeMode: ThemeMode.system,
-          onGenerateRoute: RouteGenerator().generateRoute,
+          inputDecorationTheme: InputDecorationTheme(
+            contentPadding: EdgeInsets.all(10),
+            enabledBorder: OutlineInputBorder(
+              gapPadding: 0,
+              borderSide: BorderSide(
+                color: AppColors.customGreyLevels[200].withOpacity(0.6),
+                width: 1,
+              ),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.red,
+                width: 1,
+              ),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.red,
+                width: 1,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: AppColors.customGreyLevels[100],
+                width: 0.3,
+              ),
+            ),
+            errorStyle: Theme.of(context).textTheme.subtitle2.copyWith(
+                  fontSize: 11,
+                  color: Colors.red,
+                ),
+          ),
         ),
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        localeResolutionCallback: (locale, supportedLocales) {
+          for (var supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale.languageCode &&
+                supportedLocale.countryCode == locale.countryCode) {
+              return supportedLocale;
+            }
+          }
+          return supportedLocales.first;
+        },
+        locale: Root.locale,
+        debugShowCheckedModeBanner: false,
+        themeMode: ThemeMode.system,
+        onGenerateRoute: RouteGenerator().generateRoute,
       ),
     );
   }
