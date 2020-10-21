@@ -5,12 +5,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_select/smart_select.dart';
 import 'package:suqokaz/bloc/category/category_bloc.dart';
 import 'package:suqokaz/data/models/product_model.dart';
+import 'package:suqokaz/data/repositories/categories.repository.dart';
 import 'package:suqokaz/ui/common/custom_appbar.dart';
 import 'package:suqokaz/ui/common/loading.component.dart';
 import 'package:suqokaz/ui/style/app.colors.dart';
 import 'package:suqokaz/ui/style/theme.dart';
 import 'package:suqokaz/utils/app.localization.dart';
 import 'package:flutter_range_slider/flutter_range_slider.dart' as frs;
+
+import '../../../main.dart';
 
 class FilterPage extends StatefulWidget {
   final Map filterData;
@@ -37,12 +40,17 @@ class _FilterPageState extends State<FilterPage> {
   @override
   void initState() {
     filterData=widget.filterData;
-    categoryBloc=BlocProvider.of<CategoryBloc>(context);
+    categoryBloc=CategoryBloc(new CategoriesRepository(Root.appDataBase));
+    print("here");
+    print('ahhhhhhhhhhhh');
+
     categoryBloc.add(GetCategoriesEvent());
-    if(widget.filterData!=null && widget.filterData.containsKey("minPrice")) {
+    if(widget.filterData!=null){
+    if(widget.filterData.containsKey("minPrice")) {
       _lowerValue=widget.filterData['minPrice'];
       _upperValue=widget.filterData['maxPrice'];
       }
+    }
       super.initState();
   }
 
@@ -95,19 +103,27 @@ class _FilterPageState extends State<FilterPage> {
                       BlocListener<CategoryBloc, CategoryState>(
                         listener: (context, state) {
                           if (state is CategoryLoadingState) {
+                            print("CategoryLoadingState");
                             setState(() {
                               loadingCategory = true;
                             });
                           } else if (state is CategoryLoadedState) {
+                            print("CategoryLoadedState");
                             setState(() {
                               loadingCategory = false;
                               categories=state.nestedCategories;
                               list = categories.map((type) => SmartSelectOption<dynamic>(value: type, group: null, title: type.name)).toList();
+                              if(filterData.containsKey('selectCategory')&&filterData['selectCategory']!=null){
+                                subCategories=filterData['selectCategory'].children;
+                                subList = subCategories.map((type) => SmartSelectOption<dynamic>(value: type, group: null, title: type.name)).toList();
+                              }
                             });
-                          } else if (state is CategoryLoadedState) {
+                          } else if (state is CategoryErrorState) {
+                            print("CategoryErrorState");
                             setState(() {
                               loadingCategory = false;
                             });
+                            print("error in FilterPage CategoryErrorState "+state.message);
                           }
                         },
                         child: InkWell(
@@ -165,7 +181,7 @@ class _FilterPageState extends State<FilterPage> {
               ),
               SizedBox(height: 20),
               Divider(color:  AppColors.customGreyLevels[100]),
-              subCategories.length>1? Row(
+              subCategories.length>0? Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -214,7 +230,9 @@ class _FilterPageState extends State<FilterPage> {
                               ),
                             );
                           },
-                          onChange: (value) {setState(() {filterData['subcategory'] = value;});},
+                          onChange: (value) {setState(() {
+                            filterData['subcategory'] = value;
+                          filterData['selectedCategoryID']=value.id;});},
                           choiceType: SmartSelectChoiceType.radios,
                         ),
                       ),
@@ -241,11 +259,11 @@ class _FilterPageState extends State<FilterPage> {
     filterData['category']=value.id;
     filterData['subCategories']=value.children;
     subCategories=value.children;
-    subList = subCategories.map((type) => SmartSelectOption<dynamic>(value: type.id, group: null, title: type.name)).toList();
+    subList = subCategories.map((type) => SmartSelectOption<dynamic>(value: type, group: null, title: type.name)).toList();
     filterData['selectCategory']=value;
     filterData['selectedCategoryID']=value.id;
     if(subCategories.length>0){
-      filterData['subcategory']=subCategories[0].id;
+      filterData['subcategory']=subCategories[0];
       filterData['selectedCategoryID']=subCategories[0].id;
     }
   });

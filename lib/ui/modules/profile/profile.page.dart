@@ -18,6 +18,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: CustomAppBar(
         text: AppLocalizations.of(context).translate("settings", defaultText: "settings"),
+        // disableCart: Root.user==null,
       ),
       body: SingleChildScrollView(
         child: Column(

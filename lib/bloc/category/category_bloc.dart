@@ -38,6 +38,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   ) async* {
     try {
       if (event is GetCategoriesEvent) {
+        print("GetCategoriesEvent");
         yield CategoryLoadingState();
         if (nestedCategories.isEmpty) {
           List<CategoryData> localCategories = await _categoriesDataRepository.getAllCategories();

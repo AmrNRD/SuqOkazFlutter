@@ -35,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool _obscureTextLogin = true;
 
-  final GlobalKey<FormState> _formKey = GlobalKey();
+  final GlobalKey<FormState> _formKey = GlobalKey(debugLabel: "login form key");
 
   FocusNode _emailFocusNode;
   FocusNode _passwordFocusNode;

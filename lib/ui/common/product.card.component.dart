@@ -165,8 +165,7 @@ class ProductCardComponent extends StatelessWidget {
                         shape: BoxShape.circle,
                         color: Colors.white.withOpacity(0.4),
                       ),
-                      child: Root.user != null
-                          ? InkWell(
+                      child: InkWell(
                               onTap: () {
                                 if (!inInFav) {
                                   BlocProvider.of<WishlistBloc>(context).add(
@@ -195,8 +194,7 @@ class ProductCardComponent extends StatelessWidget {
                                       height: 20,
                                       width: 20,
                                     ),
-                            )
-                          : Container(),
+                            ),
                     ),
                   ],
                 ),

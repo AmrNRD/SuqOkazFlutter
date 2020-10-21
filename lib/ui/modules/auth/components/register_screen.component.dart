@@ -28,7 +28,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool _obscureTextLogin = true;
 
-  final GlobalKey<FormState> _formKey = GlobalKey();
+  final GlobalKey<FormState> _formKey = GlobalKey(debugLabel: "register ");
 
   FocusNode _emailFocusNode;
   FocusNode _passwordFocusNode;

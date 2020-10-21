@@ -63,14 +63,6 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
       );
     BlocProvider.of<CategoryBloc>(context).add(GetCategoriesEvent());
 
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      if (Root.user == null) {
-        body = [
-          HomeTabPage(featuredBloc: _featuredProducts, latestBloc: _latestProducts,onSaleBloc: _onSaleProducts,),
-          ProfilePage(),
-        ];
-      }
-    });
   }
 
   int _currentSelectedTab = 0;
@@ -93,8 +85,8 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
         key: HomeNavigationPage.scaffoldKey,
         body: body[_currentSelectedTab],
         bottomNavigationBar: BottomNavigationBar(
-          items: Root.user != null
-              ? [
+          items:
+          [
                   BottomNavigationBarItem(
                     icon: Padding(
                       padding: const EdgeInsetsDirectional.only(bottom: 4),
@@ -137,33 +129,13 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
                     icon: Padding(
                         padding: const EdgeInsetsDirectional.only(bottom: 4),
                         child: SvgPicture.asset(
-                      (_currentSelectedTab == 3 && Root.user != null) || (_currentSelectedTab == 1 && Root.user == null)
+                      _currentSelectedTab == 3
                           ? "assets/icons/user_selected_icon.svg"
                           : "assets/icons/user_icon.svg",
                     )),
                     title: Text(
                       AppLocalizations.of(context).translate("settings", defaultText: "settings"),
                       style: TextStyle(fontWeight: FontWeight.w500,fontSize: 13),
-                    ),
-                  ),
-                ]
-              : [
-                  BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
-                      _currentSelectedTab == 0 ? "assets/icons/home_selected_icon.svg" : "assets/icons/home_icon.svg",
-                    ),
-                    title: Text(
-                      AppLocalizations.of(context).translate("home", defaultText: "Home"),
-                    ),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
-                      (_currentSelectedTab == 3 && Root.user != null) || (_currentSelectedTab == 1 && Root.user == null)
-                          ? "assets/icons/user_selected_icon.svg"
-                          : "assets/icons/user_icon.svg",
-                    ),
-                    title: Text(
-                      AppLocalizations.of(context).translate("settings", defaultText: "settings"),
                     ),
                   ),
                 ],

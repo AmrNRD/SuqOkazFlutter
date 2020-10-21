@@ -287,21 +287,37 @@ class _ProductCategoriesPageState extends State<ProductCategoriesPage> with Tick
   }
 
   onFilterClick() async {
+    if(filterData==null)
+      filterData={};
+
     filterData['category']=parentId;
     filterData['subCategories']=subCategories;
     filterData['subcategory']=selectedSubCategory;
+    print('selectedSubCategoryId');
+    print(selectedSubCategoryId);
+    print(selectedSubCategoryId.runtimeType);
+    print('selectedSubCategory');
+    print(selectedSubCategory);
+    print(selectedSubCategory.runtimeType);
+
+    print('to the filter');
+    print(filterData);
     var res = await Navigator.of(context).pushNamed(Constants.filterPage, arguments: filterData);
+    print('out of the filter');
+    print(res);
     Map results = res as Map;
     setState(() {
-      filterData = results;
-      if(filterData['category']!=null)
+      if(filterData.containsKey("minPrice")){
+        filterData = results;
+      }if(filterData.containsKey('category')&&filterData['category']!=null) {
         parentId = filterData['category'];
-      if(filterData['subCategories']!=null)
+        filterData = results;
+      }if(filterData.containsKey('subCategories')&&filterData['subCategories']!=null)
         subCategories = filterData['subCategories'];
-      if(filterData['subcategory']!=null)
-      selectedSubCategoryId = filterData['subcategory'];
-      if(filterData['subcategory']!=null)
-        selectedSubCategory = filterData['subcategory'];
+      if(filterData.containsKey('subcategory')&&filterData['subcategory']!=null)
+      selectedSubCategoryId = filterData['subcategory'].id;
+      if(filterData.containsKey('subcategory')&&filterData['subcategory']!=null)
+        selectedSubCategory = filterData['subcategory'].id;
       tabs = [];
       tabBarView = [];
     });
