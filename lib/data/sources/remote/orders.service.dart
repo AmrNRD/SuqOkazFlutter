@@ -43,7 +43,7 @@ class OrdersService {
     apiCaller.setUrl("https://api.moyasar.com/v1/payments");
     return await apiCaller.postData(headers: {},body: {
       "amount":(amount*100).toInt(),
-      "publishable_api_key":Constants.livePublishableKey,
+      "publishable_api_key":Constants.testPublishableKey,
       "source":{
         "type":"creditcard",
         "company":"mada",

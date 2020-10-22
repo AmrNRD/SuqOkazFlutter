@@ -51,8 +51,8 @@ class CartDataRepository extends CartRepository {
   }
 
  @override
-  Future deleteCartItems(int itemId) async {
-    return _cartService.deleteCartItems(itemId);
+  Future deleteCartItems(int cartID) async {
+    return _cartService.deleteCartItems(cartID);
   }
 
   @override

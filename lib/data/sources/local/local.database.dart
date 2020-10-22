@@ -159,7 +159,7 @@ class AppDataBase extends _$AppDataBase {
     return await customStatement("DELETE FROM cart_items WHERE id = ? and variation_id = ?;", [id, varId]);
   }
   Future<void> deleteCartItems(int id) async {
-    return await customStatement("DELETE FROM cart_items WHERE id = ?;", [id]);
+    return await customStatement("DELETE FROM cart_items WHERE cart_id = ?;", [id]);
   }
 
   // Address CRUD
