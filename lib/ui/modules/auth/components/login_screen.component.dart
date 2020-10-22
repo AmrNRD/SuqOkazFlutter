@@ -200,6 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
+                    SizedBox(width: 20,),
                     Padding(
                       padding: EdgeInsets.only(top: 10.0),
                       child: GestureDetector(
@@ -211,25 +212,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    Platform.isIOS
-                        ? Padding(
-                            padding: EdgeInsets.only(top: 10.0, left: 20),
-                            child: GestureDetector(
-                              onTap: initiateAppleLogin,
-                              child: Container(
-                                padding: const EdgeInsets.all(15.0),
-                                decoration:
-                                    new BoxDecoration(shape: BoxShape.circle, color: AppColors.customGreyLevels[300]),
-                                child: new Icon(FontAwesomeIcons.apple, color: Colors.black45),
-                              ),
-                            ),
-                          )
-                        : Container(),
                   ],
                 ),
-
+                Platform.isIOS ? Padding(
+                  padding: EdgeInsets.only(top: 20.0),
+                  child: GestureDetector(
+                    onTap: initiateAppleLogin,
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 40,
+                      child: Image.asset("assets/images/apple_sign_in.png"),
+                    ),
+                  ),
+                ) : Container(),
                 SizedBox(height: AppDimens.marginEdgeCase32),
-
                 Center(
                   child: InkWell(
                     onTap: widget.goToSignUp,

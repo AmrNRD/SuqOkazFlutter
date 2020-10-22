@@ -161,7 +161,6 @@ class _AddToCartButtonState extends State<AddToCartButton> {
                           if(Root.user != null) {
                             BlocProvider.of<CartBloc>(context).add(
                               AddProductToCartEvent(widget.productModel, productQuantity, widget.variationId, widget.attributes,),);
-                            Navigator.pushNamed(context, Constants.cartPage);
 
                           }else{ Navigator.of(context).pushNamedAndRemoveUntil(Constants.authPage, (Route<dynamic> route) => false);}
                         }

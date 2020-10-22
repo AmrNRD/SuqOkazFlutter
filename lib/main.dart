@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_apple_pay/flutter_apple_pay.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -28,7 +29,12 @@ import 'utils/app.localization.dart';
 import 'utils/core.util.dart';
 import 'utils/route_generator.dart';
 
-void main() => runApp(Root());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
+    runApp(Root());
+  });
+}
 
 class Root extends StatefulWidget {
   // This widget is the root of your application.
@@ -58,7 +64,7 @@ class _RootState extends State<Root> {
         this.localeLoaded = true;
         if (locale != null) {
           Root.locale = locale;
-          if(locale==Locale("en", "US"))
+          if (locale == Locale("en", "US"))
             setState(() {
               Root.fontFamily = AppFonts.fontRoboto;
             });
@@ -68,9 +74,9 @@ class _RootState extends State<Root> {
             });
         } else {
           Root.locale = Locale("ar", null);
-            setState(() {
-              Root.fontFamily = AppFonts.fontTajawal;
-            });
+          setState(() {
+            Root.fontFamily = AppFonts.fontTajawal;
+          });
         }
       });
     });
@@ -80,7 +86,7 @@ class _RootState extends State<Root> {
     setState(() {
       Root.locale = newLocale;
     });
-    if(newLocale==Locale("en", "US"))
+    if (newLocale == Locale("en", "US"))
       setState(() {
         Root.fontFamily = AppFonts.fontRoboto;
       });

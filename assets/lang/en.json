@@ -222,6 +222,10 @@
     "addToWishlist": "Start adding items to it.",
     "sale": "Sale",
     "please_wait": "Adding, please wait...",
-    "more": "More"
+    "more": "More",
+    "really_exit": "Are you sure you want to exit?",
+    "no": "No",
+    "yes_exit": "Yes, exit"
+
 
 }

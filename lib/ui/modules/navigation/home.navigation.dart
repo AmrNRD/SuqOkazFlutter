@@ -85,7 +85,34 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
           Navigator.pushReplacementNamed(context, Constants.authPage);
         }
       },
-      child: Scaffold(
+      child: WillPopScope(
+          onWillPop: () async {
+            final value = await showDialog<bool>(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    content: Text(AppLocalizations.of(context).translate("really_exit")),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text(AppLocalizations.of(context).translate("no")),
+                        onPressed: () {
+                          Navigator.of(context).pop(false);
+                        },
+                      ),
+                      FlatButton(
+                        child: Text(AppLocalizations.of(context).translate("yes_exit")),
+                        onPressed: () {
+                          Navigator.of(context).pop(true);
+                        },
+                      ),
+                    ],
+                  );
+                }
+            );
+
+            return value == true;
+          },
+          child:Scaffold(
         key: HomeNavigationPage.scaffoldKey,
         body: body[_currentSelectedTab],
         bottomNavigationBar: BottomNavigationBar(
@@ -148,7 +175,7 @@ class _HomeNavigationPageState extends State<HomeNavigationPage> {
           selectedItemColor: Colors.amber[800],
           onTap: _onItemTapped,
         ),
-      ),
+      )),
     );
   }
 }
